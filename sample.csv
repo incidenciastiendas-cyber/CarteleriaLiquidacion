@@ -1,2 +1,4 @@
 N Incidencia,SKU,Descripción,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio Unidad,Desde,Hasta,Precio sin impuesto,N Negociacion,Razon de rebaja,Industria
-C-1003-4,4030300303,Heladera Gafa,35,7738728307420,15000,10500,10500,8/12/2025,23/1/2026,,113434242454,Daño en puerta frontal,Industria Argentina
+C-1003-4,4030300303,Heladera Gafa,35,7738728307420,1500000,900500,10500,8/12/2025,23/1/2026,,113434242454,Daño en puerta frontal,Industria Argentina
+C-1003-5,4030300301,Heladera Samsung,35,7738728307420,1500000,900500,10500,8/12/2025,23/1/2026,,113434242454,Daño en puerta freezer,Industria Argentina
+C-1003-6,4030300304,Heladera LG,35,7738728307420,1500000,900500,10500,8/12/2025,23/1/2026,,113434242454,Daño en motor,Industria Argentina
