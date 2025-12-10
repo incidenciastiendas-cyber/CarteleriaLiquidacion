@@ -1,0 +1,768 @@
+:root {
+  --bg: #f5f7fa;
+  --muted: #6b7280;
+  --primary: #3b82f6;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --info: #06b6d4;
+  --border: #e5e7eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  margin: 0;
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+.app {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Header */
+header {
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+}
+
+header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.controls-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+}
+
+.btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #4b5563;
+}
+
+.btn-success {
+  background: var(--success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.btn-warning {
+  background: var(--warning);
+  color: white;
+}
+
+.btn-warning:hover {
+  background: #d97706;
+}
+
+.btn-info {
+  background: var(--info);
+  color: white;
+}
+
+.btn-info:hover {
+  background: #0891b2;
+}
+
+/* File input */
+.file-input-wrapper {
+  position: relative;
+}
+
+.file-input-wrapper input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Table */
+.table-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+td input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+}
+
+td input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+td button {
+  padding: 6px 12px;
+  background: var(--danger);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+td button:hover {
+  background: #dc2626;
+}
+
+/* Preview section */
+.preview-section {
+  margin-top: 32px;
+}
+
+.preview-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #111827;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Footer */
+footer {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+footer small {
+  font-size: 13px;
+}
+
+/* Download toolbar */
+.download-toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.btn-download {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary-download {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-primary-download:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+}
+
+.btn-secondary-download {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.btn-secondary-download:hover {
+  background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+}
+
+/* ========================================
+   PDF/PRINT STYLES - Matching the image
+   ======================================== */
+
+.sheet-a4 {
+  width: 595px;
+  height: 842px;
+  background: #fff;
+  margin: 24px auto;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  page-break-after: avoid;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  gap: 0;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  width: 100%;
+}
+
+.row-carteles {
+  height: 420px;
+}
+
+.row-obleas {
+  height: 98px;
+  margin-top: 40px;
+}
+
+/* A6 Card (main price card) */
+.a6 {
+  width: 297px;
+  height: 420px;
+  border: 1px solid #ddd;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Miso', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.titulo {
+  position: absolute;
+  top: 30px;
+  left: 12px;
+  right: 12px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000;
+  line-height: 1.2;
+}
+
+.precio-actual {
+  position: absolute;
+  top: 75px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-weight: 400;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.precio-actual .sig {
+  font-size: 28px;
+  align-self: flex-start;
+  margin-top: 0;
+  font-weight: 400;
+}
+
+.precio-actual .entero {
+  font-size: 55px;
+  letter-spacing: -1px;
+  font-weight: 400;
+}
+
+.precio-actual .dec {
+  font-size: 24px;
+  align-self: flex-start;
+  margin-top: 0;
+  font-weight: 400;
+}
+
+/* C/U text */
+.cu-text {
+  position: absolute;
+  top: 212px;
+  left: 65px;
+  font-size: 11px;
+  font-weight: 400;
+  color: #000;
+}
+
+/* Liquidación text */
+.liquidacion-text {
+  position: absolute;
+  top: 235px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  color: #000;
+  line-height: 1.3;
+}
+
+/* Origen text */
+.origen-text {
+  position: absolute;
+  top: 250px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Precio anterior con doble línea diagonal */
+.precio-anterior {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 28px;
+  font-weight: 400;
+  color: #000;
+}
+
+.precio-anterior .val {
+  display: inline-block;
+  position: relative;
+  padding: 0;
+}
+
+.precio-anterior .sig {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+.precio-anterior .val sup {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+.precio-anterior .val::before,
+.precio-anterior .val::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  height: 2px;
+  background: #000;
+  top: 50%;
+  transform-origin: center;
+}
+
+.precio-anterior .val::before {
+  transform: rotate(-12deg);
+}
+
+.precio-anterior .val::after {
+  transform: rotate(12deg);
+}
+
+/* Precio por unidad */
+.precio-unidad {
+  position: absolute;
+  bottom: 30px;
+  left: 8px;
+  font-size: 10px;
+  color: #000;
+}
+
+.precio-unidad .label {
+  font-size: 9px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 2px;
+}
+
+.precio-unidad .value {
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+}
+
+.precio-unidad .value .sig {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+.precio-unidad .value sup {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+/* Barcode */
+.barcode-svg {
+  position: absolute !important;
+  bottom: 30px !important;
+  right: 8px !important;
+  width: 100px !important;
+  height: 50px !important;
+  display: block !important;
+}
+
+.barcode-text {
+  display: none;
+}
+
+/* Oblea barcode */
+.oblea-barcode {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 110px !important;
+  height: 55px !important;
+  display: block !important;
+}
+
+.vigencia {
+  position: absolute;
+  top: 265px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: lowercase;
+}
+
+.dpto-sku {
+  position: absolute;
+  top: 280px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* Bottom info */
+.bottom-info {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+/* Oblea (small label) */
+.oblea {
+  width: 290px;
+  height: 98px;
+  border: 2px solid #000;
+  padding: 8px;
+  background: #fff;
+  position: relative;
+  font-family: 'Miso', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+.oblea-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #000;
+  margin-bottom: 2px;
+}
+
+.oblea-sku {
+  font-size: 10px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.oblea-divider {
+  width: 100%;
+  height: 1px;
+  background: #000;
+  margin: 4px 0;
+}
+
+.oblea-serie {
+  font-size: 9px;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.oblea-barcode {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 110px;
+  height: 55px;
+}
+
+.oblea-producto-text {
+  position: absolute;
+  bottom: 20px;
+  left: 8px;
+  font-size: 9px;
+  color: #000;
+  margin-top: 10px;
+}
+
+.oblea-razon {
+  position: absolute;
+  bottom: 10px;
+  left: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #000;
+}
+
+.oblea-fecha {
+  position: absolute;
+  bottom: 12px;
+  right: 8px;
+  font-size: 9px;
+  color: #000;
+}
+
+.oblea-caso {
+  position: absolute;
+  bottom: 2px;
+  right: 8px;
+  font-size: 8px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Print styles */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  @page {
+    size: 595px 842px;
+    margin: 0;
+  }
+  
+  html, body {
+    width: 595px;
+    height: 842px;
+    margin: 0;
+    padding: 0;
+    background: white;
+    overflow: hidden;
+  }
+  
+  .app {
+    width: 595px;
+    height: 842px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  /* Hide everything except preview */
+  header,
+  footer,
+  .controls,
+  .table-section {
+    display: none !important;
+  }
+  
+  #preview-section {
+    display: block !important;
+    width: 595px;
+    height: 842px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  #preview-section h2 {
+    display: none !important;
+  }
+  
+  #preview-list {
+    display: block !important;
+    width: 595px;
+    height: 842px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  /* Hide all sheets by default */
+  .sheet-a4 {
+    display: none !important;
+  }
+  
+  /* Only show marked sheet */
+  .sheet-a4[data-print-target="true"] {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 595px !important;
+    height: 842px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    background: white !important;
+    overflow: hidden !important;
+  }
+  
+  .row {
+    display: flex !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    justify-content: center !important;
+  }
+  
+  .row-carteles {
+    width: 595px !important;
+    height: 420px !important;
+  }
+  
+  .row-obleas {
+    width: 595px !important;
+    height: 98px !important;
+    margin-top: 40px !important;
+  }
+  
+  .a6 {
+    width: 297px !important;
+    height: 420px !important;
+  }
+  
+  .oblea {
+    width: 290px !important;
+    height: 98px !important;
+  }
+  
+  .download-toolbar {
+    display: none !important;
+  }
+}
