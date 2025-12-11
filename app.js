@@ -275,7 +275,7 @@ function renderPreview(){
     // Insert toolbar before container
     list.insertBefore(toolbar, container);
 
-    // Download helper - Use browser print for better quality and SVG support
+    // Download helper - Use browser print for individual sheets
     function downloadAsA4PDF(element, filename){
       // Mark element for printing
       element.setAttribute('data-print-target', 'true');
@@ -309,19 +309,30 @@ function renderPreview(){
         tempContainer.appendChild(clonedRow);
         // Re-render barcodes in cloned elements
         const clonedSvgs = clonedRow.querySelectorAll('svg[id*="barcode"]');
-        clonedSvgs.forEach((svg, i) => {
-          const originalId = svg.id;
-          const match = originalId.match(/barcode-a6b?-(\d+)/);
-          if(match) {
-            const idx = match[1];
-            const eanCode = (p.ean||p.sku||'').toString().replace(/\D/g,'');
-            if(eanCode.length >= 12) {
-              JsBarcode(svg, eanCode.length === 12 ? eanCode : eanCode.substring(0, 12), {
-                format: 'ean13', width: 1.2, height: 40, displayValue: true, fontSize: 10, margin: 0
-              });
-            }
+        try {
+          const raw = (p.ean||p.sku||'').toString().trim();
+          const digits = raw.replace(/\D/g,'');
+          let eanCode = digits;
+          
+          if(digits.length < 12) {
+            eanCode = digits.padStart(12, '0');
+          } else if(digits.length === 12) {
+            eanCode = digits;
+          } else if(digits.length === 13) {
+            eanCode = digits;
+          } else {
+            eanCode = digits.substring(0, 12);
           }
-        });
+          
+          clonedSvgs.forEach((svg) => {
+            JsBarcode(svg, eanCode, {
+              format: 'ean13', width: 1.2, height: 40, displayValue: true, fontSize: 10, margin: 0
+            });
+          });
+        } catch(e) {
+          console.error('Error rendering barcode:', e);
+        }
+        
         list.appendChild(tempContainer);
         downloadAsA4PDF(tempContainer, `${(p.nIncidencia||p.sku||'producto')}_Carteles_A4.pdf`);
         setTimeout(() => list.removeChild(tempContainer), 1000);
@@ -338,14 +349,30 @@ function renderPreview(){
         tempContainer.appendChild(clonedRow);
         // Re-render barcodes in cloned elements
         const clonedSvgs = clonedRow.querySelectorAll('svg[id*="barcode"]');
-        clonedSvgs.forEach(svg => {
-          const eanCode = (p.ean||p.sku||'').toString().replace(/\D/g,'');
-          if(eanCode.length >= 12) {
-            JsBarcode(svg, eanCode.length === 12 ? eanCode : eanCode.substring(0, 12), {
+        try {
+          const raw = (p.ean||p.sku||'').toString().trim();
+          const digits = raw.replace(/\D/g,'');
+          let eanCode = digits;
+          
+          if(digits.length < 12) {
+            eanCode = digits.padStart(12, '0');
+          } else if(digits.length === 12) {
+            eanCode = digits;
+          } else if(digits.length === 13) {
+            eanCode = digits;
+          } else {
+            eanCode = digits.substring(0, 12);
+          }
+          
+          clonedSvgs.forEach(svg => {
+            JsBarcode(svg, eanCode, {
               format: 'ean13', width: 1.0, height: 30, displayValue: true, fontSize: 8, margin: 0
             });
-          }
-        });
+          });
+        } catch(e) {
+          console.error('Error rendering barcode:', e);
+        }
+        
         list.appendChild(tempContainer);
         downloadAsA4PDF(tempContainer, `${(p.nIncidencia||p.sku||'producto')}_Obleas_A4.pdf`);
         setTimeout(() => list.removeChild(tempContainer), 1000);
@@ -421,6 +448,9 @@ async function printAllSheets() {
       
       const sheet = sheets[i];
       
+      // Wait for SVG barcodes to render
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
       // Capture the sheet exactly as displayed (595x842px)
       const canvas = await html2canvas(sheet, {
         scale: 2,
@@ -431,7 +461,14 @@ async function printAllSheets() {
         height: 842,
         windowWidth: 595,
         windowHeight: 842,
-        logging: false
+        logging: false,
+        onclone: function(clonedDoc) {
+          // Ensure SVGs are visible in cloned document
+          const svgs = clonedDoc.querySelectorAll('svg');
+          svgs.forEach(svg => {
+            svg.style.display = 'block';
+          });
+        }
       });
       
       // Add new page for sheets after the first one

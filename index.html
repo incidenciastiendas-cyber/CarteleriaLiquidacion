@@ -11,23 +11,36 @@
       <header>
         <h1>Carteleria</h1>
         <p class="muted">
-          App para creación de A6 de rebaja en precio y de oblea para productos por liquidación
+          App para creación de A6 de rebaja en precio y de oblea para productos
+          por liquidación
         </p>
       </header>
 
       <div class="controls">
         <div class="controls-group">
-          <button id="btn-add" class="btn btn-primary">+ Agregar producto</button>
           <div class="file-input-wrapper">
-            <label for="file-csv" class="btn btn-secondary">📁 Seleccionar CSV</label>
+            <label for="file-csv" class="btn btn-file"
+              >📁 Seleccionar CSV</label
+            >
             <input id="file-csv" type="file" accept=".csv" />
           </div>
-          <button id="btn-import" class="btn btn-success">Importar CSV</button>
+          <button id="btn-import" class="btn btn-file">Importar CSV</button>
         </div>
         <div class="controls-group">
-          <button id="btn-delete-selected" class="btn btn-danger">🗑️ Eliminar seleccionados</button>
-          <button id="btn-preview" class="btn btn-info">👁️ Ver/Ocultar Vista Previa</button>
-          <button id="btn-print-all" class="btn btn-success">📥 Descargar Todos los Carteles</button>
+          <button id="btn-add" class="btn btn-secondary">
+            + Agregar producto
+          </button>
+          <button id="btn-delete-selected" class="btn btn-secondary">
+            🗑️ Eliminar seleccionados
+          </button>
+        </div>
+        <div class="controls-group">
+          <button id="btn-preview" class="btn btn-primary">
+            📋 Crear Carteles
+          </button>
+          <button id="btn-print-all" class="btn btn-success">
+            📥 Descargar Todos los Carteles
+          </button>
         </div>
       </div>
 
@@ -69,7 +82,9 @@
           → Guardar como PDF).</small
         >
         <br />
-        <small class="muted">Creado por IncidenciasTiendas@gdnargentina.com</small>
+        <small class="muted"
+          >Creado por IncidenciasTiendas@gdnargentina.com</small
+        >
       </footer>
     </div>
 

@@ -127,6 +127,15 @@ header h1 {
   background: #4b5563;
 }
 
+.btn-file {
+  background: #8b5cf6;
+  color: white;
+}
+
+.btn-file:hover {
+  background: #7c3aed;
+}
+
 .btn-success {
   background: var(--success);
   color: white;
@@ -358,6 +367,7 @@ footer small {
   height: 420px;
   border: 1px solid #ddd;
   background: #fff;
+  color: black;
   position: relative;
   overflow: hidden;
   font-family: 'Miso', Arial, sans-serif;
@@ -366,7 +376,7 @@ footer small {
 
 .titulo {
   position: absolute;
-  top: 30px;
+  top: 105px;
   left: 12px;
   right: 12px;
   text-align: center;
@@ -380,7 +390,7 @@ footer small {
 
 .precio-actual {
   position: absolute;
-  top: 75px;
+  top: 160px;
   left: 0;
   right: 0;
   text-align: center;
@@ -415,8 +425,8 @@ footer small {
 /* C/U text */
 .cu-text {
   position: absolute;
-  top: 212px;
-  left: 65px;
+  top: 280px;
+  left: 85px;
   font-size: 11px;
   font-weight: 400;
   color: #000;
@@ -425,7 +435,7 @@ footer small {
 /* Liquidación text */
 .liquidacion-text {
   position: absolute;
-  top: 235px;
+  top: 305px;
   left: 0;
   right: 0;
   text-align: center;
@@ -438,7 +448,7 @@ footer small {
 /* Origen text */
 .origen-text {
   position: absolute;
-  top: 250px;
+  top: 315px;
   left: 0;
   right: 0;
   text-align: center;
@@ -450,7 +460,7 @@ footer small {
 /* Precio anterior con doble línea diagonal */
 .precio-anterior {
   position: absolute;
-  top: 200px;
+  top: 260px;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -503,7 +513,7 @@ footer small {
 .precio-unidad {
   position: absolute;
   bottom: 30px;
-  left: 8px;
+  left: 20px;
   font-size: 10px;
   color: #000;
 }
@@ -512,7 +522,7 @@ footer small {
   font-size: 9px;
   font-weight: 400;
   color: #000;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
 }
 
 .precio-unidad .value {
@@ -561,7 +571,7 @@ footer small {
 
 .vigencia {
   position: absolute;
-  top: 265px;
+  top: 325px;
   left: 0;
   right: 0;
   text-align: center;
@@ -572,7 +582,7 @@ footer small {
 
 .dpto-sku {
   position: absolute;
-  top: 280px;
+  top: 335px;
   left: 0;
   right: 0;
   text-align: center;
@@ -585,8 +595,8 @@ footer small {
 .bottom-info {
   position: absolute;
   bottom: 8px;
-  left: 8px;
-  right: 8px;
+  left: 20px;
+  right: 15px;
   display: flex;
   justify-content: space-between;
   font-size: 10px;
