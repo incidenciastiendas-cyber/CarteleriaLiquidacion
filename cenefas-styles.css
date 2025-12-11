@@ -1,0 +1,204 @@
+/* Importar estilos base del proyecto principal */
+@import url('styles.css');
+
+/* Estilos específicos para cenefas */
+
+/* A5 Horizontal: 595px ancho x 420px alto (mitad de A4 verticalmente) */
+.a5-horizontal {
+  width: 595px;
+  height: 420px;
+  border: 1px solid #ddd;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.row-cenefas {
+  height: 842px;
+  flex-direction: column;
+  gap: 1px;
+}
+
+/* Body/Área de contenido: 543px x 248px - CENTRADO en el A5 */
+/* Márgenes automáticos: (595-543)/2 = 26px izq/der, (420-248)/2 = 86px arriba/abajo */
+.cenefa-body {
+  width: 543px;
+  height: 248px;
+  position: relative;
+  background: #fff;
+}
+
+/* Oferta Box - Sector negro: 281px ancho x 172px alto */
+.oferta-box {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 281px;
+  height: 172px;
+  background: #000;
+  color: white;
+  clip-path: polygon(0 0, 85% 0, 100% 50%, 85% 100%, 0 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  z-index: 10;
+  text-align: center;
+}
+
+.oferta-principal {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 130px;
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -2px;
+}
+
+.oferta-descripcion {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.oferta-vigencia {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+/* Contenido derecha - parte blanca con objeto de oferta y aclaraciones */
+.contenido-derecha {
+  position: absolute;
+  left: 284px;
+  top: 0;
+  right: 0;
+  height: 172px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* Objeto oferta - Font size máximo 32px, adaptable automáticamente */
+.objeto-oferta {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: clamp(16px, 5vw, 32px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000;
+  letter-spacing: 0.5px;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+}
+
+/* Aclaración objeto - Menor jerarquía - Miso 13px */
+.aclaracion-objeto {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: #333;
+  line-height: 1.2;
+}
+
+/* Badge aclaración (COMBINALO COMO QUIERAS) - Poppins 13px */
+.badge-aclaracion {
+  display: inline-block;
+  background: #e53935;
+  color: white;
+  padding: 6px 12px;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 3px;
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+/* Texto aclaración simple (otros textos) - Poppins 13px sin fondo */
+.texto-aclaracion {
+  display: inline-block;
+  color: #000;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+/* Footer legal - Directamente debajo del sector negro dentro del body */
+.footer-legal {
+  position: absolute;
+  top: 178px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+}
+
+/* Footer 1 - 18px bold */
+.legal1 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+/* Footer 2 - 14px regular */
+.legal2 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000;
+  line-height: 1.3;
+}
+
+/* Botón de retorno */
+.btn-back {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #6b7280;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+/* Print styles para cenefas */
+@media print {
+  .a5-horizontal {
+    width: 595px !important;
+    height: 420px !important;
+    page-break-inside: avoid;
+  }
+  
+  .row-cenefas {
+    width: 595px !important;
+    height: 842px !important;
+  }
+}

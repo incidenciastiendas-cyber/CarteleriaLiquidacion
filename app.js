@@ -19,6 +19,8 @@ const sample = {
 };
 // add industria field to sample
 sample.industria = 'Industria Argentina';
+sample.acumulable = 'Si';
+sample.sinCambio = 'Si';
 
 
 function $(sel){return document.querySelector(sel)}
@@ -44,6 +46,8 @@ function renderTable(){
       <td><input data-idx="${idx}" data-field="nNegociacion" value="${p.nNegociacion || ''}"></td>
       <td><input data-idx="${idx}" data-field="nroSerie" value="${p.nroSerie || ''}"></td>
       <td><input data-idx="${idx}" data-field="industria" value="${p.industria || ''}"></td>
+      <td><input data-idx="${idx}" data-field="acumulable" value="${p.acumulable || ''}"></td>
+      <td><input data-idx="${idx}" data-field="sinCambio" value="${p.sinCambio || ''}"></td>
       <td><button data-idx="${idx}" class="btn-del">Eliminar</button></td>
     `;
     tbody.appendChild(tr);
@@ -88,7 +92,9 @@ function importCSV(file){
       sku: r['SKU']||'', descripcion: r['Descripción']||r['Descripcion']||'',
       razonRebaja: r['Razon de rebaja']||r['Razón de rebaja']||r['Razon de rebaja']||'',
       departamento: r['Departamento']||'', ean: r['EAN / UPC']||r['EAN/UPC']||r['EAN']||'',
-      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||''
+      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||'',
+      acumulable: r['Acumulable']||'',
+      sinCambio: r['Sin cambio']||''
     }));
     products.push(...rows);
     renderTable();
@@ -109,9 +115,10 @@ function renderPreview(){
         <div class="a6">
           <div class="titulo">${escapeHtml((p.descripcion||'').toUpperCase())}</div>
           <div class="precio-actual"><span class="sig">$</span><span class="entero">${precioAct.entero}</span><span class="dec">${precioAct.dec}</span></div>
+          ${(p.acumulable && p.acumulable.toLowerCase() === 'si') ? '<div class="acumulable-text">Acumulable con promoción y financiación vigente</div>' : ''}
           <div class="precio-anterior"><span class="val"><span class="sig">$</span>${precioAnt.entero}<sup>${precioAnt.dec}</sup></span></div>
           <div class="cu-text">C/U</div>
-          <div class="liquidacion-text">Producto sin cambio ni devolución</div>
+          ${(p.sinCambio && p.sinCambio.toLowerCase() === 'si') ? '<div class="liquidacion-text">Producto sin cambio ni devolución</div>' : ''}
           <div class="origen-text">Origen: ${escapeHtml(p.industria||'Argentina')}</div>
           <div class="precio-unidad">
             <div class="label">Precio por unidad</div>
@@ -128,9 +135,10 @@ function renderPreview(){
         <div class="a6">
           <div class="titulo">${escapeHtml((p.descripcion||'').toUpperCase())}</div>
           <div class="precio-actual"><span class="sig">$</span><span class="entero">${precioAct.entero}</span><span class="dec">${precioAct.dec}</span></div>
+          ${(p.acumulable && p.acumulable.toLowerCase() === 'si') ? '<div class="acumulable-text">Acumulable con promoción y financiación vigente</div>' : ''}
           <div class="precio-anterior"><span class="val"><span class="sig">$</span>${precioAnt.entero}<sup>${precioAnt.dec}</sup></span></div>
           <div class="cu-text">C/U</div>
-          <div class="liquidacion-text">Producto sin cambio ni devolución</div>
+          ${(p.sinCambio && p.sinCambio.toLowerCase() === 'si') ? '<div class="liquidacion-text">Producto sin cambio ni devolución</div>' : ''}
           <div class="origen-text">Origen: ${escapeHtml(p.industria||'Argentina')}</div>
           <div class="precio-unidad">
             <div class="label">Precio por unidad</div>
@@ -407,8 +415,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#btn-print-all').addEventListener('click', ()=>{ printAllSheets(); });
 
   $('#btn-import').addEventListener('click', ()=>{
-    const f = $('#file-csv').files[0]; if(!f){alert('Seleccioná un CSV');return;} importCSV(f);
+    const f = $('#file-csv').files[0]; if(!f){alert('Selecioná un CSV');return;} importCSV(f);
   });
+
+  $('#btn-download-template').addEventListener('click', ()=>{ downloadTemplate(); });
 
   $('#select-all').addEventListener('change', (e)=>{
     const v = e.target.checked; $all('.sel').forEach(ch=>ch.checked=v);
@@ -507,4 +517,13 @@ function bindTableEvents(){
     const t = e.target; const idx = parseInt(t.dataset.idx,10); const field = t.dataset.field; if(!Number.isNaN(idx)&&field) products[idx][field]=t.value;
   });
   $('#products-body').addEventListener('click', (e)=>{ if(e.target.classList.contains('btn-del')){ const idx=parseInt(e.target.dataset.idx,10); products.splice(idx,1); renderTable(); } });
+}
+
+function downloadTemplate(){
+  const headers = 'N Incidencia,SKU,Descripción,Razón de rebaja,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio Unidad,Desde,Hasta,Nro de serie,N Negociacion,Industria,Acumulable,Sin cambio';
+  const blob = new Blob([headers], {type: 'text/csv;charset=utf-8;'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'template_carteleria.csv';
+  link.click();
 }

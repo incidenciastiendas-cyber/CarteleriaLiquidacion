@@ -3,20 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cartelería Masiva — Previsualizador</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Cenefas Promocionales — Previsualizador</title>
+    <link rel="stylesheet" href="cenefas-styles.css" />
   </head>
   <body>
     <div class="app">
       <header>
-        <h1>Carteleria</h1>
+        <h1>Cenefas Promocionales</h1>
         <p class="muted">
-          App para creación de A6 de rebaja en precio y de oblea para productos
-          por liquidación
+          App para creación de cenefas A5 horizontales para promociones (2x1,
+          3x2, etc.)
         </p>
-        <a href="cenefas.html" class="btn-cenefas"
-          >🎯 Ir a Cenefas Promocionales</a
-        >
+        <a href="index.html" class="btn-back">← Volver a Cartelería</a>
       </header>
 
       <div class="controls">
@@ -33,48 +31,40 @@
           </button>
         </div>
         <div class="controls-group">
-          <button id="btn-add" class="btn btn-success">
-            + Agregar producto
-          </button>
+          <button id="btn-add" class="btn btn-success">+ Agregar cenefa</button>
           <button id="btn-delete-selected" class="btn btn-danger">
             🗑️ Eliminar seleccionados
           </button>
         </div>
         <div class="controls-group">
           <button id="btn-preview" class="btn btn-primary">
-            📋 Crear Carteles
+            📋 Crear Cenefas
           </button>
           <button id="btn-print-all" class="btn btn-success">
-            📥 Descargar Todos los Carteles
+            📥 Descargar Todas las Cenefas
           </button>
         </div>
       </div>
 
       <main>
         <section class="table-section">
-          <table id="products-table">
+          <table id="cenefas-table">
             <thead>
               <tr>
                 <th><input id="select-all" type="checkbox" /></th>
-                <th>N° Incidencia</th>
-                <th>SKU</th>
-                <th>Descripción</th>
-                <th>Razón Rebaja</th>
-                <th>Dpto</th>
-                <th>EAN/UPC</th>
-                <th>Precio Ant.</th>
-                <th>Precio Act.</th>
+                <th>Tipo Oferta</th>
+                <th>Desc. Oferta</th>
                 <th>Desde</th>
                 <th>Hasta</th>
-                <th>N° Negociación</th>
-                <th>N° Serie</th>
-                <th>Industria</th>
-                <th>Acumulable</th>
-                <th>Sin cambio</th>
+                <th>Objeto Oferta</th>
+                <th>Aclar. Objeto</th>
+                <th>Aclaración</th>
+                <th>Legal 1</th>
+                <th>Legal 2</th>
                 <th></th>
               </tr>
             </thead>
-            <tbody id="products-body"></tbody>
+            <tbody id="cenefas-body"></tbody>
           </table>
         </section>
 
@@ -93,9 +83,8 @@
 
     <!-- Dependencias CDN -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="app.js"></script>
+    <script src="cenefas-app.js"></script>
   </body>
 </html>
