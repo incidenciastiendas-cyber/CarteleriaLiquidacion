@@ -47,32 +47,257 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 0px 40px 25px 10px;
   z-index: 10;
   text-align: center;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .oferta-principal {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 130px;
+  font-size: 90px;
   font-weight: 800;
-  line-height: 0.8;
+  line-height: 0.85;
   letter-spacing: -2px;
 }
 
 .oferta-descripcion {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.5px;
   line-height: 1.1;
+  margin-top: -5px;
 }
 
 .oferta-vigencia {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 20px;
+  width: 260px;
   font-weight: 400;
   letter-spacing: 0.3px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+/* ============================================
+   LAYOUTS ESPECÍFICOS POR TIPO DE OFERTA
+   ============================================ */
+
+
+
+/* Tipo NxN: "2x1" con x pequeña */
+.tipo-NxN .oferta-nxn {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: -5px;
+}
+
+.tipo-NxN .numero {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 120px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-NxN .x-pequena {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 90px;
+  font-weight: 700;
+  margin: 0 -5px;
+}
+
+/* Tipo PRECIO: "$3.999" con $ pequeño */
+.tipo-PRECIO .oferta-precio {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+}
+
+.tipo-PRECIO .signo-peso {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 50px;
+  font-weight: 800;
+}
+
+.tipo-PRECIO .numero-precio {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 100px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Tipo DESC1: "40%" con % pequeño alineado base inferior */
+.tipo-DESC1 .oferta-descuento {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: -5px;
+}
+
+.tipo-DESC1 .numero-descuento {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 120px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-DESC1 .simbolo-porcentaje {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+/* Tipo DESC2: columnas "30% | DESCUENTO EN LA SEGUNDA UNIDAD" */
+.tipo-DESC2 .oferta-dos-columnas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.tipo-DESC2 .col-numero {
+  display: flex;
+  align-items: center;
+}
+
+.tipo-DESC2 .numero-grande {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 144px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-DESC2 .col-derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.tipo-DESC2 .simbolo-arriba {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: -8px;
+}
+
+.tipo-DESC2 .texto-columna {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: left;
+  margin-top: 2px;
+}
+
+/* Tipo NQ: columnas "6 | CUOTAS SIN INTERÉS" */
+.tipo-NQ .oferta-cuotas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Miso', Arial, sans-serif;
+  gap: 18px;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.tipo-NQ .col-numero-cuotas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tipo-NQ .numero-cuotas {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 138px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-NQ .col-texto-cuotas {
+  display: flex;
+  align-items: center;
+}
+
+.tipo-NQ .texto-cuotas {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+/* Tipo DESC-CUOTAS: dos filas "30% + 4" y "DE DESCUENTO | CUOTAS SIN INTERÉS" */
+.tipo-DESC-CUOTAS .oferta-combinada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.tipo-DESC-CUOTAS .fila-numeros {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: -3px;
+}
+
+.tipo-DESC-CUOTAS .numero-combo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 100px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-DESC-CUOTAS .simbolo-pequeno {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.tipo-DESC-CUOTAS .signo-mas {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.tipo-DESC-CUOTAS .fila-textos {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.tipo-DESC-CUOTAS .texto-izq,
+.tipo-DESC-CUOTAS .texto-der {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.tipo-DESC-CUOTAS .sin-interes {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
 }
 
 /* Contenido derecha - parte blanca con objeto de oferta y aclaraciones */
@@ -92,7 +317,7 @@
 /* Objeto oferta - Font size máximo 32px, adaptable automáticamente */
 .objeto-oferta {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: clamp(16px, 5vw, 32px);
+  font-size: clamp(16px, 5vw, 42px);
   font-weight: 800;
   line-height: 1.1;
   color: #000;
@@ -201,4 +426,137 @@
     width: 595px !important;
     height: 842px !important;
   }
+}
+
+/* Modal de Ayuda */
+.modal-ayuda {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  overflow: auto;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content-ayuda {
+  background-color: #fff;
+  margin: 2% auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-ayuda {
+  color: #999;
+  float: right;
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-ayuda:hover {
+  color: #333;
+}
+
+.modal-content-ayuda h2 {
+  color: #1e40af;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 28px;
+  border-bottom: 3px solid #3b82f6;
+  padding-bottom: 10px;
+}
+
+.ayuda-seccion {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border-left: 4px solid #3b82f6;
+}
+
+.ayuda-seccion h3 {
+  color: #1e40af;
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.ayuda-seccion h4 {
+  color: #4b5563;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.ayuda-seccion ul, .ayuda-seccion ol {
+  margin: 10px 0;
+  padding-left: 25px;
+}
+
+.ayuda-seccion li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+}
+
+.ayuda-seccion code {
+  background: #e5e7eb;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.tabla-ejemplos {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabla-ejemplos th {
+  background: #3b82f6;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.tabla-ejemplos td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-ejemplos tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-ejemplos tr:hover {
+  background: #f3f4f6;
 }

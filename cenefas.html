@@ -15,7 +15,12 @@
           App para creación de cenefas A5 horizontales para promociones (2x1,
           3x2, etc.)
         </p>
-        <a href="index.html" class="btn-back">← Volver a Cartelería</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <a href="index.html" class="btn-back">← Volver a Cartelería</a>
+          <button id="btn-ayuda" class="btn btn-info" style="padding: 8px 16px;">
+            ❓ ¿Cómo usar?
+          </button>
+        </div>
       </header>
 
       <div class="controls">
@@ -53,7 +58,7 @@
             <thead>
               <tr>
                 <th><input id="select-all" type="checkbox" /></th>
-                <th>Tipo Oferta</th>
+                <th>Código Oferta</th>
                 <th>Desc. Oferta</th>
                 <th>Desde</th>
                 <th>Hasta</th>
@@ -74,6 +79,120 @@
           <div id="preview-list"></div>
         </section>
       </main>
+
+      <!-- Modal de Ayuda -->
+      <div id="modal-ayuda" class="modal-ayuda" style="display: none;">
+        <div class="modal-content-ayuda">
+          <span class="close-ayuda">×</span>
+          <h2>📘 Guía de Uso - Cenefas Promocionales</h2>
+          
+          <div class="ayuda-seccion">
+            <h3>1️⃣ ¿Qué es una cenefa?</h3>
+            <p>Una cenefa es un cartel promocional de formato A5 horizontal (595x420px) que se usa para mostrar ofertas especiales en las tiendas. El sistema genera automáticamente 2 cenefas por hoja A4 para imprimir.</p>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>2️⃣ Formas de cargar datos</h3>
+            <h4>📋 Opción 1: Importar CSV (Recomendado)</h4>
+            <ol>
+              <li>Hacé clic en <strong>"📄 Descargar Template CSV"</strong></li>
+              <li>Abrí el archivo descargado con Excel o Google Sheets</li>
+              <li>Completá los datos siguiendo los ejemplos incluidos</li>
+              <li>Guardá el archivo como CSV</li>
+              <li>Hacé clic en <strong>"📁 Seleccionar CSV"</strong> y seleccioná tu archivo</li>
+              <li>Hacé clic en <strong>"Importar CSV"</strong></li>
+            </ol>
+            
+            <h4>✏️ Opción 2: Cargar manualmente</h4>
+            <ol>
+              <li>Hacé clic en <strong>"+ Agregar cenefa"</strong></li>
+              <li>Completá los campos en la tabla</li>
+              <li>Podés agregar múltiples cenefas repitiendo el proceso</li>
+            </ol>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>3️⃣ Códigos de Oferta - Detección Automática</h3>
+            <p><strong>El sistema detecta automáticamente el tipo de oferta</strong> según el código que ingreses:</p>
+            
+            <table class="tabla-ejemplos">
+              <tr>
+                <th>Código</th>
+                <th>Tipo</th>
+                <th>Ejemplo Visual</th>
+              </tr>
+              <tr>
+                <td><code>2x1</code>, <code>3x2</code></td>
+                <td>Llevá X Pagá Y</td>
+                <td>Número grande + x pequeña + Número</td>
+              </tr>
+              <tr>
+                <td><code>$3999</code></td>
+                <td>Precio fijo</td>
+                <td>$ pequeño + Número grande</td>
+              </tr>
+              <tr>
+                <td><code>40%</code></td>
+                <td>Descuento simple</td>
+                <td>Número grande + % pequeño</td>
+              </tr>
+              <tr>
+                <td><code>30%2</code></td>
+                <td>Descuento 2da unidad</td>
+                <td>Número + % arriba del texto</td>
+              </tr>
+              <tr>
+                <td><code>6Q</code>, <code>12</code></td>
+                <td>Cuotas sin interés</td>
+                <td>Número + "CUOTAS SIN INTERÉS"</td>
+              </tr>
+              <tr>
+                <td><code>30%+4Q</code></td>
+                <td>Descuento + Cuotas</td>
+                <td>30% + 4 en fila superior, textos abajo</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>4️⃣ Campos del Formulario</h3>
+            <ul>
+              <li><strong>Código Oferta</strong> (obligatorio): 2x1, $3999, 40%, etc.</li>
+              <li><strong>Desc. Oferta</strong> (opcional): LLEVÁ 2 PAGÁ 1, DE DESCUENTO, etc.</li>
+              <li><strong>Desde/Hasta</strong>: Fechas de vigencia (formato: 25/11)</li>
+              <li><strong>Objeto Oferta</strong>: Descripción del producto</li>
+              <li><strong>Aclar. Objeto</strong> (opcional): Detalles adicionales del producto</li>
+              <li><strong>Aclaración</strong> (opcional): Ej: "COMBINALO COMO QUIERAS"</li>
+              <li><strong>Legal 1 y 2</strong>: Textos legales al pie de la cenefa</li>
+            </ul>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>5️⃣ Generar y Descargar</h3>
+            <ol>
+              <li>Una vez cargados los datos, hacé clic en <strong>"📋 Crear Cenefas"</strong></li>
+              <li>Se mostrará la vista previa de todas las cenefas</li>
+              <li>Podés descargar:
+                <ul>
+                  <li><strong>Hoja A4 completa</strong> (2 cenefas por hoja)</li>
+                  <li><strong>Solo primera cenefa</strong> (individual)</li>
+                  <li><strong>Todas las cenefas</strong> en un solo PDF</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>✅ Consejos Útiles</h3>
+            <ul>
+              <li>✅ Descargá el template CSV para tener ejemplos de cada tipo</li>
+              <li>✅ Usá la vista previa antes de descargar para verificar</li>
+              <li>✅ Podés eliminar cenefas seleccionándolas y haciendo clic en "🗑️ Eliminar"</li>
+              <li>✅ Los textos legales se ajustan automáticamente al espacio disponible</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <footer>
         <small class="muted"
