@@ -2,7 +2,7 @@
 const cenefas = [
   {
     tipo: 'NxN',
-    tipoOferta: '3x2',
+    tipoOferta: '3X2',
     descripcionOferta: 'LLEVÁ 3 PAGÁ 2',
     fechaDesde: '26/11',
     fechaHasta: '02/12',
@@ -70,7 +70,7 @@ const cenefas = [
 
 const sample = {
   tipo: 'NxN',  // NxN, PRECIO, X%1, X%2, NQ, X%1+NQ
-  tipoOferta: '2x1',
+  tipoOferta: '2X1',
   descripcionOferta: 'LLEVÁ 2, PAGÁ 1',
   fechaDesde: '25/11',
   fechaHasta: '01/12',
@@ -303,13 +303,23 @@ function renderPreview(){
     // Generar HTML del área de oferta según el tipo
     const ofertaHTML = generarOfertaHTML(c, tipoDetectado);
     
+    // SVG para la forma de flecha (se renderiza en PDF)
+    const svgShape = `
+      <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
+        <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#000000" />
+      </svg>
+    `;
+    
     container.innerHTML = `
       <div class="row row-cenefas">
         <div class="a5-horizontal">
           <div class="cenefa-body">
             <div class="oferta-box tipo-${tipoDetectado}">
-              ${ofertaHTML}
-              <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+              ${svgShape}
+              <div class="oferta-content">
+                ${ofertaHTML}
+                <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+              </div>
             </div>
             <div class="contenido-derecha">
               <div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
@@ -325,8 +335,11 @@ function renderPreview(){
         <div class="a5-horizontal">
           <div class="cenefa-body">
             <div class="oferta-box tipo-${tipoDetectado}">
-              ${ofertaHTML}
-              <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+              ${svgShape}
+              <div class="oferta-content">
+                ${ofertaHTML}
+                <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+              </div>
             </div>
             <div class="contenido-derecha">
               <div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
@@ -406,6 +419,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#btn-delete-selected').addEventListener('click', ()=>{ deleteSelected(); });
   $('#btn-preview').addEventListener('click', ()=>{ $('#preview-section').classList.toggle('hidden'); renderPreview(); });
   $('#btn-print-all').addEventListener('click', ()=>{ printAllSheets(); });
+  $('#btn-download-selected').addEventListener('click', ()=>{ downloadSelectedPDFs(); });
 
   $('#btn-import').addEventListener('click', ()=>{
     const f = $('#file-csv').files[0]; 
@@ -422,6 +436,106 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 
 // Download all sheets as a single multi-page PDF
+// Sanitizar nombre de archivo
+function sanitizeFilename(filename) {
+  return filename
+    .replace(/[<>:"/\\|?*]/g, '-')  // Caracteres no permitidos
+    .replace(/\s+/g, '_')            // Espacios a guiones bajos
+    .replace(/_{2,}/g, '_')          // Múltiples guiones bajos a uno
+    .replace(/^[_-]+|[_-]+$/g, '')   // Limpiar bordes
+    .substring(0, 200);              // Límite de longitud
+}
+
+// Descargar cenefas seleccionadas individualmente
+async function downloadSelectedPDFs() {
+  const checkboxes = $all('tbody input[type="checkbox"]:checked');
+  
+  if(checkboxes.length === 0) {
+    alert('Selecciona al menos una cenefa para descargar.');
+    return;
+  }
+  
+  if(!confirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: tipoOferta-objetoOferta.pdf`)) {
+    return;
+  }
+  
+  const btn = $('#btn-download-selected');
+  const originalText = btn.textContent;
+  const { jsPDF } = window.jspdf;
+  
+  try {
+    btn.disabled = true;
+    
+    for(let i = 0; i < checkboxes.length; i++) {
+      const checkbox = checkboxes[i];
+      const index = parseInt(checkbox.dataset.idx);
+      const cenefa = cenefas[index];
+      
+      btn.textContent = `⏳ Descargando ${i + 1}/${checkboxes.length}...`;
+      
+      // Buscar el sheet-a4 que contiene esta cenefa
+      const sheets = $all('.sheet-a4');
+      const sheet = sheets[index];
+      
+      if(!sheet) {
+        console.error(`No se encontró sheet para índice ${index}`);
+        continue;
+      }
+      
+      // Tomar solo la primera cenefa A5 del sheet
+      const cenefaElement = sheet.querySelector('.a5-horizontal');
+      
+      if(!cenefaElement) {
+        console.error(`No se encontró cenefa A5 en sheet ${index}`);
+        continue;
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      const canvas = await html2canvas(cenefaElement, {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 595,
+        height: 420,
+        windowWidth: 595,
+        windowHeight: 420,
+        logging: false
+      });
+      
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [420, 595],
+        compress: true
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      pdf.addImage(imgData, 'JPEG', 0, 0, 595, 420);
+      
+      // Generar nombre de archivo: tipoOferta-objetoOferta.pdf
+      const tipoSanitized = sanitizeFilename(cenefa.tipoOferta);
+      const objetoSanitized = sanitizeFilename(cenefa.objetoOferta);
+      const filename = `${tipoSanitized}-${objetoSanitized}.pdf`;
+      
+      pdf.save(filename);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    
+    btn.textContent = originalText;
+    btn.disabled = false;
+    alert(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
+    
+  } catch(error) {
+    console.error('Error generando PDFs:', error);
+    alert('Error al generar los PDFs. Por favor intenta nuevamente.');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
 async function printAllSheets() {
   const sheets = $all('.sheet-a4');
   if(sheets.length === 0) {
