@@ -404,6 +404,109 @@ function formatMoney(v){
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
+// Sanitizar nombre de archivo
+function sanitizeFilename(filename) {
+  return filename
+    .replace(/[<>:"/\\|?*]/g, '-')  // Caracteres no permitidos
+    .replace(/\s+/g, '_')            // Espacios a guiones bajos
+    .replace(/_{2,}/g, '_')          // Múltiples guiones bajos a uno
+    .replace(/^[_-]+|[_-]+$/g, '')   // Limpiar bordes
+    .substring(0, 200);              // Límite de longitud
+}
+
+// Descargar carteles seleccionados individualmente
+async function downloadSelectedPDFs() {
+  const checkboxes = $all('tbody input[type="checkbox"]:checked');
+  
+  if(checkboxes.length === 0) {
+    alert('Selecciona al menos un cartel para descargar.');
+    return;
+  }
+  
+  if(!confirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: N°Incidencia - Descripción.pdf`)) {
+    return;
+  }
+  
+  const btn = $('#btn-download-selected');
+  const originalText = btn.textContent;
+  const { jsPDF } = window.jspdf;
+  
+  try {
+    btn.disabled = true;
+    
+    for(let i = 0; i < checkboxes.length; i++) {
+      const checkbox = checkboxes[i];
+      const index = parseInt(checkbox.dataset.idx);
+      const product = products[index];
+      
+      btn.textContent = `⏳ Descargando ${i + 1}/${checkboxes.length}...`;
+      
+      // Buscar el sheet-a4 que contiene este producto
+      const sheets = $all('.sheet-a4');
+      const sheet = sheets[index];
+      
+      if(!sheet) {
+        console.error(`No se encontró sheet para índice ${index}`);
+        continue;
+      }
+      
+      // Esperar a que los códigos de barras se rendericen
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      const canvas = await html2canvas(sheet, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#ffffff',
+        width: 595,
+        height: 842,
+        windowWidth: 595,
+        windowHeight: 842,
+        logging: false,
+        onclone: function(clonedDoc) {
+          // Asegurar que todos los SVG sean visibles en el documento clonado
+          const svgs = clonedDoc.querySelectorAll('svg');
+          svgs.forEach(svg => {
+            svg.style.display = 'block';
+            svg.style.visibility = 'visible';
+            svg.setAttribute('width', svg.getAttribute('width'));
+            svg.setAttribute('height', svg.getAttribute('height'));
+          });
+        }
+      });
+      
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'px',
+        format: [595, 842],
+        compress: true
+      });
+      
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      pdf.addImage(imgData, 'JPEG', 0, 0, 595, 842);
+      
+      // Generar nombre de archivo: N°Incidencia - Descripción.pdf
+      const incidenciaSanitized = sanitizeFilename(product.nIncidencia || 'Sin_Incidencia');
+      const descripcionSanitized = sanitizeFilename(product.descripcion || 'Sin_Descripcion');
+      const filename = `${incidenciaSanitized}_-_${descripcionSanitized}.pdf`;
+      
+      pdf.save(filename);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    
+    btn.textContent = originalText;
+    btn.disabled = false;
+    alert(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
+    
+  } catch(error) {
+    console.error('Error generando PDFs:', error);
+    alert('Error al generar los PDFs. Por favor intenta nuevamente.');
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
   products.push(sample);
@@ -413,6 +516,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#btn-delete-selected').addEventListener('click', ()=>{ deleteSelected(); });
   $('#btn-preview').addEventListener('click', ()=>{ $('#preview-section').classList.toggle('hidden'); renderPreview(); });
   $('#btn-print-all').addEventListener('click', ()=>{ printAllSheets(); });
+  $('#btn-download-selected').addEventListener('click', ()=>{ downloadSelectedPDFs(); });
 
   $('#btn-import').addEventListener('click', ()=>{
     const f = $('#file-csv').files[0]; if(!f){alert('Selecioná un CSV');return;} importCSV(f);

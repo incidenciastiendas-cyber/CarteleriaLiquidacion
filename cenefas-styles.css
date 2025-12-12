@@ -128,7 +128,7 @@
 /* Tipo PRECIO: "$3.999" con $ pequeño */
 .tipo-PRECIO .oferta-precio {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   gap: 5px;
 }
