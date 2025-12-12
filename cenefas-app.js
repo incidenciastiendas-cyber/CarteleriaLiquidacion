@@ -161,7 +161,7 @@ function generarOfertaHTML(c, tipo) {
                 </div>
                 <div class="col-derecha">
                   <div class="simbolo-arriba">%</div>
-                  <div class="texto-columna">DESCUENTO EN LA<br>SEGUNDA UNIDAD</div>
+                  <div class="texto-columna">DESCUENTO EN<br>LA SEGUNDA<br>UNIDAD</div>
                 </div>
               </div>`;
     
