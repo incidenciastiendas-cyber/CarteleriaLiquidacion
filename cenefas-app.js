@@ -65,21 +65,32 @@ const cenefas = [
 
     legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
     legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 01/12/2025 HASTA EL DÍA 07/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
+  },
+  {
+    tipo: 'MC',
+    tipoOferta: '80%MC',
+    descripcionOferta: 'DE DESCUENTO',
+    fechaDesde: '20/11',
+    fechaHasta: '26/11',
+    objetoOferta: 'GAZEBOS, PÉRGOLAS, REPOSERAS DE JARDÍN, MESAS Y SILLAS DE JARDÍN',
+    aclaracion: '(NO INCLUYE MUEBLES PLÁSTICOS NI MUEBLES DE PLAYAS)',
+    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
+    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL 20/11/2025 HASTA EL DÍA 26/11/2025. PROMOCIÓN VÁLIDA DEL DÍA 20/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
+  },
+  {
+    tipo: 'MC2',
+    tipoOferta: '30%o35%MC',
+    descripcionOferta: 'LOS MEDIOS DE PAGO',
+    fechaDesde: '21/11',
+    fechaHasta: '26/11',
+    objetoOferta: 'INFLABLES, FILTROS, ANTIPARRAS, SALVAVIDAS Y ACCESORIOS DE PILETAS',
+    aclaracion: 'DESCUENTOS NO ACUMULABLES',
+    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
+    legal2: 'PRIMERA UNIDAD PRECIACIÓN. PROMOCI VÁLIDA DEL DÍA 21/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
   }
 ];
 
-const sample = {
-  tipo: 'NxN',  // NxN, PRECIO, X%1, X%2, NQ, X%1+NQ
-  tipoOferta: '2X1',
-  descripcionOferta: 'LLEVÁ 2, PAGÁ 1',
-  fechaDesde: '25/11',
-  fechaHasta: '01/12',
-  objetoOferta: 'ADORNOS PARA ÁRBOL, LUCES Y DECO NAVIDEÑA',
-
-
-  legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-  legal2: 'PROMOCIÓN VÁLIDA DESDE EL 25/11/17 HASTA HASTA EL 01/12/2025. SUJETA A DISPONIBILIDAD Y CONDICIONES DE PROMOCIONES APLICABLES CONSULTE EN NUESTRO LOCAL. ESPACIO 25-8130 REC-G'
-};
+const sample = {};
 
 // Detectar automáticamente el tipo de oferta según el contenido de tipoOferta
 function detectarTipo(tipoOferta) {
@@ -99,6 +110,16 @@ function detectarTipo(tipoOferta) {
   // DESC2: contiene "2" o "SEGUNDA" o "2°" con %
   if (texto.includes('%') && (texto.includes('2') || texto.includes('SEGUNDA') || texto.includes('2°'))) {
     return 'DESC2';
+  }
+  
+  // MC2: formato x%oz%MC (ej: 30%o35%MC)
+  if (/\d+%O\d+%MC/i.test(texto)) {
+    return 'MC2';
+  }
+  
+  // MC: formato x%MC (ej: 80%MC)
+  if (/\d+%MC$/i.test(texto)) {
+    return 'MC';
   }
   
   // DESC1: contiene solo %
@@ -192,6 +213,44 @@ function generarOfertaHTML(c, tipo) {
                   <div class="fila-textos">
                     <span class="texto-izq">DE DESCUENTO</span>
                     <span class="texto-der">CUOTAS<br><span class="sin-interes">SIN INTERÉS</span></span>
+                  </div>
+                </div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
+    case 'MC':
+      // Formato: 80%MC con banner superior Más Club
+      const descMC = tipoOferta.match(/(\d+)%MC/i);
+      if (descMC) {
+        const pct = descMC[1];
+        return `<div class="oferta-mc">
+                  <div class="mc-banner">
+                    <span class="mc-exclusivo">EXCLUSIVO</span>
+                    <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
+                  </div>
+                  <div class="mc-numero">${pct}<span class="mc-simbolo">%</span></div>
+                  <div class="mc-descripcion">${descripcion.toUpperCase()}</div>
+                </div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
+    case 'MC2':
+      // Formato: 30%o35%MC - Doble descuento con Más Club
+      const descMC2 = tipoOferta.match(/(\d+)%[oO](\d+)%MC/i);
+      if (descMC2) {
+        const pct1 = descMC2[1];
+        const pct2 = descMC2[2];
+        return `<div class="oferta-mc2">
+                  <div class="mc2-general">
+                    <span class="mc2-numero">${pct1}</span><span class="mc2-simbolo">%</span>
+                  </div>
+                  <div class="mc2-texto">CON TODOS<br>${descripcion}</div>
+                  <div class="mc2-club">
+                    <span class="mc2-numero-club">${pct2}</span><span class="mc2-simbolo-club">%</span>
+                    <div class="mc2-exclusivo">
+                      <span class="mc2-exclusivo-text">EXCLUSIVO</span>
+                      <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-inline">
+                    </div>
                   </div>
                 </div>`;
       }
@@ -304,11 +363,39 @@ function renderPreview(){
     const ofertaHTML = generarOfertaHTML(c, tipoDetectado);
     
     // SVG para la forma de flecha (se renderiza en PDF)
-    const svgShape = `
+    // Para MC: flecha derecha con color #2B3689, apunta hacia la derecha igual que el negro
+    const svgShape = tipoDetectado === 'MC' ? `
+      <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; right: 0; width: 281px; height: 172px; z-index: 1;">
+        <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#2B3689" />
+      </svg>
+    ` : `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
         <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#000000" />
       </svg>
     `;
+    
+    // Para MC2, la vigencia va abajo en footer-legal, no en oferta-box
+    // Para MC, la vigencia también va dentro del cuadro pero sin el prefijo DEL/AL
+    const vigenciaEnOferta = tipoDetectado === 'MC2' 
+      ? ''
+      : tipoDetectado === 'MC'
+      ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>` 
+      : `<div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`;
+    
+    const vigenciaEnFooter = tipoDetectado === 'MC2'
+      ? `<div class="vigencia-footer">VIGENCIA DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`
+      : '';
+    
+    // Para MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
+    const objetoOfertaHTML = tipoDetectado === 'MC' 
+      ? `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
+              ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
+              ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}` 
+      : `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
+              ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
+              ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
+    
+    const objetoOfertaMC = '';
     
     container.innerHTML = `
       <div class="row row-cenefas">
@@ -318,14 +405,14 @@ function renderPreview(){
               ${svgShape}
               <div class="oferta-content">
                 ${ofertaHTML}
-                <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+                ${objetoOfertaMC}
+                ${vigenciaEnOferta}
               </div>
             </div>
             <div class="contenido-derecha">
-              <div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
-              ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
-              ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}
+              ${objetoOfertaHTML}
             </div>
+            ${vigenciaEnFooter}
             <div class="footer-legal">
               <div class="legal1">${escapeHtml(c.legal1||'')}</div>
               <div class="legal2">${escapeHtml(c.legal2||'')}</div>
@@ -338,14 +425,14 @@ function renderPreview(){
               ${svgShape}
               <div class="oferta-content">
                 ${ofertaHTML}
-                <div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>
+                ${objetoOfertaMC}
+                ${vigenciaEnOferta}
               </div>
             </div>
             <div class="contenido-derecha">
-              <div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
-              ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
-              ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}
+              ${objetoOfertaHTML}
             </div>
+            ${vigenciaEnFooter}
             <div class="footer-legal">
               <div class="legal1">${escapeHtml(c.legal1||'')}</div>
               <div class="legal2">${escapeHtml(c.legal2||'')}</div>

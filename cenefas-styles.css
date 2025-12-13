@@ -312,6 +312,218 @@
   font-weight: 400;
 }
 
+/* ============================================
+   FORMATO MC - x%MC (80%MC)
+   Banner superior Más Club + descuento grande
+   Cuadro a la derecha color #2B3689
+   ============================================ */
+
+.tipo-MC .oferta-box {
+  left: auto;
+  right: 0;
+}
+
+.tipo-MC .oferta-content {
+
+}
+
+.tipo-MC .oferta-mc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0;
+}
+
+.tipo-MC .mc-banner {
+  position: absolute;
+  left: 198px;
+  width: 305px;
+  height: 43px;
+  background: #2B3689;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.tipo-MC .mc-exclusivo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+.tipo-MC .mc-logo-banner {
+  height: 24px;
+  width: auto;
+}
+
+.tipo-MC .mc-numero {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 110px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: -8px;
+}
+
+.tipo-MC .mc-simbolo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 45px;
+  font-weight: 700;
+}
+
+.tipo-MC .mc-descripcion {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  padding: 0 15px;
+}
+
+/* Vigencia dentro del cuadro MC */
+.tipo-MC .mc-vigencia {
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+/* Contenido izquierda para MC (parte blanca con objeto oferta) */
+.tipo-MC .contenido-derecha {
+  display: flex;
+  left: 0;
+  right: 284px;
+  width: auto;
+
+}
+
+/* Objeto oferta en MC con tamaño adaptativo */
+.tipo-MC .objeto-oferta {
+  font-size: clamp(14px, 2vw, 22px);
+  line-height: 1.0;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  padding-top: 43px;
+}
+
+/* ============================================
+   FORMATO MC2 - x%oz%MC* (30%o35%MC)
+   Doble descuento + vigencia abajo
+   ============================================ */
+
+.tipo-MC2 .oferta-mc2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 15px 10px 5px 10px;
+  gap: 8px;
+}
+
+.tipo-MC2 .mc2-general {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.tipo-MC2 .mc2-numero {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 85px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tipo-MC2 .mc2-simbolo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+.tipo-MC2 .mc2-texto {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  margin-top: -3px;
+}
+
+.tipo-MC2 .mc2-club {
+  background: #2B3689;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.tipo-MC2 .mc2-numero-club {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 70px;
+  font-weight: 800;
+  line-height: 1;
+  color: white;
+}
+
+.tipo-MC2 .mc2-simbolo-club {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+}
+
+.tipo-MC2 .mc2-exclusivo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: -8px;
+}
+
+.tipo-MC2 .mc2-exclusivo-text {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+.tipo-MC2 .mc-logo-inline {
+  height: 18px;
+  width: auto;
+}
+
+/* Vigencia en footer para MC2 */
+.vigencia-footer {
+  position: absolute;
+  top: 176px;
+  left: 0;
+  right: 0;
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Ajustar footer-legal cuando hay vigencia-footer */
+.cenefa-body:has(.vigencia-footer) .footer-legal {
+  top: 200px;
+}
+
 /* Contenido derecha - parte blanca con objeto de oferta y aclaraciones */
 .contenido-derecha {
   position: absolute;
