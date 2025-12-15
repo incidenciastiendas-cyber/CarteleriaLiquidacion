@@ -102,8 +102,9 @@
 
 
 
-/* Tipo NxN: "2x1" con x pequeña */
-.tipo-NxN .oferta-nxn {
+/* Tipo NxN: "2x1" con X mayúscula */
+/* Tipo NxNMC: "2X1MC" con banner MasClub (reutiliza clases de NxN, fondo azul) */
+.oferta-nxn {
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -111,18 +112,19 @@
   margin-bottom: -5px;
 }
 
-.tipo-NxN .numero {
+.numero {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 120px;
   font-weight: 800;
   line-height: 1;
 }
 
-.tipo-NxN .x-pequena {
+.x-pequena {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 120px;
+  font-size: 100px;
   font-weight: 700;
-  margin: 0 -5px;
+  margin: -23px -5px;
+  text-transform: uppercase;
 }
 
 /* Tipo PRECIO: "$3.999" con $ pequeño */
@@ -343,6 +345,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 30px;
   gap: 8px;
   z-index: 10;
 }
@@ -350,8 +353,9 @@
 .mc-exclusivo {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 400;
   color: white;
+  padding-top: 5px;
   text-transform: uppercase;
 }
 
@@ -461,7 +465,7 @@
 }
 
 /* Vigencia arriba - 17px Miso bold negro */
-.tipo-MC2 .mc2-vigencia {
+.mc2-vigencia {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 17px;
   font-weight: 700;
@@ -473,7 +477,7 @@
 }
 
 /* DCTO1 - flex row, texto negro */
-.tipo-MC2 .mc2-dcto1 {
+.mc2-dcto1 {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -483,7 +487,7 @@
   top: 15px
 }
 
-.tipo-MC2 .mc2-numero1 {
+.mc2-numero1 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 70px;
   font-weight: 700;
@@ -493,7 +497,7 @@
   align-content: flex-start;
 }
 
-.tipo-MC2 .mc2-simbolo1 {
+.mc2-simbolo1 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 28px;
   font-weight: 700;
@@ -501,13 +505,13 @@
   padding-top: 10px;
 }
 
-.tipo-MC2 .mc2-texto1 {
+.mc2-texto1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.tipo-MC2 .mc2-texto1-linea1 {
+.mc2-texto1-linea1 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 28px;
   font-weight: 400;
@@ -515,7 +519,7 @@
   line-height: 1;
 }
 
-.tipo-MC2 .mc2-texto1-linea2 {
+.mc2-texto1-linea2 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 15px;
   font-weight: 400;
@@ -524,7 +528,7 @@
 }
 
 /* Separador - texto blanco 20px */
-.tipo-MC2 .mc2-separador {
+.mc2-separador {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 20px;
   font-weight: 400;
@@ -535,7 +539,7 @@
 }
 
 /* DCTO2 - flex row, texto blanco, gap 30px */
-.tipo-MC2 .mc2-dcto2 {
+.mc2-dcto2 {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -545,7 +549,7 @@
   top: 95px;
 }
 
-.tipo-MC2 .mc2-numero2 {
+.mc2-numero2 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 70px;
   font-weight: 700;
@@ -555,7 +559,7 @@
   align-content: flex-start;
 }
 
-.tipo-MC2 .mc2-simbolo2 {
+.mc2-simbolo2 {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 28px;
   font-weight: 700;
@@ -563,14 +567,14 @@
   padding-top:10px;
 }
 
-.tipo-MC2 .mc2-texto2 {
+.mc2-texto2 {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
 }
 
-.tipo-MC2 .mc2-exclusivo {
+.mc2-exclusivo {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -578,9 +582,12 @@
   text-transform: uppercase;
 }
 
-.tipo-MC2 .mc2-logo {
+.mc2-logo {
   height: 22px;
   width: auto;
+}
+.tipo-NxNMC2 .mc2-numero1, .mc2-numero2{
+  text-transform: lowercase;
 }
 
 /* Contenido derecha - parte blanca con objeto de oferta y aclaraciones */

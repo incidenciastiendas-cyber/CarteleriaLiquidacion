@@ -61,13 +61,12 @@
             <thead>
               <tr>
                 <th><input id="select-all" type="checkbox" /></th>
-                <th>Código Oferta</th>
-                <th>Desc. Oferta</th>
+                <th>Tipo Acción</th>
                 <th>Desde</th>
                 <th>Hasta</th>
-                <th>Objeto Oferta</th>
-                <th>Aclar. Objeto</th>
-                <th>Aclaración</th>
+                <th>Título Acción</th>
+                <th>Incluye/Excluye</th>
+                <th>Aclaración 2</th>
                 <th>Legal 1</th>
                 <th>Legal 2</th>
                 <th></th>
@@ -138,9 +137,9 @@
                 <th>Ejemplo Visual</th>
               </tr>
               <tr>
-                <td><code>2x1</code>, <code>3x2</code></td>
+                <td><code>2X1</code>, <code>3X2</code></td>
                 <td>Llevá X Pagá Y</td>
-                <td>Número grande + x pequeña + Número</td>
+                <td>Número grande + X mayúscula + Número</td>
               </tr>
               <tr>
                 <td><code>$3999</code></td>
@@ -167,6 +166,31 @@
                 <td>Descuento + Cuotas</td>
                 <td>30% + 4 en fila superior, textos abajo</td>
               </tr>
+              <tr>
+                <td><code>80%MC</code></td>
+                <td>Descuento MásClub</td>
+                <td>Banner azul EXCLUSIVO + logo + descuento</td>
+              </tr>
+              <tr>
+                <td><code>30%o35%MC</code></td>
+                <td>Doble descuento MC</td>
+                <td>Vigencia + 30% general + 35% MásClub</td>
+              </tr>
+              <tr>
+                <td><code>35%2MC</code></td>
+                <td>2da unidad MC</td>
+                <td>Banner azul + 35% en 2da unidad</td>
+              </tr>
+              <tr>
+                <td><code>2X1MC</code></td>
+                <td>Llevá X Pagá Y MC</td>
+                <td>Banner azul + 2X1 estilo MásClub</td>
+              </tr>
+              <tr>
+                <td><code>3X2o4X2MC</code></td>
+                <td>Doble NxN MC</td>
+                <td>Vigencia + 3X2 general + 4X2 MásClub</td>
+              </tr>
             </table>
           </div>
 
@@ -174,24 +198,23 @@
             <h3>4️⃣ Campos del Formulario</h3>
             <ul>
               <li>
-                <strong>Código Oferta</strong> (obligatorio): 2x1, $3999, 40%,
-                etc.
-              </li>
-              <li>
-                <strong>Desc. Oferta</strong> (opcional): LLEVÁ 2 PAGÁ 1, DE
-                DESCUENTO, etc.
+                <strong>Tipo Acción</strong> (obligatorio): 2X1, $3999, 40%,
+                2X1MC, 35%2MC, etc. Los textos se generan automáticamente.
               </li>
               <li>
                 <strong>Desde/Hasta</strong>: Fechas de vigencia (formato:
                 25/11)
               </li>
-              <li><strong>Objeto Oferta</strong>: Descripción del producto</li>
               <li>
-                <strong>Aclar. Objeto</strong> (opcional): Detalles adicionales
-                del producto
+                <strong>Título Acción</strong>: Descripción del
+                producto/promoción
               </li>
               <li>
-                <strong>Aclaración</strong> (opcional): Ej: "COMBINALO COMO
+                <strong>Incluye/Excluye</strong> (opcional): Detalles de
+                inclusión/exclusión
+              </li>
+              <li>
+                <strong>Aclaración 2</strong> (opcional): Ej: "COMBINALO COMO
                 QUIERAS"
               </li>
               <li>

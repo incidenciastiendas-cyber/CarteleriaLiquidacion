@@ -98,6 +98,28 @@ const cenefas = [
     aclaracion: '',
     legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
     legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL DÍA 22/11/2025 HASTA EL DÍA 28/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
+  },
+  {
+    tipo: 'NxNMC',
+    tipoOferta: '2X1MC',
+    descripcionOferta: 'LLEVÁ 2 PAGÁ 1',
+    fechaDesde: '23/11',
+    fechaHasta: '29/11',
+    objetoOferta: 'PRODUCTOS SELECCIONADOS DE BAZAR',
+    aclaracion: '',
+    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
+    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL DÍA 23/11/2025 HASTA EL DÍA 29/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
+  },
+  {
+    tipo: 'NxNMC2',
+    tipoOferta: '3X2o4X2MC',
+    descripcionOferta: 'LLEVÁ 3 PAGÁ 2 + LLEVÁ 4 PAGÁ 2',
+    fechaDesde: '24/11',
+    fechaHasta: '30/11',
+    objetoOferta: 'ARTÍCULOS DE LIBRERÍA Y PAPELERÍA',
+    aclaracion: '',
+    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
+    legal2: 'PROMOCIÓN VÁLIDA DEL DÍA 24/11/2025 HASTA EL DÍA 30/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
   }
 ];
 
@@ -118,9 +140,14 @@ function detectarTipo(tipoOferta) {
     return 'DESC-CUOTAS';
   }
   
-  // MC2: formato x%oz%MC (ej: 30%o35%MC)
-  if (/\d+%O\d+%MC/i.test(texto)) {
+  // MC2: formato x%ox%MC (ej: 30%o35%MC)
+  if (/\d+%[oO]\d+%MC$/i.test(texto)) {
     return 'MC2';
+  }
+  
+  // NxNMC2: formato NxNozxNMC (ej: 3X2o4X2MC)
+  if (/\d+[xX]\d+[oO]\d+[xX]\d+MC$/i.test(texto)) {
+    return 'NxNMC2';
   }
   
   // DESC2-MC: formato x%2MC (ej: 30%2MC - descuento en segunda unidad MasClub)
@@ -163,16 +190,17 @@ function generarOfertaHTML(c, tipo) {
   
   switch(tipo) {
     case 'NxN':
-      // Formato: "2x1" con x pequeña
-      const partes = tipoOferta.match(/(\d+)(x)(\d+)/i);
-      if (partes) {
-        return `<div class="oferta-principal oferta-nxn">
-                  <span class="numero">${partes[1]}</span><span class="x-pequena">x</span><span class="numero">${partes[3]}</span>
+      // Formato: "2X1" con X mayúscula - genera automáticamente "LLEVÁ 2 PAGÁ 1"
+      const matchNxN = tipoOferta.match(/(\d+)[xX](\d+)/);
+      if (matchNxN) {
+        const numLleva = matchNxN[1];
+        const numPaga = matchNxN[2];
+        return `<div class="oferta-nxn">
+                  <span class="numero">${numLleva}</span><span class="x-pequena">X</span><span class="numero">${numPaga}</span>
                 </div>
-                <div class="oferta-descripcion">${descripcion.toUpperCase()}</div>`;
+                <div class="oferta-descripcion">LLEVÁ ${numLleva} PAGÁ ${numPaga}</div>`;
       }
-      return `<div class="oferta-principal">${tipoOferta}</div>
-              <div class="oferta-descripcion">${descripcion.toUpperCase()}</div>`;
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
     
     case 'PRECIO':
       // Formato: "$3.999" con $ pequeño
@@ -216,10 +244,10 @@ function generarOfertaHTML(c, tipo) {
     
     case 'DESC-CUOTAS':
       // Formato: dos filas "30% + 4" y "DE DESCUENTO | CUOTAS SIN INTERÉS"
-      const match = tipoOferta.match(/(\d+)%\+(\d+)/);
-      if (match) {
-        const pct = match[1];
-        const nCuotas = match[2];
+      const matchDescCuotas = tipoOferta.match(/(\d+)%\+(\d+)/);
+      if (matchDescCuotas) {
+        const pct = matchDescCuotas[1];
+        const nCuotas = matchDescCuotas[2];
         return `<div class="oferta-combinada">
                   <div class="fila-numeros">
                     <span class="numero-combo">${pct}</span><span class="simbolo-pequeno">%</span>
@@ -261,6 +289,19 @@ function generarOfertaHTML(c, tipo) {
       }
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
+    case 'NxNMC':
+      // Formato: "2X1MC" con banner MasClub - genera automáticamente "LLEVÁ 2 PAGÁ 1"
+      const matchNxNMC = tipoOferta.match(/(\d+)[xX](\d+)MC/i);
+      if (matchNxNMC) {
+        const numLleva = matchNxNMC[1];
+        const numPaga = matchNxNMC[2];
+        return `<div class="oferta-nxn">
+                  <span class="numero">${numLleva}</span><span class="x-pequena">X</span><span class="numero">${numPaga}</span>
+                </div>
+                <div class="oferta-descripcion">LLEVÁ ${numLleva} PAGÁ ${numPaga}</div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
     case 'MC2':
       // Formato: 30%o35%MC - Doble descuento con Más Club
       const descMC2 = tipoOferta.match(/(\d+)%[oO](\d+)%MC/i);
@@ -286,6 +327,32 @@ function generarOfertaHTML(c, tipo) {
       }
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
+    case 'NxNMC2':
+      // Formato: 3X2o4X2MC - NxN general + NxN MasClub (replica MC2 con NxN)
+      const descNxNMC2 = tipoOferta.match(/(\d+)[xX](\d+)[oO](\d+)[xX](\d+)MC/i);
+      if (descNxNMC2) {
+        const num1 = descNxNMC2[1];
+        const paga1 = descNxNMC2[2];
+        const num2 = descNxNMC2[3];
+        const paga2 = descNxNMC2[4];
+        return `<div class="mc2-dcto1">
+                  <div class="mc2-numero1">${num1}X${paga1}</div>
+                  <div class="mc2-texto1">
+                    <div class="mc2-texto1-linea1">CON TODOS</div>
+                    <div class="mc2-texto1-linea2">LOS MEDIOS DE PAGO</div>
+                  </div>
+                </div>
+                <div class="mc2-separador">DESCUENTOS NO ACUMULABLES</div>
+                <div class="mc2-dcto2">
+                  <div class="mc2-numero2">${num2}X${paga2}</div>
+                  <div class="mc2-texto2">
+                    <span class="mc2-exclusivo">EXCLUSIVO</span>
+                    <img src="assets/logos/masclub.png" alt="Más club" class="mc2-logo">
+                  </div>
+                </div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
     default:
       return `<div class="oferta-principal">${tipoOferta}</div>
               <div class="oferta-descripcion">${descripcion}</div>`;
@@ -302,13 +369,12 @@ function renderTable(){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="checkbox" data-idx="${idx}" class="sel"></td>
-      <td><input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2x1, $3999, 40%, etc"></td>
-      <td><input data-idx="${idx}" data-field="descripcionOferta" value="${c.descripcionOferta || ''}" placeholder="Opcional"></td>
+      <td><input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc"></td>
       <td><input data-idx="${idx}" data-field="fechaDesde" value="${c.fechaDesde || ''}" placeholder="25/11"></td>
       <td><input data-idx="${idx}" data-field="fechaHasta" value="${c.fechaHasta || ''}" placeholder="01/12"></td>
-      <td><input data-idx="${idx}" data-field="objetoOferta" value="${c.objetoOferta || ''}" placeholder="Descripción del producto"></td>
-      <td><input data-idx="${idx}" data-field="aclaracionObjeto" value="${c.aclaracionObjeto || ''}" placeholder="Opcional"></td>
-      <td><input data-idx="${idx}" data-field="aclaracion" value="${c.aclaracion || ''}" placeholder="COMBINALO COMO QUIERAS"></td>
+      <td><input data-idx="${idx}" data-field="objetoOferta" value="${c.objetoOferta || ''}" placeholder="Título de la acción"></td>
+      <td><input data-idx="${idx}" data-field="aclaracionObjeto" value="${c.aclaracionObjeto || ''}" placeholder="Incluye/Excluye"></td>
+      <td><input data-idx="${idx}" data-field="aclaracion" value="${c.aclaracion || ''}" placeholder="Aclaración 2"></td>
       <td><input data-idx="${idx}" data-field="legal1" value="${c.legal1 || ''}" placeholder="Texto legal principal"></td>
       <td><input data-idx="${idx}" data-field="legal2" value="${c.legal2 || ''}" placeholder="Texto legal secundario"></td>
       <td><button data-idx="${idx}" class="btn-del">Eliminar</button></td>
@@ -322,7 +388,6 @@ function addEmpty(){
     id: Date.now().toString(),
     tipo: 'NxN',
     tipoOferta: '',
-    descripcionOferta: '',
     fechaDesde: '',
     fechaHasta: '',
     objetoOferta: '',
@@ -361,13 +426,12 @@ function importCSV(file){
     const rows = results.data.map(r=>({
       id: Date.now().toString()+Math.random().toString(36).slice(2,6),
       tipo: '',  // se detecta automáticamente
-      tipoOferta: r['SKU']||r['Tipo Oferta']||r['TipoOferta']||'',
-      descripcionOferta: r['Descripcion Oferta']||r['Descripción Oferta']||'',
+      tipoOferta: r['Tipo Accion']||r['Tipo Acción']||r['SKU']||r['Tipo Oferta']||'',
       fechaDesde: r['Desde']||r['Fecha Desde']||'',
       fechaHasta: r['Hasta']||r['Fecha Hasta']||'',
-      objetoOferta: r['Objeto Oferta']||r['Objeto']||'',
-      aclaracionObjeto: r['Aclaracion Objeto']||r['Aclaración Objeto']||'',
-      aclaracion: r['Aclaracion']||r['Aclaración']||'',
+      objetoOferta: r['Titulo Accion']||r['Título Acción']||r['Objeto Oferta']||r['Objeto']||'',
+      aclaracionObjeto: r['Incluye/Excluye']||r['Aclaracion 1']||r['Aclaración 1']||r['Aclaracion Objeto']||r['Aclaración Objeto']||'',
+      aclaracion: r['Aclaracion 2']||r['Aclaración 2']||r['Aclaracion']||r['Aclaración']||'',
       legal1: r['Legal 1']||r['Legal1']||'',
       legal2: r['Legal 2']||r['Legal2']||''
     }));
@@ -393,16 +457,16 @@ function renderPreview(){
     const ofertaHTML = generarOfertaHTML(c, tipoDetectado);
     
     // SVG para la forma de flecha (se renderiza en PDF)
-    // Para MC y DESC2-MC: flecha derecha con color #2B3689
-    // Para MC2: SVG personalizado con fondos incluidos
-    const svgShape = (tipoDetectado === 'MC2') ? `
+    // Para MC, DESC2-MC y NxNMC: flecha derecha con color #2B3689
+    // Para MC2 y NxNMC2: SVG personalizado con fondos incluidos
+    const svgShape = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
         <path d="M253.764 1L279.953 85.0029L253.759 171H1V1H253.764Z" fill="#ffffff" stroke="black" stroke-width="2"/>
         <path d="M254.5 172L279 91H0V172H254.5Z" fill="#2B3689"/>
         <path d="M281 85.1463L279.007 79H0V100H276.516L281 85.1463Z" fill="#0B0B0B"/>
         <path d="M259 20L1 18" stroke="black" stroke-width="2"/>
       </svg>
-    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') ? `
+    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; right: 0; width: 281px; height: 172px; z-index: 1;">
         <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#2B3689" />
       </svg>
@@ -412,11 +476,11 @@ function renderPreview(){
       </svg>
     `;
     
-    // Para MC2, la vigencia va arriba dentro del oferta-content
-    // Para MC y DESC2-MC, la vigencia va dentro del cuadro abajo
-    const vigenciaEnOferta = tipoDetectado === 'MC2' 
+    // Para MC2 y NxNMC2, la vigencia va arriba dentro del oferta-content
+    // Para MC, DESC2-MC y NxNMC, la vigencia va dentro del cuadro abajo
+    const vigenciaEnOferta = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') 
       ? `<div class="mc2-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`
-      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC')
+      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC')
       ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>` 
       : `<div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`;
     
@@ -425,7 +489,7 @@ function renderPreview(){
     // Para MC y DESC2-MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
     // MC2 usa contenido-derecha normal (sin -mc)
     // Agregar clase específica para contenido-derecha según el tipo
-    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') 
+    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') 
       ? 'contenido-derecha-mc' 
       : 'contenido-derecha';
     
@@ -434,7 +498,7 @@ function renderPreview(){
               ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
     
     // Banner MasClub para MC y DESC2-MC (fuera de oferta-content pero dentro de cenefa-body)
-    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') 
+    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') 
       ? `<div class="mc-banner">
            <span class="mc-exclusivo">EXCLUSIVO</span>
            <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
@@ -762,62 +826,8 @@ async function printAllSheets() {
 }
 
 function downloadTemplate(){
-  const headers = 'SKU,Objeto Oferta,Aclaracion,Desde,Hasta,Departamento';
-  const instrucciones = `
-# INSTRUCCIONES PARA CENEFAS PROMOCIONALES
-# ==========================================
-# 
-# FORMATOS SOPORTADOS (se detectan automáticamente según el campo "SKU"):
-# 
-# 1. NxN - Ej: 2x1, 3x2
-#    SKU: escribir "2x1" o "3x2"
-#    Objeto Oferta: "LLEVÁ 2, PAGÁ 1"
-#    Formato: Números grandes con "x" pequeña entre ellos
-# 
-# 2. PRECIO - Precio simple
-#    SKU: escribir "$3999" o "3.999"
-#    Objeto Oferta: (vacío o texto descriptivo)
-#    Formato: Símbolo $ pequeño, números grandes
-# 
-# 3. X%1 - Descuento unitario
-#    SKU: escribir "40%"
-#    Objeto Oferta: "DE DESCUENTO"
-#    Formato: Número grande + símbolo % pequeño alineado base inferior
-# 
-# 4. X%2 - Descuento en segunda unidad
-#    SKU: escribir "30%2" o "30% 2DA"
-#    Objeto Oferta: (auto se genera "DESCUENTO EN LA SEGUNDA UNIDAD")
-#    Formato: Dos columnas - número con % | texto a la izquierda
-# 
-# 5. NQ - Cuotas sin interés
-#    SKU: escribir "6" (solo el número)
-#    Objeto Oferta: "CUOTAS SIN INTERÉS"
-#    Formato: Dos columnas - número gigante | texto
-# 
-# 6. X%1+NQ - Descuento + cuotas
-#    SKU: escribir "30%+4"
-#    Objeto Oferta: "DE DESCUENTO" (se complementa automáticamente)
-#    Formato: Fila 1: "30% + 4" / Fila 2: "DE DESCUENTO | CUOTAS SIN INTERÉS"
-# 
-# CAMPOS:
-# - SKU: código de oferta (ver formatos arriba)
-# - Objeto Oferta: descripción del producto/oferta
-# - Aclaracion: texto opcional (ej: "COMBINALO COMO QUIERAS")
-# - Desde/Hasta: fechas de vigencia (formato: 25/11)
-# - Departamento: número de departamento
-# 
-# NOTA: La vigencia siempre aparece al pie del área negra
-`;
-  const ejemplos = `
-2x1,ADORNOS PARA ÁRBOL LUCES Y DECO NAVIDEÑA,COMBINALO COMO QUIERAS,25/11,01/12,35
-$3999,HELADERA GAFA,,08/12,23/01,35
-40%,MUEBLES DE JARDÍN,,15/12,31/12,40
-30%2,ACCESORIOS PILETA,,01/12,15/12,45
-6,ELECTRODOMÉSTICOS SELECCIONADOS,,10/12,20/12,35
-30%+4,CONJUNTOS DE LIVING,,12/12,25/12,40
-`;
-  
-  const contenido = instrucciones + '\n' + headers + ejemplos;
+  const headers = 'Tipo Acción,Desde,Hasta,Título Acción,Incluye/Excluye,Aclaración 2,Legal 1,Legal 2';
+  const contenido = headers;
   const blob = new Blob([contenido], {type: 'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
