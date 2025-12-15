@@ -87,6 +87,17 @@ const cenefas = [
     aclaracion: 'DESCUENTOS NO ACUMULABLES',
     legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
     legal2: 'PRIMERA UNIDAD PRECIACIÓN. PROMOCI VÁLIDA DEL DÍA 21/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
+  },
+  {
+    tipo: 'DESC2-MC',
+    tipoOferta: '35%2MC',
+    descripcionOferta: 'EN LA SEGUNDA UNIDAD',
+    fechaDesde: '22/11',
+    fechaHasta: '28/11',
+    objetoOferta: 'COLCHONES Y SOMMIERS SELECCIONADOS',
+    aclaracion: '',
+    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
+    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL DÍA 22/11/2025 HASTA EL DÍA 28/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
   }
 ];
 
@@ -107,19 +118,24 @@ function detectarTipo(tipoOferta) {
     return 'DESC-CUOTAS';
   }
   
-  // DESC2: contiene "2" o "SEGUNDA" o "2°" con %
-  if (texto.includes('%') && (texto.includes('2') || texto.includes('SEGUNDA') || texto.includes('2°'))) {
-    return 'DESC2';
-  }
-  
   // MC2: formato x%oz%MC (ej: 30%o35%MC)
   if (/\d+%O\d+%MC/i.test(texto)) {
     return 'MC2';
   }
   
+  // DESC2-MC: formato x%2MC (ej: 30%2MC - descuento en segunda unidad MasClub)
+  if (/\d+%2MC$/i.test(texto)) {
+    return 'DESC2-MC';
+  }
+  
   // MC: formato x%MC (ej: 80%MC)
   if (/\d+%MC$/i.test(texto)) {
     return 'MC';
+  }
+  
+  // DESC2: contiene "2" o "SEGUNDA" o "2°" con %
+  if (texto.includes('%') && (texto.includes('2') || texto.includes('SEGUNDA') || texto.includes('2°'))) {
+    return 'DESC2';
   }
   
   // DESC1: contiene solo %
@@ -219,17 +235,28 @@ function generarOfertaHTML(c, tipo) {
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
     case 'MC':
-      // Formato: 80%MC con banner superior Más Club
+      // Formato: 80%MC con banner superior Más Club (banner fuera de oferta-content)
       const descMC = tipoOferta.match(/(\d+)%MC/i);
       if (descMC) {
         const pct = descMC[1];
-        return `<div class="oferta-mc">
-                  <div class="mc-banner">
-                    <span class="mc-exclusivo">EXCLUSIVO</span>
-                    <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
+        return `<div class="mc-numero">${pct}<span class="mc-simbolo">%</span></div>
+                <div class="mc-descripcion">${descripcion.toUpperCase()}</div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
+    case 'DESC2-MC':
+      // Formato: 30%2MC - Descuento en segunda unidad con MasClub (replica DESC2, banner fuera)
+      const descMC2Seg = tipoOferta.match(/(\d+)%2MC/i);
+      if (descMC2Seg) {
+        const pct = descMC2Seg[1];
+        return `<div class="oferta-dos-columnas">
+                  <div class="col-numero">
+                    <span class="numero-grande">${pct}</span>
                   </div>
-                  <div class="mc-numero">${pct}<span class="mc-simbolo">%</span></div>
-                  <div class="mc-descripcion">${descripcion.toUpperCase()}</div>
+                  <div class="col-derecha">
+                    <div class="simbolo-arriba">%</div>
+                    <div class="texto-columna">DESCUENTO EN<br>LA SEGUNDA<br>UNIDAD</div>
+                  </div>
                 </div>`;
       }
       return `<div class="oferta-principal">${tipoOferta}</div>`;
@@ -240,17 +267,20 @@ function generarOfertaHTML(c, tipo) {
       if (descMC2) {
         const pct1 = descMC2[1];
         const pct2 = descMC2[2];
-        return `<div class="oferta-mc2">
-                  <div class="mc2-general">
-                    <span class="mc2-numero">${pct1}</span><span class="mc2-simbolo">%</span>
+        // Vigencia se pasa como variable separada, no dentro del HTML de oferta
+        return `<div class="mc2-dcto1">
+                  <div class="mc2-numero1">${pct1}<span class="mc2-simbolo1">%</span></div>
+                  <div class="mc2-texto1">
+                    <div class="mc2-texto1-linea1">CON TODOS</div>
+                    <div class="mc2-texto1-linea2">LOS MEDIOS DE PAGO</div>
                   </div>
-                  <div class="mc2-texto">CON TODOS<br>${descripcion}</div>
-                  <div class="mc2-club">
-                    <span class="mc2-numero-club">${pct2}</span><span class="mc2-simbolo-club">%</span>
-                    <div class="mc2-exclusivo">
-                      <span class="mc2-exclusivo-text">EXCLUSIVO</span>
-                      <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-inline">
-                    </div>
+                </div>
+                <div class="mc2-separador">DESCUENTOS NO ACUMULABLES</div>
+                <div class="mc2-dcto2">
+                  <div class="mc2-numero2">${pct2}<span class="mc2-simbolo2">%</span></div>
+                  <div class="mc2-texto2">
+                    <span class="mc2-exclusivo">EXCLUSIVO</span>
+                    <img src="assets/logos/masclub.png" alt="Más club" class="mc2-logo">
                   </div>
                 </div>`;
       }
@@ -363,8 +393,16 @@ function renderPreview(){
     const ofertaHTML = generarOfertaHTML(c, tipoDetectado);
     
     // SVG para la forma de flecha (se renderiza en PDF)
-    // Para MC: flecha derecha con color #2B3689, apunta hacia la derecha igual que el negro
-    const svgShape = tipoDetectado === 'MC' ? `
+    // Para MC y DESC2-MC: flecha derecha con color #2B3689
+    // Para MC2: SVG personalizado con fondos incluidos
+    const svgShape = (tipoDetectado === 'MC2') ? `
+      <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
+        <path d="M253.764 1L279.953 85.0029L253.759 171H1V1H253.764Z" fill="#ffffff" stroke="black" stroke-width="2"/>
+        <path d="M254.5 172L279 91H0V172H254.5Z" fill="#2B3689"/>
+        <path d="M281 85.1463L279.007 79H0V100H276.516L281 85.1463Z" fill="#0B0B0B"/>
+        <path d="M259 20L1 18" stroke="black" stroke-width="2"/>
+      </svg>
+    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; right: 0; width: 281px; height: 172px; z-index: 1;">
         <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#2B3689" />
       </svg>
@@ -374,42 +412,48 @@ function renderPreview(){
       </svg>
     `;
     
-    // Para MC2, la vigencia va abajo en footer-legal, no en oferta-box
-    // Para MC, la vigencia también va dentro del cuadro pero sin el prefijo DEL/AL
+    // Para MC2, la vigencia va arriba dentro del oferta-content
+    // Para MC y DESC2-MC, la vigencia va dentro del cuadro abajo
     const vigenciaEnOferta = tipoDetectado === 'MC2' 
-      ? ''
-      : tipoDetectado === 'MC'
+      ? `<div class="mc2-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`
+      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC')
       ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>` 
       : `<div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`;
     
-    const vigenciaEnFooter = tipoDetectado === 'MC2'
-      ? `<div class="vigencia-footer">VIGENCIA DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`
-      : '';
+    const vigenciaEnFooter = '';
     
-    // Para MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
-    const objetoOfertaHTML = tipoDetectado === 'MC' 
-      ? `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
-              ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
-              ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}` 
-      : `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
+    // Para MC y DESC2-MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
+    // MC2 usa contenido-derecha normal (sin -mc)
+    // Agregar clase específica para contenido-derecha según el tipo
+    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') 
+      ? 'contenido-derecha-mc' 
+      : 'contenido-derecha';
+    
+    const objetoOfertaHTML = `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
               ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
               ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
     
-    const objetoOfertaMC = '';
+    // Banner MasClub para MC y DESC2-MC (fuera de oferta-content pero dentro de cenefa-body)
+    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC') 
+      ? `<div class="mc-banner">
+           <span class="mc-exclusivo">EXCLUSIVO</span>
+           <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
+         </div>`
+      : '';
     
     container.innerHTML = `
       <div class="row row-cenefas">
         <div class="a5-horizontal">
           <div class="cenefa-body">
+            ${bannerMC}
             <div class="oferta-box tipo-${tipoDetectado}">
               ${svgShape}
               <div class="oferta-content">
-                ${ofertaHTML}
-                ${objetoOfertaMC}
                 ${vigenciaEnOferta}
+                ${ofertaHTML}
               </div>
             </div>
-            <div class="contenido-derecha">
+            <div class="${contenidoDerechaClass}">
               ${objetoOfertaHTML}
             </div>
             ${vigenciaEnFooter}
@@ -421,15 +465,15 @@ function renderPreview(){
         </div>
         <div class="a5-horizontal">
           <div class="cenefa-body">
+            ${bannerMC}
             <div class="oferta-box tipo-${tipoDetectado}">
               ${svgShape}
               <div class="oferta-content">
-                ${ofertaHTML}
-                ${objetoOfertaMC}
                 ${vigenciaEnOferta}
+                ${ofertaHTML}
               </div>
             </div>
-            <div class="contenido-derecha">
+            <div class="${contenidoDerechaClass}">
               ${objetoOfertaHTML}
             </div>
             ${vigenciaEnFooter}
@@ -442,6 +486,31 @@ function renderPreview(){
       </div>
     `;
     list.appendChild(container);
+    
+    // Ajustar tamaño de fuente del objeto-oferta dinámicamente
+    setTimeout(() => {
+      const objetoOfertaElements = container.querySelectorAll('.objeto-oferta');
+      objetoOfertaElements.forEach(element => {
+        const texto = element.textContent || '';
+        const longitud = texto.length;
+        
+        // Calcular tamaño de fuente basado en longitud del texto
+        // Máximo 34px (textos cortos <= 30 caracteres)
+        // Mínimo 20px (textos largos >= 80 caracteres)
+        let fontSize;
+        if (longitud <= 30) {
+          fontSize = 34;
+        } else if (longitud >= 80) {
+          fontSize = 20;
+        } else {
+          // Interpolación lineal entre 30-80 caracteres -> 34-20px
+          fontSize = 34 - ((longitud - 30) / (80 - 30)) * (34 - 20);
+          fontSize = Math.round(fontSize);
+        }
+        
+        element.style.fontSize = `${fontSize}px`;
+      });
+    }, 10);
 
     // Add download toolbar for this sheet
     const toolbar = document.createElement('div');

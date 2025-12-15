@@ -169,7 +169,7 @@
 }
 
 /* Tipo DESC2: columnas "30% | DESCUENTO EN LA SEGUNDA UNIDAD" */
-.tipo-DESC2 .oferta-dos-columnas {
+.oferta-dos-columnas {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,26 +178,26 @@
   padding: 0 10px;
 }
 
-.tipo-DESC2 .col-numero {
+.col-numero {
   display: flex;
   align-items: center;
 }
 
-.tipo-DESC2 .numero-grande {
+.numero-grande {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 144px;
   font-weight: 800;
   line-height: 1;
 }
 
-.tipo-DESC2 .col-derecha {
+.col-derecha {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
 }
 
-.tipo-DESC2 .simbolo-arriba {
+.simbolo-arriba {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 64px;
   font-weight: 700;
@@ -205,7 +205,7 @@
   margin-bottom: -8px;
 }
 
-.tipo-DESC2 .texto-columna {
+.texto-columna {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -323,9 +323,6 @@
   right: 0;
 }
 
-.tipo-MC .oferta-content {
-
-}
 
 .tipo-MC .oferta-mc {
   display: flex;
@@ -337,9 +334,9 @@
   padding: 0;
 }
 
-.tipo-MC .mc-banner {
+.mc-banner {
   position: absolute;
-  left: 198px;
+  left: 231px;
   width: 305px;
   height: 43px;
   background: #2B3689;
@@ -350,7 +347,7 @@
   z-index: 10;
 }
 
-.tipo-MC .mc-exclusivo {
+.mc-exclusivo {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
@@ -358,7 +355,7 @@
   text-transform: uppercase;
 }
 
-.tipo-MC .mc-logo-banner {
+.mc-logo-banner {
   height: 24px;
   width: auto;
 }
@@ -395,133 +392,195 @@
   font-weight: 400;
 }
 
-/* Contenido izquierda para MC (parte blanca con objeto oferta) */
-.tipo-MC .contenido-derecha {
-  display: flex;
-  left: 0;
-  right: 284px;
-  width: auto;
+/* ============================================
+   CONTENIDO DERECHA ESPECÍFICO PARA MC/MC2
+   ============================================ */
 
+/* Contenido izquierda para MC (parte blanca con objeto oferta) */
+.contenido-derecha-mc {
+  position: absolute;
+  right: 0px;
+  width: 259px;
+  top: 0;
+  height: 172px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding-top: 43px;
 }
 
 /* Objeto oferta en MC con tamaño adaptativo */
-.tipo-MC .objeto-oferta {
-  font-size: clamp(14px, 2vw, 22px);
+.contenido-derecha-mc .objeto-oferta {
+  font-size: 22px; /* Será ajustado por JS entre 20-34px */
   line-height: 1.0;
   max-width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: normal;
+  hyphens: none;
+}
+
+/* ============================================
+   FORMATO DESC2-MC - x%2MC (35%2MC)
+   Descuento en segunda unidad + MasClub
+   ============================================ */
+
+.tipo-DESC2-MC .oferta-desc2-mc {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+
+
+/* Contenido derecha para DESC2-MC también usa contenido-derecha-mc */
+.tipo-DESC2-MC .contenido-derecha-mc {
   padding-top: 43px;
 }
 
 /* ============================================
-   FORMATO MC2 - x%oz%MC* (30%o35%MC)
-   Doble descuento + vigencia abajo
+   FORMATO MC2 - x%ox%MC (30%o35%MC)
+   Doble descuento + vigencia arriba
    ============================================ */
 
 .tipo-MC2 .oferta-mc2 {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
   height: 100%;
-  padding: 15px 10px 5px 10px;
-  gap: 8px;
+  padding: 0;
 }
-
-.tipo-MC2 .mc2-general {
+.tipo-MC2 .oferta-content {
   display: flex;
-  align-items: baseline;
-  justify-content: center;
+  
+  box-sizing: border-box;
 }
 
-.tipo-MC2 .mc2-numero {
+/* Vigencia arriba - 17px Miso bold negro */
+.tipo-MC2 .mc2-vigencia {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 85px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.tipo-MC2 .mc2-simbolo {
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 38px;
-  font-weight: 700;
-}
-
-.tipo-MC2 .mc2-texto {
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.1;
-  text-align: center;
-  margin-top: -3px;
-}
-
-.tipo-MC2 .mc2-club {
-  background: #2B3689;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
-
-.tipo-MC2 .mc2-numero-club {
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 70px;
-  font-weight: 800;
-  line-height: 1;
-  color: white;
-}
-
-.tipo-MC2 .mc2-simbolo-club {
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: white;
-}
-
-.tipo-MC2 .mc2-exclusivo {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: -8px;
-}
-
-.tipo-MC2 .mc2-exclusivo-text {
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: white;
-  text-transform: uppercase;
-}
-
-.tipo-MC2 .mc-logo-inline {
-  height: 18px;
-  width: auto;
-}
-
-/* Vigencia en footer para MC2 */
-.vigencia-footer {
-  position: absolute;
-  top: 176px;
-  left: 0;
-  right: 0;
-  font-family: 'Miso', Arial, sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   color: #000;
   text-align: center;
+  position: absolute;
+  bottom: 148px
+ 
+}
+
+/* DCTO1 - flex row, texto negro */
+.tipo-MC2 .mc2-dcto1 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: absolute;
+  top: 15px
+}
+
+.tipo-MC2 .mc2-numero1 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 70px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1;
+  display: flex;
+  align-content: flex-start;
+}
+
+.tipo-MC2 .mc2-simbolo1 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #000;
+  padding-top: 10px;
+}
+
+.tipo-MC2 .mc2-texto1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.tipo-MC2 .mc2-texto1-linea1 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: #000;
+  line-height: 1;
+}
+
+.tipo-MC2 .mc2-texto1-linea2 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #000;
+  line-height: 1;
+}
+
+/* Separador - texto blanco 20px */
+.tipo-MC2 .mc2-separador {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: white;
+  text-align: center;
+  position:absolute;
+  top: 73px;
+}
+
+/* DCTO2 - flex row, texto blanco, gap 30px */
+.tipo-MC2 .mc2-dcto2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position:absolute;
+  top: 95px;
+}
+
+.tipo-MC2 .mc2-numero2 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 70px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+    display: flex;
+  align-content: flex-start;
+}
+
+.tipo-MC2 .mc2-simbolo2 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  padding-top:10px;
+}
+
+.tipo-MC2 .mc2-texto2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.tipo-MC2 .mc2-exclusivo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
   text-transform: uppercase;
 }
 
-/* Ajustar footer-legal cuando hay vigencia-footer */
-.cenefa-body:has(.vigencia-footer) .footer-legal {
-  top: 200px;
+.tipo-MC2 .mc2-logo {
+  height: 22px;
+  width: auto;
 }
 
 /* Contenido derecha - parte blanca con objeto de oferta y aclaraciones */
@@ -538,17 +597,19 @@
   box-sizing: border-box;
 }
 
-/* Objeto oferta - Font size máximo 32px, adaptable automáticamente */
+/* Objeto oferta - Font size dinámico ajustado por JavaScript (20-34px) */
 .objeto-oferta {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: clamp(16px, 5vw, 42px);
+  font-size: 34px; /* Tamaño inicial, será ajustado por JS */
   font-weight: 800;
   line-height: 1.1;
   color: #000;
   letter-spacing: 0.5px;
   max-width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  white-space: normal;
+  hyphens: none;
   text-align: center;
 }
 
