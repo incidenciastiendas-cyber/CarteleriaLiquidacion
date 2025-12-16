@@ -1,190 +1,138 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Cartelería Masiva — Previsualizador</title>
-    <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header>
-        <h1>Carteleria</h1>
-        <p class="muted">
-          App para creación de A6 de rebaja en precio y de oblea para productos
-          por liquidación
-        </p>
-        <div style="display: flex; gap: 10px; align-items: center">
-          <a href="cenefas.html" class="btn-cenefas">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">ads_click</span>
-            Ir a Cenefas Promocionales
-          </a>
-          <button id="btn-ayuda" class="btn btn-info" style="padding: 8px 16px">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">help</span> ¿Cómo usar?
-          </button>
-        </div>
-      </header>
-
-      <div class="controls">
-        <div class="controls-group">
-          <div class="file-input-wrapper">
-            <label for="file-csv" class="btn btn-file">
-              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">folder_open</span>
-              Seleccionar CSV
-            </label>
-            <input id="file-csv" type="file" accept=".csv" />
-          </div>
-          <button id="btn-import" class="btn btn-file">Importar CSV</button>
-          <button id="btn-download-template" class="btn btn-info">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">description</span>
-            Descargar Template CSV
-          </button>
-        </div>
-        <div class="controls-group">
-          <button id="btn-add" class="btn btn-success">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">add</span>
-            Agregar producto
-          </button>
-          <button id="btn-delete-selected" class="btn btn-danger">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">delete</span>
-            Eliminar seleccionados
-          </button>
-        </div>
-        <div class="controls-group">
-          <button id="btn-preview" class="btn btn-primary">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">preview</span>
-            Crear Carteles
-          </button>
-          <button id="btn-download-selected" class="btn btn-success">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">download</span>
-            Descargar Seleccionados
-          </button>
-          <button id="btn-print-all" class="btn btn-info">
-            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">picture_as_pdf</span>
-            Descargar Todo (PDF único)
-          </button>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Cartelería GDN</title>
+  <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <div class="login-logo">
+        <img src="fonts/gdnicon.png" alt="Logo" style="width: 50px; height: 50px;">
       </div>
-
-      <main>
-        <section class="table-section">
-          <table id="products-table">
-            <thead>
-              <tr>
-                <th><input id="select-all" type="checkbox" /></th>
-                <th title="Número de caso proporcionado por Incidencias Tiendas">N° Incidencia</th>
-                <th>SKU</th>
-                <th title="Descripción de SKU traída de microstrategy/SIM">Descripción</th>
-                <th title="Razón de falta o condición estética que causó la rebaja">Razón Rebaja</th>
-                <th title="Departamento correspondiente al SKU">Dpto</th>
-                <th>EAN/UPC</th>
-                <th title="Precio actual sin rebaja">Precio Ant.</th>
-                <th title="Precio con rebaja">Precio Act.</th>
-                <th>Desde</th>
-                <th>Hasta</th>
-                <th title="Número de negociación correspondiente">N° Negociación</th>
-                <th title="Número de serie/IMEI del producto">N° Serie</th>
-                <th title="País donde fue fabricado el producto">Industria</th>
-                <th title="Acumula con otras ofertas (Si/No)">Acumulable</th>
-                <th title="Producto Sin Cambio ni devolución? (Si/No)">Sin cambio</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="products-body"></tbody>
-          </table>
-        </section>
-
-        <section id="preview-section" class="preview-section hidden">
-          <h2>Vista previa</h2>
-          <div id="preview-list"></div>
-        </section>
-      </main>
-
-      <!-- Modal de Ayuda -->
-      <div id="modal-ayuda" class="modal-ayuda" style="display: none">
-        <div class="modal-content-ayuda">
-          <span class="close-ayuda">×</span>
-          <h2>📘 Guía de Uso - Cartelería Liquidación</h2>
-
-          <div class="ayuda-seccion">
-            <h3>1️⃣ ¿Para qué sirve?</h3>
-            <p>
-              Esta aplicación genera carteles A6 de rebaja en precio y obleas para productos en liquidación.
-              Cada cartel incluye código de barras, precios, fechas de vigencia y toda la información necesaria.
-            </p>
-          </div>
-
-          <div class="ayuda-seccion">
-            <h3>2️⃣ Formas de cargar datos</h3>
-            <h4>📋 Opción 1: Importar CSV (Recomendado)</h4>
-            <ol>
-              <li>Hacé clic en <strong>"📄 Descargar Template CSV"</strong></li>
-              <li>Abrí el archivo descargado con Excel o Google Sheets</li>
-              <li>Completá los datos de los productos en liquidación</li>
-              <li>Guardá el archivo como CSV</li>
-              <li>Hacé clic en <strong>"📁 Seleccionar CSV"</strong> y seleccioná tu archivo</li>
-              <li>Hacé clic en <strong>"Importar CSV"</strong></li>
-            </ol>
-
-            <h4>✏️ Opción 2: Cargar manualmente</h4>
-            <ol>
-              <li>Hacé clic en <strong>"+ Agregar producto"</strong></li>
-              <li>Completá los campos en la tabla</li>
-              <li>Podés agregar múltiples productos repitiendo el proceso</li>
-            </ol>
-          </div>
-
-          <div class="ayuda-seccion">
-            <h3>3️⃣ Campos obligatorios</h3>
-            <ul>
-              <li><strong>N° Incidencia:</strong> Número de caso proporcionado por Incidencias Tiendas</li>
-              <li><strong>Descripción:</strong> Descripción del SKU traída de microstrategy/SIM</li>
-              <li><strong>Razón Rebaja:</strong> Motivo de la liquidación (daño, falta estética, etc.)</li>
-              <li><strong>Precio Ant.:</strong> Precio original sin rebaja</li>
-              <li><strong>Precio Act.:</strong> Precio con descuento aplicado</li>
-              <li><strong>Desde/Hasta:</strong> Fechas de vigencia de la promoción</li>
-              <li><strong>EAN/UPC:</strong> Código de barras del producto</li>
-              <li><strong>Acumulable:</strong> Escribir "Si" o "No" según acumule con otras ofertas</li>
-              <li><strong>Sin cambio:</strong> Escribir "Si" o "No" según permita cambios/devoluciones</li>
-            </ul>
-          </div>
-
-          <div class="ayuda-seccion">
-            <h3>4️⃣ Generar y descargar</h3>
-            <ol>
-              <li>Una vez cargados los datos, hacé clic en <strong>"📋 Crear Carteles"</strong></li>
-              <li>Se generará una vista previa de todos los carteles</li>
-              <li>Podés descargar carteles individuales con el checkbox + <strong>"📥 Descargar Seleccionados"</strong></li>
-              <li>O descargar todo en un solo PDF con <strong>"📄 Descargar Todo"</strong></li>
-            </ol>
-          </div>
-
-          <div class="ayuda-seccion">
-            <h3>💡 Consejos</h3>
-            <ul>
-              <li>Verificá que el código de barras (EAN/UPC) sea correcto</li>
-              <li>Revisá las fechas antes de imprimir</li>
-              <li>Usá el template CSV para evitar errores de formato</li>
-              <li>Los campos "Acumulable" y "Sin cambio" deben ser "Si" o "No"</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <footer>
-        <small class="muted"
-          >Creado por IncidenciasTiendas@gdnargentina.com</small
-        >
-      </footer>
+      <h1 class="login-title">Cartelería</h1>
+      <p class="login-subtitle">Sistema de generación de carteles</p>
     </div>
 
-    <!-- Dependencias CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="app.js"></script>
-  </body>
+    <form class="login-form" id="login-form" autocomplete="on">
+      <div class="error-message" id="error-message"></div>
+      
+      <div class="form-group">
+        <label class="form-label" for="username">Usuario</label>
+        <input 
+          type="text" 
+          id="username" 
+          name="username"
+          class="form-input" 
+          placeholder="Ingresá tu usuario"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Contraseña</label>
+        <div style="position: relative;">
+          <input 
+            type="password" 
+            id="password" 
+            name="password"
+            class="form-input" 
+            placeholder="Ingresá tu contraseña"
+            autocomplete="current-password"
+            style="padding-right: 45px;"
+            required
+          >
+          <button 
+            type="button" 
+            id="toggle-password" 
+            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+            title="Mostrar contraseña"
+          >
+            👁️
+          </button>
+        </div>
+      </div>
+
+      <div class="form-checkbox-group">
+        <input 
+          type="checkbox" 
+          id="remember-me" 
+          class="form-checkbox"
+        >
+        <label for="remember-me" class="checkbox-label">Mantenerme conectado</label>
+      </div>
+
+      <button type="submit" class="btn-login">Iniciar Sesión</button>
+    </form>
+
+    <div class="login-footer">
+      <p class="contact-info">
+        ¿Problemas para acceder?<br>
+        Contactar con: <a href="mailto:incidenciastiendas@gdnargentina.com" class="contact-link">incidenciastiendas@gdnargentina.com</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="users.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    // Redirigir si ya está autenticado
+    redirectIfAuthenticated();
+
+    // Cargar usuario recordado
+    const rememberedUser = getRememberedUser();
+    if (rememberedUser) {
+      document.getElementById('username').value = rememberedUser;
+      document.getElementById('remember-me').checked = true;
+      document.getElementById('password').focus();
+    }
+
+    // Toggle mostrar/ocultar contraseña
+    document.getElementById('toggle-password').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      const type = passwordInput.type === 'password' ? 'text' : 'password';
+      passwordInput.type = type;
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+      this.title = type === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña';
+    });
+
+    // Manejar submit del formulario
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('remember-me').checked;
+      const errorMsg = document.getElementById('error-message');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      
+      // Limpiar error previo
+      errorMsg.classList.remove('show');
+      
+      // Deshabilitar botón
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verificando...';
+      
+      // Simular delay para UX
+      setTimeout(() => {
+        const result = login(username, password, rememberMe);
+        
+        if (result.success) {
+          window.location.href = 'home.html';
+        } else {
+          errorMsg.textContent = result.message;
+          errorMsg.classList.add('show');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Iniciar Sesión';
+          document.getElementById('password').value = '';
+          document.getElementById('password').focus();
+        }
+      }, 500);
+    });
+  </script>
+</body>
 </html>
