@@ -19,12 +19,12 @@ const authorizedUsers = [
     password: 'AguanteBOCA12',
     email: 'gustavo.klobouk@gdnargentina.com',
     name: 'Gustavo Klobouk'
-  }
+  },
   {
-    username:'rodrigo.armando',
-    password:'Rodrigo4',
-    email:'rodrigo.armando@gdnargentina.com',
-    name:'Rodrigo Bernel'
+    username: 'rodrigo.armando',
+    password: 'Rodrigo4',
+    email: 'rodrigo.armando@gdnargentina.com',
+    name: 'Rodrigo Bernel'
   }
   // Agregar más usuarios aquí siguiendo el formato:
   // {
