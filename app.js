@@ -1,27 +1,6 @@
 // app.js - lógica para la versión estática de Cartelería Masiva
 const products = [];
 
-const sample = {
-  nIncidencia: 'C-1003-4',
-  sku: '4030300303',
-  descripcion: 'Heladera Gafa',
-  razonRebaja: 'Daño en puerta frontal',
-  departamento: '35',
-  ean: '7796962000419',
-  precioAnterior: '1500000',
-  precioActual: '900500',
-  precioUnidad: '900500',
-  desde: '8/12/2025',
-  hasta: '23/1/2026',
-  precioSinImpuesto: '',
-  nNegociacion: '113434242454',
-  nroSerie: 'xxxxxxxxxx'
-};
-// add industria field to sample
-sample.industria = 'Industria Argentina';
-sample.acumulable = 'Si';
-sample.sinCambio = 'Si';
-
 
 function $(sel){return document.querySelector(sel)}
 function $all(sel){return Array.from(document.querySelectorAll(sel))}
@@ -33,21 +12,21 @@ function renderTable(){
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="checkbox" data-idx="${idx}" class="sel"></td>
-      <td><input data-idx="${idx}" data-field="nIncidencia" value="${p.nIncidencia || ''}"></td>
-      <td><input data-idx="${idx}" data-field="sku" value="${p.sku || ''}"></td>
-      <td><input data-idx="${idx}" data-field="descripcion" value="${p.descripcion || ''}"></td>
-      <td><input data-idx="${idx}" data-field="razonRebaja" value="${p.razonRebaja || ''}"></td>
-      <td><input data-idx="${idx}" data-field="departamento" value="${p.departamento || ''}"></td>
-      <td><input data-idx="${idx}" data-field="ean" value="${p.ean || ''}"></td>
-      <td><input data-idx="${idx}" data-field="precioAnterior" value="${p.precioAnterior || ''}"></td>
-      <td><input data-idx="${idx}" data-field="precioActual" value="${p.precioActual || ''}"></td>
-      <td><input data-idx="${idx}" data-field="desde" value="${p.desde || ''}"></td>
-      <td><input data-idx="${idx}" data-field="hasta" value="${p.hasta || ''}"></td>
-      <td><input data-idx="${idx}" data-field="nNegociacion" value="${p.nNegociacion || ''}"></td>
-      <td><input data-idx="${idx}" data-field="nroSerie" value="${p.nroSerie || ''}"></td>
-      <td><input data-idx="${idx}" data-field="industria" value="${p.industria || ''}"></td>
-      <td><input data-idx="${idx}" data-field="acumulable" value="${p.acumulable || ''}"></td>
-      <td><input data-idx="${idx}" data-field="sinCambio" value="${p.sinCambio || ''}"></td>
+      <td><input data-idx="${idx}" data-field="nIncidencia" value="${p.nIncidencia || ''}" placeholder="C-1234-5"></td>
+      <td><input data-idx="${idx}" data-field="sku" value="${p.sku || ''}" placeholder="12345678"></td>
+      <td><input data-idx="${idx}" data-field="descripcion" value="${p.descripcion || ''}" placeholder="Descripción producto"></td>
+      <td><input data-idx="${idx}" data-field="razonRebaja" value="${p.razonRebaja || ''}" placeholder="Daño en caja"></td>
+      <td><input data-idx="${idx}" data-field="departamento" value="${p.departamento || ''}" placeholder="35"></td>
+      <td><input data-idx="${idx}" data-field="ean" value="${p.ean || ''}" placeholder="7796962000419"></td>
+      <td><input data-idx="${idx}" data-field="precioAnterior" value="${p.precioAnterior || ''}" placeholder="50000"></td>
+      <td><input data-idx="${idx}" data-field="precioActual" value="${p.precioActual || ''}" placeholder="35000"></td>
+      <td><input data-idx="${idx}" data-field="desde" value="${p.desde || ''}" placeholder="01/12/2025"></td>
+      <td><input data-idx="${idx}" data-field="hasta" value="${p.hasta || ''}" placeholder="31/12/2025"></td>
+      <td><input data-idx="${idx}" data-field="nNegociacion" value="${p.nNegociacion || ''}" placeholder="123456789"></td>
+      <td><input data-idx="${idx}" data-field="nroSerie" value="${p.nroSerie || ''}" placeholder="IMEI o N° Serie"></td>
+      <td><input data-idx="${idx}" data-field="industria" value="${p.industria || ''}" placeholder="Argentina"></td>
+      <td><input data-idx="${idx}" data-field="acumulable" value="${p.acumulable || ''}" placeholder="Si/No"></td>
+      <td><input data-idx="${idx}" data-field="sinCambio" value="${p.sinCambio || ''}" placeholder="Si/No"></td>
       <td><button data-idx="${idx}" class="btn-del">Eliminar</button></td>
     `;
     tbody.appendChild(tr);
@@ -509,7 +488,6 @@ async function downloadSelectedPDFs() {
 
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
-  products.push(sample);
   renderTable(); bindTableEvents();
 
   $('#btn-add').addEventListener('click', ()=>{ addEmpty(); });
@@ -526,6 +504,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('#select-all').addEventListener('change', (e)=>{
     const v = e.target.checked; $all('.sel').forEach(ch=>ch.checked=v);
+  });
+
+  // Modal de ayuda
+  const modalAyuda = $('#modal-ayuda');
+  const btnAyuda = $('#btn-ayuda');
+  const closeAyuda = document.querySelector('.close-ayuda');
+
+  btnAyuda.addEventListener('click', () => {
+    modalAyuda.style.display = 'flex';
+  });
+
+  closeAyuda.addEventListener('click', () => {
+    modalAyuda.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modalAyuda) {
+      modalAyuda.style.display = 'none';
+    }
   });
 });
 

@@ -16,10 +16,15 @@
           App para creación de A6 de rebaja en precio y de oblea para productos
           por liquidación
         </p>
-        <a href="cenefas.html" class="btn-cenefas">
-          <span class="material-icons" style="font-size: 18px; margin-right: 4px;">ads_click</span>
-          Ir a Cenefas Promocionales
-        </a>
+        <div style="display: flex; gap: 10px; align-items: center">
+          <a href="cenefas.html" class="btn-cenefas">
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">ads_click</span>
+            Ir a Cenefas Promocionales
+          </a>
+          <button id="btn-ayuda" class="btn btn-info" style="padding: 8px 16px">
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">help</span> ¿Cómo usar?
+          </button>
+        </div>
       </header>
 
       <div class="controls">
@@ -69,21 +74,21 @@
             <thead>
               <tr>
                 <th><input id="select-all" type="checkbox" /></th>
-                <th>N° Incidencia</th>
+                <th title="Número de caso proporcionado por Incidencias Tiendas">N° Incidencia</th>
                 <th>SKU</th>
-                <th>Descripción</th>
-                <th>Razón Rebaja</th>
-                <th>Dpto</th>
+                <th title="Descripción de SKU traída de microstrategy/SIM">Descripción</th>
+                <th title="Razón de falta o condición estética que causó la rebaja">Razón Rebaja</th>
+                <th title="Departamento correspondiente al SKU">Dpto</th>
                 <th>EAN/UPC</th>
-                <th>Precio Ant.</th>
-                <th>Precio Act.</th>
+                <th title="Precio actual sin rebaja">Precio Ant.</th>
+                <th title="Precio con rebaja">Precio Act.</th>
                 <th>Desde</th>
                 <th>Hasta</th>
-                <th>N° Negociación</th>
-                <th>N° Serie</th>
-                <th>Industria</th>
-                <th>Acumulable</th>
-                <th>Sin cambio</th>
+                <th title="Número de negociación correspondiente">N° Negociación</th>
+                <th title="Número de serie/IMEI del producto">N° Serie</th>
+                <th title="País donde fue fabricado el producto">Industria</th>
+                <th title="Acumula con otras ofertas (Si/No)">Acumulable</th>
+                <th title="Producto Sin Cambio ni devolución? (Si/No)">Sin cambio</th>
                 <th></th>
               </tr>
             </thead>
@@ -96,6 +101,77 @@
           <div id="preview-list"></div>
         </section>
       </main>
+
+      <!-- Modal de Ayuda -->
+      <div id="modal-ayuda" class="modal-ayuda" style="display: none">
+        <div class="modal-content-ayuda">
+          <span class="close-ayuda">×</span>
+          <h2>📘 Guía de Uso - Cartelería Liquidación</h2>
+
+          <div class="ayuda-seccion">
+            <h3>1️⃣ ¿Para qué sirve?</h3>
+            <p>
+              Esta aplicación genera carteles A6 de rebaja en precio y obleas para productos en liquidación.
+              Cada cartel incluye código de barras, precios, fechas de vigencia y toda la información necesaria.
+            </p>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>2️⃣ Formas de cargar datos</h3>
+            <h4>📋 Opción 1: Importar CSV (Recomendado)</h4>
+            <ol>
+              <li>Hacé clic en <strong>"📄 Descargar Template CSV"</strong></li>
+              <li>Abrí el archivo descargado con Excel o Google Sheets</li>
+              <li>Completá los datos de los productos en liquidación</li>
+              <li>Guardá el archivo como CSV</li>
+              <li>Hacé clic en <strong>"📁 Seleccionar CSV"</strong> y seleccioná tu archivo</li>
+              <li>Hacé clic en <strong>"Importar CSV"</strong></li>
+            </ol>
+
+            <h4>✏️ Opción 2: Cargar manualmente</h4>
+            <ol>
+              <li>Hacé clic en <strong>"+ Agregar producto"</strong></li>
+              <li>Completá los campos en la tabla</li>
+              <li>Podés agregar múltiples productos repitiendo el proceso</li>
+            </ol>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>3️⃣ Campos obligatorios</h3>
+            <ul>
+              <li><strong>N° Incidencia:</strong> Número de caso proporcionado por Incidencias Tiendas</li>
+              <li><strong>Descripción:</strong> Descripción del SKU traída de microstrategy/SIM</li>
+              <li><strong>Razón Rebaja:</strong> Motivo de la liquidación (daño, falta estética, etc.)</li>
+              <li><strong>Precio Ant.:</strong> Precio original sin rebaja</li>
+              <li><strong>Precio Act.:</strong> Precio con descuento aplicado</li>
+              <li><strong>Desde/Hasta:</strong> Fechas de vigencia de la promoción</li>
+              <li><strong>EAN/UPC:</strong> Código de barras del producto</li>
+              <li><strong>Acumulable:</strong> Escribir "Si" o "No" según acumule con otras ofertas</li>
+              <li><strong>Sin cambio:</strong> Escribir "Si" o "No" según permita cambios/devoluciones</li>
+            </ul>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>4️⃣ Generar y descargar</h3>
+            <ol>
+              <li>Una vez cargados los datos, hacé clic en <strong>"📋 Crear Carteles"</strong></li>
+              <li>Se generará una vista previa de todos los carteles</li>
+              <li>Podés descargar carteles individuales con el checkbox + <strong>"📥 Descargar Seleccionados"</strong></li>
+              <li>O descargar todo en un solo PDF con <strong>"📄 Descargar Todo"</strong></li>
+            </ol>
+          </div>
+
+          <div class="ayuda-seccion">
+            <h3>💡 Consejos</h3>
+            <ul>
+              <li>Verificá que el código de barras (EAN/UPC) sea correcto</li>
+              <li>Revisá las fechas antes de imprimir</li>
+              <li>Usá el template CSV para evitar errores de formato</li>
+              <li>Los campos "Acumulable" y "Sin cambio" deben ser "Si" o "No"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
       <footer>
         <small class="muted"

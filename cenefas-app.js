@@ -1,52 +1,7 @@
 // cenefas-app.js - lógica para cenefas promocionales
 const cenefas = [
-  {
-    tipo: 'NxN',
-    tipoOferta: '3X2',
-    descripcionOferta: 'LLEVÁ 3 PAGÁ 2',
-    fechaDesde: '26/11',
-    fechaHasta: '02/12',
-    objetoOferta: 'CERVEZAS QUILMES 1L',
 
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 26/11/2025 HASTA EL DÍA 02/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
-    tipo: 'MC',
-    tipoOferta: '80%MC',
-    descripcionOferta: 'DE DESCUENTO',
-    fechaDesde: '20/11',
-    fechaHasta: '26/11',
-    objetoOferta: 'GAZEBOS, PÉRGOLAS, REPOSERAS DE JARDÍN, MESAS Y SILLAS DE JARDÍN',
-    aclaracion: '(NO INCLUYE MUEBLES PLÁSTICOS NI MUEBLES DE PLAYAS)',
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL 20/11/2025 HASTA EL DÍA 26/11/2025. PROMOCIÓN VÁLIDA DEL DÍA 20/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
-  },
-  {
-    tipo: 'DESC-CUOTAS-MC',
-    tipoOferta: '30%+6QMC',
-    descripcionOferta: '',
-    fechaDesde: '20/11',
-    fechaHasta: '30/11',
-    objetoOferta: 'SMART TV SAMSUNG 55 PULGADAS 4K UHD',
-    aclaracion: '',
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL 20/11/2025 HASTA EL DÍA 30/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
-  },
 ];
-
-const sample = {
-    tipo: 'NxNMC2',
-    tipoOferta: '3X2o4X2MC',
-    descripcionOferta: 'LLEVÁ 3 PAGÁ 2 + LLEVÁ 4 PAGÁ 2',
-    fechaDesde: '24/11',
-    fechaHasta: '30/11',
-    objetoOferta: 'ARTÍCULOS DE LIBRERÍA Y PAPELERÍA',
-    aclaracion: '',
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DEL DÍA 24/11/2025 HASTA EL DÍA 30/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
- 
-};
 
 // Detectar automáticamente el tipo de oferta según el contenido de tipoOferta
 function detectarTipo(tipoOferta) {
@@ -492,7 +447,19 @@ function extraerDiaMes(fecha) {
 
 function renderPreview(){
   const list = $('#preview-list'); list.innerHTML='';
-  cenefas.forEach((c, idx)=>{
+  
+  // Filtrar cenefas que tienen al menos tipoOferta u objetoOferta
+  const cenefasValidas = cenefas.filter(c => {
+    return (c.tipoOferta && c.tipoOferta.trim() !== '') || 
+           (c.objetoOferta && c.objetoOferta.trim() !== '');
+  });
+  
+  if(cenefasValidas.length === 0) {
+    showModal('No hay cenefas válidas para generar. Agregá información a las filas.');
+    return;
+  }
+  
+  cenefasValidas.forEach((c, idx)=>{
     const container = document.createElement('div'); 
     container.className='sheet-a4';
     container.setAttribute('data-preview-idx', idx); // FEATURE-ScrollToPreview: Identificador para scroll
@@ -691,7 +658,6 @@ function showModal(mensaje) {
 
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
-  cenefas.push(sample);
   renderTable(); 
   bindTableEvents();
 
