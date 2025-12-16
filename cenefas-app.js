@@ -98,8 +98,8 @@ function detectarTipo(tipoOferta) {
     return 'DESC1';
   }
   
-  // NQ: contiene CUOTAS o solo un número (ej: "6")
-  if (texto.includes('CUOTAS') || /^\d{1,2}$/.test(texto)) {
+  // NQ: contiene CUOTAS, Q al final con números, o solo un número (ej: "6Q", "6", "CUOTAS")
+  if (texto.includes('CUOTAS') || /^\d{1,2}Q?$/i.test(texto)) {
     return 'NQ';
   }
   
