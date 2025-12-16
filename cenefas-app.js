@@ -12,61 +12,6 @@ const cenefas = [
     legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 26/11/2025 HASTA EL DÍA 02/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
   },
   {
-    tipo: 'PRECIO',
-    tipoOferta: '$3999',
-    descripcionOferta: '',
-    fechaDesde: '27/11',
-    fechaHasta: '03/12',
-    objetoOferta: 'WHISKY JOHNNIE WALKER RED LABEL 750ML',
-
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 27/11/2025 HASTA EL DÍA 03/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
-    tipo: 'DESC1',
-    tipoOferta: '40%',
-    descripcionOferta: 'DE DESCUENTO',
-    fechaDesde: '28/11',
-    fechaHasta: '04/12',
-    objetoOferta: 'VINOS NORTON RESERVA 750ML',
-
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 28/11/2025 HASTA EL DÍA 04/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
-    tipo: 'DESC2',
-    tipoOferta: '30%2',
-    descripcionOferta: 'EN LA SEGUNDA UNIDAD',
-    fechaDesde: '29/11',
-    fechaHasta: '05/12',
-    objetoOferta: 'ACEITE COCINERO 1.5L',
-
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 29/11/2025 HASTA EL DÍA 05/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
-    tipo: 'NQ',
-    tipoOferta: '6Q',
-    descripcionOferta: 'CUOTAS SIN INTERÉS',
-    fechaDesde: '30/11',
-    fechaHasta: '06/12',
-    objetoOferta: 'SMART TV SAMSUNG 50 PULGADAS 4K',
-
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 30/11/2025 HASTA EL DÍA 06/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
-    tipo: 'DESC-CUOTAS',
-    tipoOferta: '30%+4Q',
-    descripcionOferta: 'DESCUENTO + CUOTAS',
-    fechaDesde: '01/12',
-    fechaHasta: '07/12',
-    objetoOferta: 'HELADERA PHILCO 364L NO FROST',
-
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PROMOCIÓN VÁLIDA DESDE EL DÍA 01/12/2025 HASTA EL DÍA 07/12/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.'
-  },
-  {
     tipo: 'MC',
     tipoOferta: '80%MC',
     descripcionOferta: 'DE DESCUENTO',
@@ -78,39 +23,19 @@ const cenefas = [
     legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL 20/11/2025 HASTA EL DÍA 26/11/2025. PROMOCIÓN VÁLIDA DEL DÍA 20/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
   },
   {
-    tipo: 'MC2',
-    tipoOferta: '30%o35%MC',
-    descripcionOferta: 'LOS MEDIOS DE PAGO',
-    fechaDesde: '21/11',
-    fechaHasta: '26/11',
-    objetoOferta: 'INFLABLES, FILTROS, ANTIPARRAS, SALVAVIDAS Y ACCESORIOS DE PILETAS',
-    aclaracion: 'DESCUENTOS NO ACUMULABLES',
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PRIMERA UNIDAD PRECIACIÓN. PROMOCI VÁLIDA DEL DÍA 21/11/2025 HASTA EL DÍA 26/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
-  },
-  {
-    tipo: 'DESC2-MC',
-    tipoOferta: '35%2MC',
-    descripcionOferta: 'EN LA SEGUNDA UNIDAD',
-    fechaDesde: '22/11',
-    fechaHasta: '28/11',
-    objetoOferta: 'COLCHONES Y SOMMIERS SELECCIONADOS',
+    tipo: 'DESC-CUOTAS-MC',
+    tipoOferta: '30%+6QMC',
+    descripcionOferta: '',
+    fechaDesde: '20/11',
+    fechaHasta: '30/11',
+    objetoOferta: 'SMART TV SAMSUNG 55 PULGADAS 4K UHD',
     aclaracion: '',
     legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL DÍA 22/11/2025 HASTA EL DÍA 28/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
+    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL 20/11/2025 HASTA EL DÍA 30/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
   },
-  {
-    tipo: 'NxNMC',
-    tipoOferta: '2X1MC',
-    descripcionOferta: 'LLEVÁ 2 PAGÁ 1',
-    fechaDesde: '23/11',
-    fechaHasta: '29/11',
-    objetoOferta: 'PRODUCTOS SELECCIONADOS DE BAZAR',
-    aclaracion: '',
-    legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
-    legal2: 'PRIMERA UNIDAD A PRECIO DE LISTA. PROMOCIÓN VÁLIDA DEL DÍA 23/11/2025 HASTA EL DÍA 29/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
-  },
-  {
+];
+
+const sample = {
     tipo: 'NxNMC2',
     tipoOferta: '3X2o4X2MC',
     descripcionOferta: 'LLEVÁ 3 PAGÁ 2 + LLEVÁ 4 PAGÁ 2',
@@ -120,10 +45,8 @@ const cenefas = [
     aclaracion: '',
     legal1: 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO',
     legal2: 'PROMOCIÓN VÁLIDA DEL DÍA 24/11/2025 HASTA EL DÍA 30/11/2025. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. WWW.MASCLUB.COM.AR.'
-  }
-];
-
-const sample = {};
+ 
+};
 
 // Detectar automáticamente el tipo de oferta según el contenido de tipoOferta
 function detectarTipo(tipoOferta) {
@@ -133,6 +56,11 @@ function detectarTipo(tipoOferta) {
   // PRECIO: contiene $ o números con decimales/puntos
   if (texto.includes('$') || /^\d{1,3}(\.\d{3})*$/.test(texto.replace(/\$/g, ''))) {
     return 'PRECIO';
+  }
+  
+  // DESC-CUOTAS-MC: formato x%+NMC (ej: "30%+6QMC")
+  if (/\d+%\+\d+Q?MC$/i.test(texto)) {
+    return 'DESC-CUOTAS-MC';
   }
   
   // DESC-CUOTAS: contiene % Y un número seguido (ej: "30%+4")
@@ -160,8 +88,8 @@ function detectarTipo(tipoOferta) {
     return 'MC';
   }
   
-  // DESC2: contiene "2" o "SEGUNDA" o "2°" con %
-  if (texto.includes('%') && (texto.includes('2') || texto.includes('SEGUNDA') || texto.includes('2°'))) {
+  // DESC2: contiene "2" seguido de % o palabra SEGUNDA/2° (ej: "30%2", "SEGUNDA")
+  if (texto.includes('%') && (/\d+%2/i.test(texto) || texto.includes('SEGUNDA') || texto.includes('2°'))) {
     return 'DESC2';
   }
   
@@ -262,13 +190,34 @@ function generarOfertaHTML(c, tipo) {
       }
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
+    case 'DESC-CUOTAS-MC':
+      // Formato: 30%+6QMC - Descuento + Cuotas con Más Club (igual a DESC-CUOTAS pero con fondo azul)
+      const matchDescCuotasMC = tipoOferta.match(/(\d+)%\+(\d+)Q?MC/i);
+      if (matchDescCuotasMC) {
+        const pct = matchDescCuotasMC[1];
+        const nCuotas = matchDescCuotasMC[2];
+        return `<div class="oferta-combinada">
+                  <div class="fila-numeros">
+                    <span class="numero-combo">${pct}</span><span class="simbolo-pequeno">%</span>
+                    <span class="signo-mas">+</span>
+                    <span class="numero-combo">${nCuotas}</span>
+                  </div>
+                  <div class="fila-textos">
+                    <span class="texto-izq">DE DESCUENTO</span>
+                    <span class="texto-der">CUOTAS<br><span class="sin-interes">SIN INTERÉS</span></span>
+                  </div>
+                </div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
     case 'MC':
       // Formato: 80%MC con banner superior Más Club (banner fuera de oferta-content)
       const descMC = tipoOferta.match(/(\d+)%MC/i);
       if (descMC) {
         const pct = descMC[1];
+        const descTexto = descripcion || 'DE DESCUENTO';
         return `<div class="mc-numero">${pct}<span class="mc-simbolo">%</span></div>
-                <div class="mc-descripcion">${descripcion.toUpperCase()}</div>`;
+                <div class="mc-descripcion">${descTexto.toUpperCase()}</div>`;
       }
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
@@ -411,7 +360,17 @@ function bindTableEvents(){
     const t = e.target;
     const idx = parseInt(t.dataset.idx,10);
     const field = t.dataset.field;
-    if(!Number.isNaN(idx) && field) cenefas[idx][field] = t.value;
+    if(!Number.isNaN(idx) && field) {
+      let value = t.value;
+      
+      // Formatear automáticamente fechas a dd/mm
+      if (field === 'fechaDesde' || field === 'fechaHasta') {
+        value = formatearFecha(value);
+        t.value = value; // Actualizar el input con el formato correcto
+      }
+      
+      cenefas[idx][field] = value;
+    }
   });
   $('#cenefas-body').addEventListener('click', (e)=>{
     if(e.target.classList.contains('btn-del')){
@@ -423,21 +382,92 @@ function bindTableEvents(){
 
 function importCSV(file){
   Papa.parse(file, {header:true, skipEmptyLines:true, complete:function(results){
-    const rows = results.data.map(r=>({
-      id: Date.now().toString()+Math.random().toString(36).slice(2,6),
-      tipo: '',  // se detecta automáticamente
-      tipoOferta: r['Tipo Accion']||r['Tipo Acción']||r['SKU']||r['Tipo Oferta']||'',
-      fechaDesde: r['Desde']||r['Fecha Desde']||'',
-      fechaHasta: r['Hasta']||r['Fecha Hasta']||'',
-      objetoOferta: r['Titulo Accion']||r['Título Acción']||r['Objeto Oferta']||r['Objeto']||'',
-      aclaracionObjeto: r['Incluye/Excluye']||r['Aclaracion 1']||r['Aclaración 1']||r['Aclaracion Objeto']||r['Aclaración Objeto']||'',
-      aclaracion: r['Aclaracion 2']||r['Aclaración 2']||r['Aclaracion']||r['Aclaración']||'',
-      legal1: r['Legal 1']||r['Legal1']||'',
-      legal2: r['Legal 2']||r['Legal2']||''
-    }));
+    const rows = [];
+    
+    results.data.forEach((r, idx) => {
+      let tipoAccion = r['Tipo Accion']||r['Tipo Acción']||r['SKU']||r['Tipo Oferta']||'';
+      let desde = r['Desde']||r['Fecha Desde']||'';
+      let hasta = r['Hasta']||r['Fecha Hasta']||'';
+      
+      // Corregir Tipo Acción: si tiene solo números, agregar %
+      if (tipoAccion && /^\d+$/.test(tipoAccion.trim())) {
+        tipoAccion = tipoAccion.trim() + '%';
+      }
+      
+      // Formatear fecha "Desde" a dd/mm
+      desde = formatearFecha(desde);
+      
+      // Formatear fecha "Hasta" a dd/mm
+      hasta = formatearFecha(hasta);
+      
+      rows.push({
+        id: Date.now().toString()+Math.random().toString(36).slice(2,6),
+        tipo: '',  // se detecta automáticamente
+        tipoOferta: tipoAccion,
+        fechaDesde: desde,
+        fechaHasta: hasta,
+        objetoOferta: r['Titulo Accion']||r['Título Acción']||r['Objeto Oferta']||r['Objeto']||'',
+        aclaracionObjeto: r['Incluye/Excluye']||r['Aclaracion 1']||r['Aclaración 1']||r['Aclaracion Objeto']||r['Aclaración Objeto']||'',
+        aclaracion: r['Aclaracion 2']||r['Aclaración 2']||r['Aclaracion']||r['Aclaración']||'',
+        legal1: r['Legal 1']||r['Legal1']||'',
+        legal2: r['Legal 2']||r['Legal2']||''
+      });
+    });
+    
     cenefas.push(...rows);
     renderTable();
+    alert(`✅ Se importaron ${rows.length} cenefa(s) correctamente.`);
   }});
+}
+
+function formatearFecha(fecha) {
+  if (!fecha) return '';
+  
+  // Quitar espacios
+  fecha = fecha.trim();
+  
+  // Si ya está en formato dd/mm o dd/mm/aaaa, devolverla tal cual
+  if (/^\d{1,2}\/\d{1,2}(\/\d{4})?$/.test(fecha)) {
+    return fecha;
+  }
+  
+  // Intentar detectar y convertir otros formatos comunes
+  
+  // Formato: aaaa-mm-dd o aaaa/mm/dd
+  let match = fecha.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+  if (match) {
+    return `${match[3]}/${match[2]}`;
+  }
+  
+  // Formato: dd-mm-aaaa o dd-mm
+  match = fecha.match(/^(\d{1,2})-(\d{1,2})(-\d{4})?$/);
+  if (match) {
+    return `${match[1]}/${match[2]}`;
+  }
+  
+  // Formato: mm/dd/aaaa (solo si el día > 12, sabemos que está invertido)
+  match = fecha.match(/^(\d{1,2})\/(\d{1,2})(\/\d{4})?$/);
+  if (match && parseInt(match[1]) > 12) {
+    return `${match[2]}/${match[1]}`;
+  }
+  
+  // Si no se pudo parsear, devolver original
+  return fecha;
+}
+
+function extraerDiaMes(fecha) {
+  if (!fecha) return '';
+  
+  // Aplicar formateo primero
+  fecha = formatearFecha(fecha);
+  
+  // Si tiene formato dd/mm/aaaa, extraer solo dd/mm
+  const match = fecha.match(/^(\d{1,2}\/\d{1,2})(\/\d{4})?$/);
+  if (match) {
+    return match[1]; // Retorna solo dd/mm
+  }
+  
+  return fecha;
 }
 
 function renderPreview(){
@@ -457,7 +487,7 @@ function renderPreview(){
     const ofertaHTML = generarOfertaHTML(c, tipoDetectado);
     
     // SVG para la forma de flecha (se renderiza en PDF)
-    // Para MC, DESC2-MC y NxNMC: flecha derecha con color #2B3689
+    // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC: flecha derecha azul #2B3689
     // Para MC2 y NxNMC2: SVG personalizado con fondos incluidos
     const svgShape = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
@@ -466,7 +496,7 @@ function renderPreview(){
         <path d="M281 85.1463L279.007 79H0V100H276.516L281 85.1463Z" fill="#0B0B0B"/>
         <path d="M259 20L1 18" stroke="black" stroke-width="2"/>
       </svg>
-    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') ? `
+    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; right: 0; width: 281px; height: 172px; z-index: 1;">
         <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#2B3689" />
       </svg>
@@ -477,19 +507,23 @@ function renderPreview(){
     `;
     
     // Para MC2 y NxNMC2, la vigencia va arriba dentro del oferta-content
-    // Para MC, DESC2-MC y NxNMC, la vigencia va dentro del cuadro abajo
+    // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC, la vigencia va dentro del cuadro abajo
+    // Extraer solo dd/mm (sin año) para vigencia
+    const fechaDesdeFormatted = extraerDiaMes(c.fechaDesde||'');
+    const fechaHastaFormatted = extraerDiaMes(c.fechaHasta||'');
+    
     const vigenciaEnOferta = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') 
-      ? `<div class="mc2-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`
-      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC')
-      ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>` 
-      : `<div class="oferta-vigencia">DEL ${escapeHtml(c.fechaDesde||'')} AL ${escapeHtml(c.fechaHasta||'')}</div>`;
+      ? `<div class="mc2-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>`
+      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC')
+      ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>` 
+      : `<div class="oferta-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>`;
     
     const vigenciaEnFooter = '';
     
-    // Para MC y DESC2-MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
+    // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
     // MC2 usa contenido-derecha normal (sin -mc)
     // Agregar clase específica para contenido-derecha según el tipo
-    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') 
+    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') 
       ? 'contenido-derecha-mc' 
       : 'contenido-derecha';
     
@@ -497,8 +531,8 @@ function renderPreview(){
               ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
               ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
     
-    // Banner MasClub para MC y DESC2-MC (fuera de oferta-content pero dentro de cenefa-body)
-    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC') 
+    // Banner MasClub para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC (fuera de oferta-content pero dentro de cenefa-body)
+    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') 
       ? `<div class="mc-banner">
            <span class="mc-exclusivo">EXCLUSIVO</span>
            <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
@@ -798,7 +832,7 @@ async function printAllSheets() {
 
 function downloadTemplate(){
   const headers = 'Tipo Acción,Desde,Hasta,Título Acción,Incluye/Excluye,Aclaración 2,Legal 1,Legal 2';
-  const contenido = headers;
+  const contenido = '\uFEFF' + headers;  // UTF-8 BOM para Excel
   const blob = new Blob([contenido], {type: 'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
