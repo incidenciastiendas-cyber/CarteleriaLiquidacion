@@ -583,13 +583,8 @@ function renderPreview(){
     const btnA4 = document.createElement('button'); 
     btnA4.className = 'btn-download btn-primary-download';
     btnA4.innerHTML = '📄 Descargar A4 Completo';
-    
-    const btnIndividual = document.createElement('button'); 
-    btnIndividual.className = 'btn-download btn-secondary-download';
-    btnIndividual.innerHTML = '🏷️ Solo Primera Cenefa';
 
     toolbar.appendChild(btnA4);
-    toolbar.appendChild(btnIndividual);
 
     list.insertBefore(toolbar, container);
 
@@ -607,22 +602,6 @@ function renderPreview(){
 
     btnA4.addEventListener('click', ()=>{
       downloadAsA4PDF(container, `cenefa_${c.tipoOferta||'promo'}_${idx}.pdf`);
-    });
-
-    btnIndividual.addEventListener('click', ()=>{
-      const tempContainer = document.createElement('div');
-      tempContainer.className = 'sheet-a4';
-      const firstCenefa = container.querySelector('.a5-horizontal');
-      if(firstCenefa) {
-        const clonedCenefa = firstCenefa.cloneNode(true);
-        const row = document.createElement('div');
-        row.className = 'row row-cenefas';
-        row.appendChild(clonedCenefa);
-        tempContainer.appendChild(row);
-        list.appendChild(tempContainer);
-        downloadAsA4PDF(tempContainer, `cenefa_individual_${c.tipoOferta||'promo'}_${idx}.pdf`);
-        setTimeout(() => list.removeChild(tempContainer), 1000);
-      }
     });
   });
 }
@@ -702,37 +681,29 @@ async function downloadSelectedPDFs() {
         continue;
       }
       
-      // Tomar solo la primera cenefa A5 del sheet
-      const cenefaElement = sheet.querySelector('.a5-horizontal');
-      
-      if(!cenefaElement) {
-        console.error(`No se encontró cenefa A5 en sheet ${index}`);
-        continue;
-      }
-      
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      const canvas = await html2canvas(cenefaElement, {
+        const canvas = await html2canvas(sheet, {
         scale: 3,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-        width: 595,
-        height: 420,
-        windowWidth: 595,
-        windowHeight: 420,
+          width: 595,
+          height: 842,
+          windowWidth: 595,
+          windowHeight: 842,
         logging: false
       });
       
       const pdf = new jsPDF({
-        orientation: 'landscape',
+          orientation: 'portrait',
         unit: 'px',
-        format: [420, 595],
+          format: [595, 842],
         compress: true
       });
       
       const imgData = canvas.toDataURL('image/jpeg', 0.95);
-      pdf.addImage(imgData, 'JPEG', 0, 0, 595, 420);
+        pdf.addImage(imgData, 'JPEG', 0, 0, 595, 842);
       
       // Generar nombre de archivo: tipoOferta-objetoOferta.pdf
       const tipoSanitized = sanitizeFilename(cenefa.tipoOferta);
