@@ -376,6 +376,7 @@ footer small {
 
 .row-carteles {
   height: 420px;
+  padding-top: 40px;
 }
 
 .row-obleas {
@@ -650,6 +651,7 @@ footer small {
   position: relative;
   font-family: 'Miso', Arial, sans-serif;
   box-sizing: border-box;
+  margin-top: 30px;
 }
 
 .oblea-title {
@@ -839,6 +841,7 @@ footer small {
     position: relative !important;
     font-family: 'Miso', Arial, sans-serif !important;
     box-sizing: border-box !important;
+    margin-top: 30px !important;  
   }
   
   .oblea-title {

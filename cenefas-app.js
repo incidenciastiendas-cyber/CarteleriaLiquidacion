@@ -379,8 +379,9 @@ function bindTableEvents(){
       cenefas.splice(idx,1); renderTable();
     }
     // FEATURE-ScrollToPreview: Scroll al cartel en vista previa
-    if(e.target.classList.contains('btn-view-preview')){
-      const idx = parseInt(e.target.dataset.idx,10);
+    const viewBtn = e.target.closest('.btn-view-preview');
+    if(viewBtn){
+      const idx = parseInt(viewBtn.dataset.idx,10);
       // Mostrar vista previa si está oculta
       const previewSection = $('#preview-section');
       if(previewSection.classList.contains('hidden')){

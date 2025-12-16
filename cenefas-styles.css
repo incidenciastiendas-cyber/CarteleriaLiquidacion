@@ -1024,11 +1024,6 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
 
 /* Restaurar tamaño completo al imprimir o capturar con html2canvas */
 @media print {
-  * {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  
   body {
     margin: 0 !important;
     padding: 0 !important;
@@ -1041,6 +1036,8 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
   
   #preview-list {
     display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   /* Ocultar todos los wrappers excepto el que contiene el sheet target */
