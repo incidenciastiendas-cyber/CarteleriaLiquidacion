@@ -758,8 +758,9 @@
 
 /* Botón de retorno */
 .btn-back {
-  display: inline-block;
-  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0;
   padding: 8px 16px;
   background: #6b7280;
   color: white;
@@ -768,6 +769,8 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
+  min-height: 38px;
+  height: 38px;
 }
 
 .btn-back:hover {
@@ -920,4 +923,228 @@
 
 .tabla-ejemplos tr:hover {
   background: #f3f4f6;
+}
+
+/* ============================================
+   FEATURE-UniformButtons: Altura uniforme para todos los botones
+   ============================================ */
+button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .btn-del, .btn-view-preview {
+  min-height: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-view-preview {
+  padding: 4px 8px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-view-preview:hover {
+  background: #2563eb;
+}
+
+/* ============================================
+   FEATURE-BackToTop: Bot\u00f3n flotante volver arriba
+   ============================================ */
+.btn-back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-back-to-top:hover {
+  background: #2563eb;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* ============================================
+   FEATURE-ZoomPreview: Vista previa reducida con grid
+   ============================================ */
+#preview-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.preview-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+}
+
+#preview-list .sheet-a4 {
+  transform: scale(0.33);
+  transform-origin: top left;
+  width: 595px;
+  height: 842px;
+  margin-bottom: calc(-842px * 0.67);
+  margin-right: calc(-595px * 0.67);
+}
+
+#preview-list .download-toolbar {
+  margin-bottom: 10px;
+  width: 196px; /* 595px * 0.33 = 196.35px */
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#preview-list .download-toolbar .btn-download {
+  font-size: 11px;
+  padding: 4px 8px;
+  white-space: nowrap;
+  flex: 1;
+  min-height: 28px;
+  height: 28px;
+}
+
+/* Restaurar tamaño completo al imprimir o capturar con html2canvas */
+@media print {
+  * {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  @page {
+    margin: 0;
+    size: 595px 842px;
+  }
+  
+  #preview-list {
+    display: block !important;
+  }
+  
+  /* Ocultar todos los wrappers excepto el que contiene el sheet target */
+  .preview-item-wrapper {
+    display: none !important;
+  }
+  
+  .preview-item-wrapper:has([data-print-target="true"]) {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .sheet-a4[data-print-target="true"] {
+    display: block !important;
+    transform: scale(1) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 595px !important;
+    height: 842px !important;
+  }
+  
+  .download-toolbar,
+  .btn-back-to-top,
+  header,
+  .controls {
+    display: none !important;
+  }
+}
+
+/* Para html2canvas - cuando el elemento tiene data-print-target */
+[data-print-target="true"] {
+  transform: scale(1) !important;
+  margin: 0 !important;
+}
+
+[data-print-target="true"] .download-toolbar {
+  display: none !important;
+}
+
+[data-print-target="true"] .sheet-a4 {
+  transform: scale(1) !important;
+  margin-bottom: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ============================================
+   Texto sin separación
+   ============================================ */
+.no-break {
+  white-space: nowrap;
+  display: inline;
+}
+
+/* ============================================
+   FEATURE-ModalAlerts: Modal para mensajes
+   ============================================ */
+.modal-mensaje {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-mensaje-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-mensaje-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+}
+
+.modal-mensaje-close:hover {
+  color: #333;
+}
+
+#modal-mensaje-texto {
+  margin: 20px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+#modal-mensaje-ok {
+  margin-top: 20px;
+  padding: 10px 30px;
+  min-width: 100px;
 }

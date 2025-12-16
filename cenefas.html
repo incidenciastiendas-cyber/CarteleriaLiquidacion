@@ -6,6 +6,7 @@
     <title>Cenefas Promocionales — Previsualizador</title>
     <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
     <link rel="stylesheet" href="cenefas-styles.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   </head>
   <body>
     <div class="app">
@@ -16,9 +17,12 @@
           3x2, etc.)
         </p>
         <div style="display: flex; gap: 10px; align-items: center">
-          <a href="index.html" class="btn-back">← Volver a Cartelería</a>
+          <a href="index.html" class="btn-back">
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">arrow_back</span>
+            Volver a Cartelería
+          </a>
           <button id="btn-ayuda" class="btn btn-info" style="padding: 8px 16px">
-            ❓ ¿Cómo usar?
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">help</span> ¿Cómo usar?
           </button>
         </div>
       </header>
@@ -27,30 +31,30 @@
         <div class="controls-group">
           <div class="file-input-wrapper">
             <label for="file-csv" class="btn btn-file"
-              >📁 Seleccionar CSV</label
+              ><span class="material-icons" style="font-size: 18px; margin-right: 4px;">folder_open</span> Seleccionar CSV</label
             >
             <input id="file-csv" type="file" accept=".csv" />
           </div>
           <button id="btn-import" class="btn btn-file">Importar CSV</button>
           <button id="btn-download-template" class="btn btn-info">
-            📄 Descargar Template CSV
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">description</span> Descargar Template CSV
           </button>
         </div>
         <div class="controls-group">
-          <button id="btn-add" class="btn btn-success">+ Agregar cenefa</button>
+          <button id="btn-add" class="btn btn-success"><span class="material-icons" style="font-size: 18px; margin-right: 4px;">add</span> Agregar cenefa</button>
           <button id="btn-delete-selected" class="btn btn-danger">
-            🗑️ Eliminar seleccionados
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">delete</span> Eliminar seleccionados
           </button>
         </div>
         <div class="controls-group">
           <button id="btn-preview" class="btn btn-primary">
-            📋 Crear Cenefas
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">preview</span> Crear Cenefas
           </button>
           <button id="btn-download-selected" class="btn btn-success">
-            📥 Descargar Seleccionadas
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">download</span> Descargar Seleccionadas
           </button>
           <button id="btn-print-all" class="btn btn-info">
-            📄 Descargar Todo (PDF único)
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">picture_as_pdf</span> Descargar Todo (PDF único)
           </button>
         </div>
       </div>
@@ -70,6 +74,7 @@
                 <th>Legal 1</th>
                 <th>Legal 2</th>
                 <th></th>
+                <th>Ver</th>
               </tr>
             </thead>
             <tbody id="cenefas-body"></tbody>
@@ -81,6 +86,20 @@
           <div id="preview-list"></div>
         </section>
       </main>
+
+      <!-- FEATURE-BackToTop: Botón flotante para volver arriba -->
+      <button id="btn-back-to-top" class="btn-back-to-top" style="display: none;" title="Volver arriba">
+        <span class="material-icons" style="font-size: 24px;">arrow_upward</span>
+      </button>
+
+      <!-- FEATURE-ModalAlerts: Modal para mensajes -->
+      <div id="modal-mensaje" class="modal-mensaje" style="display: none;">
+        <div class="modal-mensaje-content">
+          <span class="modal-mensaje-close">×</span>
+          <p id="modal-mensaje-texto"></p>
+          <button id="modal-mensaje-ok" class="btn btn-primary">OK</button>
+        </div>
+      </div>
 
       <!-- Modal de Ayuda -->
       <div id="modal-ayuda" class="modal-ayuda" style="display: none">

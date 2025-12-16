@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Cartelería Masiva — Previsualizador</title>
     <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -15,41 +16,49 @@
           App para creación de A6 de rebaja en precio y de oblea para productos
           por liquidación
         </p>
-        <a href="cenefas.html" class="btn-cenefas"
-          >🎯 Ir a Cenefas Promocionales</a
-        >
+        <a href="cenefas.html" class="btn-cenefas">
+          <span class="material-icons" style="font-size: 18px; margin-right: 4px;">ads_click</span>
+          Ir a Cenefas Promocionales
+        </a>
       </header>
 
       <div class="controls">
         <div class="controls-group">
           <div class="file-input-wrapper">
-            <label for="file-csv" class="btn btn-file"
-              >📁 Seleccionar CSV</label
-            >
+            <label for="file-csv" class="btn btn-file">
+              <span class="material-icons" style="font-size: 18px; margin-right: 4px;">folder_open</span>
+              Seleccionar CSV
+            </label>
             <input id="file-csv" type="file" accept=".csv" />
           </div>
           <button id="btn-import" class="btn btn-file">Importar CSV</button>
           <button id="btn-download-template" class="btn btn-info">
-            📄 Descargar Template CSV
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">description</span>
+            Descargar Template CSV
           </button>
         </div>
         <div class="controls-group">
           <button id="btn-add" class="btn btn-success">
-            + Agregar producto
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">add</span>
+            Agregar producto
           </button>
           <button id="btn-delete-selected" class="btn btn-danger">
-            🗑️ Eliminar seleccionados
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">delete</span>
+            Eliminar seleccionados
           </button>
         </div>
         <div class="controls-group">
           <button id="btn-preview" class="btn btn-primary">
-            📋 Crear Carteles
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">preview</span>
+            Crear Carteles
           </button>
           <button id="btn-download-selected" class="btn btn-success">
-            📥 Descargar Seleccionados
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">download</span>
+            Descargar Seleccionados
           </button>
           <button id="btn-print-all" class="btn btn-info">
-            📄 Descargar Todo (PDF único)
+            <span class="material-icons" style="font-size: 18px; margin-right: 4px;">picture_as_pdf</span>
+            Descargar Todo (PDF único)
           </button>
         </div>
       </div>

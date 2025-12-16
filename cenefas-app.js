@@ -327,6 +327,7 @@ function renderTable(){
       <td><input data-idx="${idx}" data-field="legal1" value="${c.legal1 || ''}" placeholder="Texto legal principal"></td>
       <td><input data-idx="${idx}" data-field="legal2" value="${c.legal2 || ''}" placeholder="Texto legal secundario"></td>
       <td><button data-idx="${idx}" class="btn-del">Eliminar</button></td>
+      <td><button data-idx="${idx}" class="btn-view-preview"><span class="material-icons" style="font-size: 16px;">visibility</span></button></td>
     `;
     tbody.appendChild(tr);
   });
@@ -377,6 +378,24 @@ function bindTableEvents(){
       const idx = parseInt(e.target.dataset.idx,10);
       cenefas.splice(idx,1); renderTable();
     }
+    // FEATURE-ScrollToPreview: Scroll al cartel en vista previa
+    if(e.target.classList.contains('btn-view-preview')){
+      const idx = parseInt(e.target.dataset.idx,10);
+      // Mostrar vista previa si está oculta
+      const previewSection = $('#preview-section');
+      if(previewSection.classList.contains('hidden')){
+        $('#btn-preview').click();
+      }
+      // Scroll al cartel después de un breve delay para que se renderice
+      setTimeout(() => {
+        const previewItem = document.querySelector(`[data-preview-idx="${idx}"]`);
+        if(previewItem) {
+          previewItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          previewItem.style.outline = '3px solid #007bff';
+          setTimeout(() => { previewItem.style.outline = ''; }, 2000);
+        }
+      }, 300);
+    }
   });
 }
 
@@ -416,7 +435,7 @@ function importCSV(file){
     
     cenefas.push(...rows);
     renderTable();
-    alert(`✅ Se importaron ${rows.length} cenefa(s) correctamente.`);
+    showModal(`✅ Se importaron ${rows.length} cenefa(s) correctamente.`);
   }});
 }
 
@@ -475,6 +494,7 @@ function renderPreview(){
   cenefas.forEach((c, idx)=>{
     const container = document.createElement('div'); 
     container.className='sheet-a4';
+    container.setAttribute('data-preview-idx', idx); // FEATURE-ScrollToPreview: Identificador para scroll
     
     // Detectar tipo automáticamente
     const tipoDetectado = c.tipo || detectarTipo(c.tipoOferta);
@@ -527,7 +547,20 @@ function renderPreview(){
       ? 'contenido-derecha-mc' 
       : 'contenido-derecha';
     
-    const objetoOfertaHTML = `<div class="objeto-oferta">${escapeHtml(c.objetoOferta||'').toUpperCase()}</div>
+    // Procesar objeto oferta para mantener juntos elementos separados por coma
+    let objetoOfertaTexto = escapeHtml(c.objetoOferta||'').toUpperCase();
+    if (objetoOfertaTexto.includes(',')) {
+      // Separar por comas y envolver cada elemento en span con nowrap
+      const elementos = objetoOfertaTexto.split(',');
+      objetoOfertaTexto = elementos.map((elem, i) => {
+        const texto = elem.trim();
+        return i < elementos.length - 1 
+          ? `<span class="no-break">${texto},</span> `
+          : `<span class="no-break">${texto}</span>`;
+      }).join('');
+    }
+    
+    const objetoOfertaHTML = `<div class="objeto-oferta">${objetoOfertaTexto}</div>
               ${c.aclaracionObjeto ? `<div class="aclaracion-objeto">${escapeHtml(c.aclaracionObjeto)}</div>` : ''}
               ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
     
@@ -616,11 +649,16 @@ function renderPreview(){
 
     const btnA4 = document.createElement('button'); 
     btnA4.className = 'btn-download btn-primary-download';
-    btnA4.innerHTML = '📄 Descargar A4 Completo';
+    btnA4.innerHTML = '<span class="material-icons" style="font-size: 16px; margin-right: 4px;">description</span> VER / IMPRIMIR A4';
 
     toolbar.appendChild(btnA4);
 
-    list.insertBefore(toolbar, container);
+    // FEATURE-ZoomPreview: Crear wrapper para toolbar + sheet
+    const wrapper = document.createElement('div');
+    wrapper.className = 'preview-item-wrapper';
+    wrapper.appendChild(toolbar);
+    wrapper.appendChild(container);
+    list.appendChild(wrapper);
 
     // Download helper
     function downloadAsA4PDF(element, filename){
@@ -642,6 +680,14 @@ function renderPreview(){
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
+// FEATURE-ModalAlerts: Funci\u00f3n para mostrar mensajes en modal en lugar de alert
+function showModal(mensaje) {
+  const modal = $('#modal-mensaje');
+  const texto = $('#modal-mensaje-texto');
+  texto.textContent = mensaje;
+  modal.style.display = 'flex';
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
   cenefas.push(sample);
@@ -656,7 +702,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   $('#btn-import').addEventListener('click', ()=>{
     const f = $('#file-csv').files[0]; 
-    if(!f){alert('Selecioná un CSV');return;} 
+    if(!f){showModal('Selecioná un CSV');return;} 
     importCSV(f);
   });
 
@@ -665,6 +711,38 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#select-all').addEventListener('change', (e)=>{
     const v = e.target.checked; 
     $all('.sel').forEach(ch=>ch.checked=v);
+  });
+
+  // FEATURE-BackToTop: Bot\u00f3n flotante para volver arriba
+  const btnBackToTop = $('#btn-back-to-top');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      btnBackToTop.style.display = 'flex';
+    } else {
+      btnBackToTop.style.display = 'none';
+    }
+  });
+  btnBackToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // FEATURE-ModalAlerts: Inicializar modal de mensajes
+  const modalMensaje = $('#modal-mensaje');
+  const modalMensajeClose = $('.modal-mensaje-close');
+  const modalMensajeOk = $('#modal-mensaje-ok');
+  
+  modalMensajeClose.addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+  });
+  
+  modalMensajeOk.addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+  });
+  
+  window.addEventListener('click', (e) => {
+    if (e.target === modalMensaje) {
+      modalMensaje.style.display = 'none';
+    }
   });
 });
 
@@ -684,7 +762,7 @@ async function downloadSelectedPDFs() {
   const checkboxes = $all('tbody input[type="checkbox"]:checked');
   
   if(checkboxes.length === 0) {
-    alert('Selecciona al menos una cenefa para descargar.');
+    showModal('Selecciona al menos una cenefa para descargar.');
     return;
   }
   
@@ -717,17 +795,23 @@ async function downloadSelectedPDFs() {
       
       await new Promise(resolve => setTimeout(resolve, 300));
       
-        const canvas = await html2canvas(sheet, {
-        scale: 3,
+      // Aplicar data-print-target para restaurar tamaño completo
+      sheet.setAttribute('data-print-target', 'true');
+      
+      const canvas = await html2canvas(sheet, {
+        scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
-          width: 595,
-          height: 842,
-          windowWidth: 595,
-          windowHeight: 842,
+        width: 595,
+        height: 842,
+        windowWidth: 595,
+        windowHeight: 842,
         logging: false
       });
+      
+      // Remover atributo después de la captura
+      sheet.removeAttribute('data-print-target');
       
       const pdf = new jsPDF({
           orientation: 'portrait',
@@ -751,11 +835,11 @@ async function downloadSelectedPDFs() {
     
     btn.textContent = originalText;
     btn.disabled = false;
-    alert(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
+    showModal(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
     
   } catch(error) {
     console.error('Error generando PDFs:', error);
-    alert('Error al generar los PDFs. Por favor intenta nuevamente.');
+    showModal('Error al generar los PDFs. Por favor intenta nuevamente.');
     btn.textContent = originalText;
     btn.disabled = false;
   }
@@ -764,7 +848,7 @@ async function downloadSelectedPDFs() {
 async function printAllSheets() {
   const sheets = $all('.sheet-a4');
   if(sheets.length === 0) {
-    alert('No hay cenefas para imprimir. Genera la vista previa primero.');
+    showModal('No hay cenefas para imprimir. Genera la vista previa primero.');
     return;
   }
   
@@ -793,6 +877,9 @@ async function printAllSheets() {
       const sheet = sheets[i];
       await new Promise(resolve => setTimeout(resolve, 200));
       
+      // Aplicar data-print-target para restaurar tamaño completo
+      sheet.setAttribute('data-print-target', 'true');
+      
       const canvas = await html2canvas(sheet, {
         scale: 2,
         useCORS: true,
@@ -804,6 +891,9 @@ async function printAllSheets() {
         windowHeight: 842,
         logging: false
       });
+      
+      // Remover atributo después de la captura
+      sheet.removeAttribute('data-print-target');
       
       if(i > 0) {
         pdf.addPage([595, 842], 'portrait');
@@ -820,11 +910,11 @@ async function printAllSheets() {
     
     btn.textContent = originalText;
     btn.disabled = false;
-    alert(`✅ Se descargó el PDF con ${sheets.length} cenefa(s).`);
+    showModal(`✅ Se descargó el PDF con ${sheets.length} cenefa(s).`);
     
   } catch(error) {
     console.error('Error generando PDF:', error);
-    alert('Error al generar el PDF. Por favor intenta nuevamente.');
+    showModal('Error al generar el PDF. Por favor intenta nuevamente.');
     btn.textContent = originalText;
     btn.disabled = false;
   }
