@@ -20,6 +20,7 @@ function renderTable(){
       <td><input data-idx="${idx}" data-field="ean" value="${p.ean || ''}" placeholder="7796962000419"></td>
       <td><input data-idx="${idx}" data-field="precioAnterior" value="${p.precioAnterior || ''}" placeholder="50000"></td>
       <td><input data-idx="${idx}" data-field="precioActual" value="${p.precioActual || ''}" placeholder="35000"></td>
+      <td><input data-idx="${idx}" data-field="precioSinImpuesto" value="${p.precioSinImpuesto || ''}" placeholder="28925"></td>
       <td><input data-idx="${idx}" data-field="desde" value="${p.desde || ''}" placeholder="01/12/2025"></td>
       <td><input data-idx="${idx}" data-field="hasta" value="${p.hasta || ''}" placeholder="31/12/2025"></td>
       <td><input data-idx="${idx}" data-field="nNegociacion" value="${p.nNegociacion || ''}" placeholder="123456789"></td>
@@ -36,7 +37,7 @@ function renderTable(){
 function addEmpty(){
   products.push({
     id: Date.now().toString(),
-    nIncidencia: '', sku:'', descripcion:'', razonRebaja:'', departamento:'', ean:'', precioAnterior:'', precioActual:'', precioUnidad:'', desde:'', hasta:'', precioSinImpuesto:'', nNegociacion:'', nroSerie:''
+    nIncidencia: '', sku:'', descripcion:'', razonRebaja:'', departamento:'', ean:'', precioAnterior:'', precioActual:'', precioUnidad:'', precioSinImpuesto:'', desde:'', hasta:'', nNegociacion:'', nroSerie:''
   });
   renderTable();
 }
@@ -71,7 +72,7 @@ function importCSV(file){
       sku: r['SKU']||'', descripcion: r['Descripción']||r['Descripcion']||'',
       razonRebaja: r['Razon de rebaja']||r['Razón de rebaja']||r['Razon de rebaja']||'',
       departamento: r['Departamento']||'', ean: r['EAN / UPC']||r['EAN/UPC']||r['EAN']||'',
-      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||'',
+      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', precioSinImpuesto: r['Precio sin impuesto']||r['Precio sin impuestos']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||'',
       acumulable: r['Acumulable']||'',
       sinCambio: r['Sin cambio']||''
     }));
@@ -103,12 +104,16 @@ function renderPreview(){
             <div class="label">Precio por unidad</div>
             <div class="value"><span class="sig">$</span>${precioAct.entero}<sup>${precioAct.dec}</sup></div>
           </div>
+          <div class="precio-sin-impuesto">
+            <div class="label">Precio sin impuestos</div>
+            <div class="value"><span class="sig">$</span>${formatMoneyParts(p.precioSinImpuesto||'0').entero}<sup>${formatMoneyParts(p.precioSinImpuesto||'0').dec}</sup></div>
+          </div>
           <svg class="barcode-svg" id="barcode-a6-${idx}"></svg>
           <div class="vigencia">vigencia: del ${p.desde||''} al ${p.hasta||''}</div>
           <div class="dpto-sku">DPTO ${p.departamento||''} - SKU ${p.sku||''}</div>
           <div class="bottom-info">
             <div>CASO: ${escapeHtml(p.nIncidencia||'')}</div>
-            <div>NEGOCIACIÓN: ${escapeHtml(p.nNegociacion||'')}</div>
+            <div class="negociacion-destacada">NEGOCIACIÓN: ${escapeHtml(p.nNegociacion||'')}</div>
           </div>
         </div>
         <div class="a6">
@@ -123,12 +128,16 @@ function renderPreview(){
             <div class="label">Precio por unidad</div>
             <div class="value"><span class="sig">$</span>${precioAct.entero}<sup>${precioAct.dec}</sup></div>
           </div>
+          <div class="precio-sin-impuesto">
+            <div class="label">Precio sin impuestos</div>
+            <div class="value"><span class="sig">$</span>${formatMoneyParts(p.precioSinImpuesto||'0').entero}<sup>${formatMoneyParts(p.precioSinImpuesto||'0').dec}</sup></div>
+          </div>
           <svg class="barcode-svg" id="barcode-a6b-${idx}"></svg>
           <div class="vigencia">vigencia: del ${p.desde||''} al ${p.hasta||''}</div>
           <div class="dpto-sku">DPTO ${p.departamento||''} - SKU ${p.sku||''}</div>
           <div class="bottom-info">
             <div>CASO: ${escapeHtml(p.nIncidencia||'')}</div>
-            <div>NEGOCIACIÓN: ${escapeHtml(p.nNegociacion||'')}</div>
+            <div class="negociacion-destacada">NEGOCIACIÓN: ${escapeHtml(p.nNegociacion||'')}</div>
           </div>
         </div>
       </div>
@@ -621,8 +630,8 @@ function bindTableEvents(){
 }
 
 function downloadTemplate(){
-  const headers = 'N Incidencia,SKU,Descripción,Razón de rebaja,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio Unidad,Desde,Hasta,Nro de serie,N Negociacion,Industria,Acumulable,Sin cambio';
-  const blob = new Blob([headers], {type: 'text/csv;charset=utf-8;'});
+  const headers = 'N Incidencia,SKU,Descripción,Razón de rebaja,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio sin impuesto,Desde,Hasta,Nro de serie,N Negociacion,Industria,Acumulable,Sin cambio';
+  const blob = new Blob(['\uFEFF' + headers], {type: 'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'template_carteleria.csv';

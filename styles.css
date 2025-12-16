@@ -584,7 +584,7 @@ footer small {
 /* Precio por unidad */
 .precio-unidad {
   position: absolute;
-  bottom: 30px;
+  bottom: 50px;
   left: 20px;
   font-size: 10px;
   color: #000;
@@ -594,7 +594,7 @@ footer small {
   font-size: 9px;
   font-weight: 400;
   color: #000;
-  margin-bottom: 0px;
+  margin-bottom: -7px;
 }
 
 .precio-unidad .value {
@@ -611,6 +611,42 @@ footer small {
 }
 
 .precio-unidad .value sup {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+/* Precio sin impuestos */
+.precio-sin-impuesto {
+  position: absolute;
+  bottom: 23px;
+  left: 20px;
+  font-size: 10px;
+  color: #000;
+}
+
+.precio-sin-impuesto .label {
+  font-size: 9px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: -7px;
+}
+
+.precio-sin-impuesto .value {
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+}
+
+.precio-sin-impuesto .value .sig {
+  font-size: 14px;
+  vertical-align: top;
+  position: relative;
+  top: 0;
+}
+
+.precio-sin-impuesto .value sup {
   font-size: 14px;
   vertical-align: top;
   position: relative;
@@ -646,13 +682,20 @@ footer small {
 /* Bottom info */
 .bottom-info {
   position: absolute;
-  bottom: 8px;
+  bottom: 4px;
   left: 20px;
   right: 15px;
   display: flex;
   justify-content: space-between;
   font-size: 10px;
   font-weight: 400;
+}
+
+.negociacion-destacada {
+  border: 2px solid #000;
+  padding: 1px 2px;
+  text-align: center;
+  border-radius: 3px;
 }
 
 /* Oblea (small label) */
@@ -730,7 +773,7 @@ footer small {
   position: absolute;
   bottom: 20px;
   right: 8px;
-  font-size: 12px;
+  font-size: 10px;
   color: #000;
 }
 
@@ -738,7 +781,7 @@ footer small {
   position: absolute;
   bottom: 2px;
   right: 8px;
-  font-size: 15px;
+  font-size: 10px;
   font-weight: 600;
   color: #000;
 }
