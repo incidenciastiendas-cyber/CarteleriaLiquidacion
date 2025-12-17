@@ -42,8 +42,15 @@ function addEmpty(){
   renderTable();
 }
 
-function deleteSelected(){
+async function deleteSelected(){
   const checks = $all('.sel').filter(i=>i.checked);
+  if(checks.length === 0){
+    showModal('⚠️ No hay productos seleccionados para eliminar');
+    return;
+  }
+  const confirmar = await showConfirm(`¿Estás seguro de eliminar ${checks.length} producto(s)?`);
+  if(!confirmar) return;
+  
   const idxs = checks.map(c=>parseInt(c.dataset.idx,10));
   for(let i=idxs.length-1;i>=0;i--) products.splice(idxs[i],1);
   renderTable();
@@ -56,10 +63,13 @@ function bindTableEvents(){
     const field = t.dataset.field;
     if(!Number.isNaN(idx) && field) products[idx][field] = t.value;
   });
-  $('#products-body').addEventListener('click', (e)=>{
+  $('#products-body').addEventListener('click', async (e)=>{
     if(e.target.classList.contains('btn-del')){
       const idx = parseInt(e.target.dataset.idx,10);
-      products.splice(idx,1); renderTable();
+      const confirmar = await showConfirm('¿Eliminar este producto?');
+      if(!confirmar) return;
+      products.splice(idx,1); 
+      renderTable();
     }
   });
 }
@@ -72,7 +82,7 @@ function importCSV(file){
       sku: r['SKU']||'', descripcion: r['Descripción']||r['Descripcion']||'',
       razonRebaja: r['Razon de rebaja']||r['Razón de rebaja']||r['Razon de rebaja']||'',
       departamento: r['Departamento']||'', ean: r['EAN / UPC']||r['EAN/UPC']||r['EAN']||'',
-      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', precioSinImpuesto: r['Precio sin impuesto']||r['Precio sin impuestos']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||'',
+      precioAnterior: r['Precio anterior']||'', precioActual: r['Precio actual']||'', precioSinImpuesto: r['Precio sin impuestos nacionales']||r['Precio sin impuestos nacionales']||'', desde: r['Desde']||'', hasta: r['Hasta']||'', nNegociacion: r['N Negociacion']||r['N° Negociación']||'', nroSerie: r['Nro Serie']||'', industria: r['Industria']||r['Industria Argentina']||'',
       acumulable: r['Acumulable']||'',
       sinCambio: r['Sin cambio']||''
     }));
@@ -105,7 +115,7 @@ function renderPreview(){
             <div class="value"><span class="sig">$</span>${precioAct.entero}<sup>${precioAct.dec}</sup></div>
           </div>
           <div class="precio-sin-impuesto">
-            <div class="label">Precio sin impuestos</div>
+            <div class="label">Precio sin impuestos nacionales</div>
             <div class="value"><span class="sig">$</span>${formatMoneyParts(p.precioSinImpuesto||'0').entero}<sup>${formatMoneyParts(p.precioSinImpuesto||'0').dec}</sup></div>
           </div>
           <svg class="barcode-svg" id="barcode-a6-${idx}"></svg>
@@ -129,7 +139,7 @@ function renderPreview(){
             <div class="value"><span class="sig">$</span>${precioAct.entero}<sup>${precioAct.dec}</sup></div>
           </div>
           <div class="precio-sin-impuesto">
-            <div class="label">Precio sin impuestos</div>
+            <div class="label">Precio sin impuestos nacionales</div>
             <div class="value"><span class="sig">$</span>${formatMoneyParts(p.precioSinImpuesto||'0').entero}<sup>${formatMoneyParts(p.precioSinImpuesto||'0').dec}</sup></div>
           </div>
           <svg class="barcode-svg" id="barcode-a6b-${idx}"></svg>
@@ -392,6 +402,44 @@ function formatMoney(v){
 
 function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
+// Función para mostrar mensajes en modal
+function showModal(mensaje) {
+  const modal = $('#modal-mensaje');
+  const texto = $('#modal-mensaje-texto');
+  texto.textContent = mensaje;
+  modal.style.display = 'flex';
+}
+
+// Modal de confirmación (reemplaza confirm())
+function showConfirm(mensaje) {
+  return new Promise((resolve) => {
+    const modal = $('#modal-confirm');
+    const texto = $('#modal-confirm-texto');
+    const btnSi = $('#modal-confirm-si');
+    const btnNo = $('#modal-confirm-no');
+    
+    texto.textContent = mensaje;
+    modal.style.display = 'flex';
+    
+    const handleSi = () => {
+      modal.style.display = 'none';
+      btnSi.removeEventListener('click', handleSi);
+      btnNo.removeEventListener('click', handleNo);
+      resolve(true);
+    };
+    
+    const handleNo = () => {
+      modal.style.display = 'none';
+      btnSi.removeEventListener('click', handleSi);
+      btnNo.removeEventListener('click', handleNo);
+      resolve(false);
+    };
+    
+    btnSi.addEventListener('click', handleSi);
+    btnNo.addEventListener('click', handleNo);
+  });
+}
+
 // Sanitizar nombre de archivo
 function sanitizeFilename(filename) {
   return filename
@@ -407,13 +455,12 @@ async function downloadSelectedPDFs() {
   const checkboxes = $all('tbody input[type="checkbox"]:checked');
   
   if(checkboxes.length === 0) {
-    alert('Selecciona al menos un cartel para descargar.');
+    showModal('Selecciona al menos un cartel para descargar.');
     return;
   }
   
-  if(!confirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: N°Incidencia - Descripción.pdf`)) {
-    return;
-  }
+  const confirmar = await showConfirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: N°Incidencia - Descripción.pdf`);
+  if(!confirmar) return;
   
   const btn = $('#btn-download-selected');
   const originalText = btn.textContent;
@@ -485,11 +532,11 @@ async function downloadSelectedPDFs() {
     
     btn.textContent = originalText;
     btn.disabled = false;
-    alert(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
+    showModal(`✅ Se descargaron ${checkboxes.length} PDF(s) individuales.`);
     
   } catch(error) {
     console.error('Error generando PDFs:', error);
-    alert('Error al generar los PDFs. Por favor intenta nuevamente.');
+    showModal('Error al generar los PDFs. Por favor intenta nuevamente.');
     btn.textContent = originalText;
     btn.disabled = false;
   }
@@ -506,7 +553,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#btn-download-selected').addEventListener('click', ()=>{ downloadSelectedPDFs(); });
 
   $('#btn-import').addEventListener('click', ()=>{
-    const f = $('#file-csv').files[0]; if(!f){alert('Selecioná un CSV');return;} importCSV(f);
+    const f = $('#file-csv').files[0]; if(!f){showModal('Selecioná un CSV');return;} importCSV(f);
   });
 
   $('#btn-download-template').addEventListener('click', ()=>{ downloadTemplate(); });
@@ -532,20 +579,48 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (e.target === modalAyuda) {
       modalAyuda.style.display = 'none';
     }
+    // Cerrar modal de mensaje
+    const modalMensaje = $('#modal-mensaje');
+    if (e.target === modalMensaje) {
+      modalMensaje.style.display = 'none';
+    }
+    // Cerrar modal de confirmación
+    const modalConfirm = $('#modal-confirm');
+    if (e.target === modalConfirm) {
+      modalConfirm.style.display = 'none';
+      const btnNo = $('#modal-confirm-no');
+      if(btnNo) btnNo.click();
+    }
   });
+  
+  // Event listeners para modales de mensaje
+  const modalMensaje = $('#modal-mensaje');
+  const closeBtnMsg = $('.modal-mensaje-close');
+  const okBtn = $('#modal-mensaje-ok');
+  
+  if(closeBtnMsg) {
+    closeBtnMsg.addEventListener('click', () => {
+      modalMensaje.style.display = 'none';
+    });
+  }
+  
+  if(okBtn) {
+    okBtn.addEventListener('click', () => {
+      modalMensaje.style.display = 'none';
+    });
+  }
 });
 
 // Download all sheets as a single multi-page PDF
 async function printAllSheets() {
   const sheets = $all('.sheet-a4');
   if(sheets.length === 0) {
-    alert('No hay carteles para imprimir. Genera la vista previa primero.');
+    showModal('No hay carteles para imprimir. Genera la vista previa primero.');
     return;
   }
   
-  if(!confirm(`¿Descargar ${sheets.length} cartel(es) en un solo PDF?`)) {
-    return;
-  }
+  const confirmar = await showConfirm(`¿Descargar ${sheets.length} cartel(es) en un solo PDF?`);
+  if(!confirmar) return;
   
   const btn = $('#btn-print-all');
   const originalText = btn.textContent;
@@ -610,27 +685,18 @@ async function printAllSheets() {
     
     btn.textContent = originalText;
     btn.disabled = false;
-    alert(`✅ Se descargó el PDF con ${sheets.length} cartel(es).`);
+    showModal(`✅ Se descargó el PDF con ${sheets.length} cartel(es).`);
     
   } catch(error) {
     console.error('Error generando PDF:', error);
-    alert('Error al generar el PDF. Por favor intenta nuevamente.');
+    showModal('Error al generar el PDF. Por favor intenta nuevamente.');
     btn.textContent = originalText;
     btn.disabled = false;
   }
 }
 
-// Utility bindings
-function bindTableEvents(){
-  // handlers already attached via renderTable interactive listener
-  $('#products-body').addEventListener('input', (e)=>{
-    const t = e.target; const idx = parseInt(t.dataset.idx,10); const field = t.dataset.field; if(!Number.isNaN(idx)&&field) products[idx][field]=t.value;
-  });
-  $('#products-body').addEventListener('click', (e)=>{ if(e.target.classList.contains('btn-del')){ const idx=parseInt(e.target.dataset.idx,10); products.splice(idx,1); renderTable(); } });
-}
-
 function downloadTemplate(){
-  const headers = 'N Incidencia,SKU,Descripción,Razón de rebaja,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio sin impuesto,Desde,Hasta,Nro de serie,N Negociacion,Industria,Acumulable,Sin cambio';
+  const headers = 'N Incidencia,SKU,Descripción,Razón de rebaja,Departamento,EAN / UPC,Precio anterior,Precio actual,Precio sin impuestos nacionales,Desde,Hasta,Nro de serie,N Negociacion,Industria,Acumulable,Sin cambio';
   const blob = new Blob(['\uFEFF' + headers], {type: 'text/csv;charset=utf-8;'});
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);

@@ -963,6 +963,76 @@ footer small {
 }
 
 /* ============================================
+   FEATURE-ModalAlerts: Modal para mensajes y confirmaciones
+   ============================================ */
+.modal-mensaje {
+  display: none;
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-mensaje-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-mensaje-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #999;
+  cursor: pointer;
+}
+
+.modal-mensaje-close:hover {
+  color: #333;
+}
+
+#modal-mensaje-texto {
+  margin: 20px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+#modal-mensaje-ok {
+  margin-top: 20px;
+  padding: 10px 30px;
+  min-width: 100px;
+}
+
+/* Modal de Confirmación */
+#modal-confirm-texto {
+  margin: 20px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  font-weight: 500;
+}
+
+#modal-confirm-si,
+#modal-confirm-no {
+  padding: 10px 24px;
+  min-width: 120px;
+  font-weight: 600;
+}
+
+/* ============================================
    Modal de Ayuda
    ============================================ */
 .modal-ayuda {

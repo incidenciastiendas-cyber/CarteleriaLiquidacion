@@ -43,6 +43,25 @@
 
 /* Estilos específicos para cenefas */
 
+/* Inputs de la tabla de edición - más anchos para mejor escritura */
+#cenefas-table input[type="text"],
+#cenefas-table input[data-field] {
+  min-width: 150px;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+/* Columnas específicas con anchos personalizados */
+#cenefas-table td:nth-child(2) input { min-width: 180px; } /* Tipo Oferta */
+#cenefas-table td:nth-child(3) input,
+#cenefas-table td:nth-child(4) input { min-width: 100px; } /* Fechas */
+#cenefas-table td:nth-child(5) input { min-width: 250px; } /* Objeto Oferta */
+#cenefas-table td:nth-child(6) input,
+#cenefas-table td:nth-child(7) input { min-width: 200px; } /* Aclaraciones */
+#cenefas-table td:nth-child(8) input,
+#cenefas-table td:nth-child(9) input { min-width: 220px; } /* Legal 1 y 2 */
+
 /* A5 Horizontal: 595px ancho x 420px alto (mitad de A4 verticalmente) */
 .a5-horizontal {
   width: 595px;
@@ -170,20 +189,20 @@
 }
 
 /* Tipo PRECIO: "$3.999" con $ pequeño */
-.tipo-PRECIO .oferta-precio {
+.oferta-precio {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 5px;
 }
 
-.tipo-PRECIO .signo-peso {
+.signo-peso {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 50px;
   font-weight: 800;
 }
 
-.tipo-PRECIO .numero-precio {
+.numero-precio {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 120px;
   font-weight: 800;
@@ -191,7 +210,7 @@
 }
 
 /* Tipo DESC1: "40%" con % pequeño alineado base inferior */
-.tipo-DESC1 .oferta-descuento {
+.oferta-descuento {
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -199,14 +218,14 @@
   margin-bottom: -5px;
 }
 
-.tipo-DESC1 .numero-descuento {
+.numero-descuento {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 120px;
   font-weight: 800;
   line-height: 1;
 }
 
-.tipo-DESC1 .simbolo-porcentaje {
+.simbolo-porcentaje {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 50px;
   font-weight: 700;
@@ -260,7 +279,7 @@
 }
 
 /* Tipo NQ: columnas "6 | CUOTAS SIN INTERÉS" */
-.tipo-NQ .oferta-cuotas {
+.oferta-cuotas {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -270,25 +289,25 @@
   padding: 0px 15px 0px 32px;
 }
 
-.tipo-NQ .col-numero-cuotas {
+.col-numero-cuotas {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.tipo-NQ .numero-cuotas {
+.numero-cuotas {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 138px;
   font-weight: 800;
   line-height: 1;
 }
 
-.tipo-NQ .col-texto-cuotas {
+.col-texto-cuotas {
   display: flex;
   align-items: center;
 }
 
-.tipo-NQ .texto-cuotas {
+.texto-cuotas {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 35px;
   font-weight: 700;
@@ -333,7 +352,7 @@
   font-weight: 700;
 }
 
-.tipo-DESC-CUOTAS .fila-textos {
+.fila-textos {
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -341,8 +360,8 @@
   padding: 0 10px;
 }
 
-.tipo-DESC-CUOTAS .texto-izq,
-.tipo-DESC-CUOTAS .texto-der {
+.texto-izq,
+.texto-der {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
@@ -350,7 +369,7 @@
   text-align: center;
 }
 
-.tipo-DESC-CUOTAS .sin-interes {
+.sin-interes {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 11px;
   font-weight: 400;
@@ -529,12 +548,13 @@
 /* Objeto oferta en MC con tamaño adaptativo */
 .contenido-derecha-mc .objeto-oferta {
   font-size: 22px; /* Será ajustado por JS entre 20-34px */
-  line-height: 1.0;
+  line-height: 1.2;
   max-width: 100%;
-  word-break: keep-all;
-  overflow-wrap: normal;
+  word-wrap: break-word;
+  text-align: center;
+  overflow-wrap: break-word;
   white-space: normal;
-  hyphens: none;
+  hyphens: auto;
 }
 
 /* ============================================
@@ -720,14 +740,14 @@
   font-family: 'Miso', Arial, sans-serif;
   font-size: 34px; /* Tamaño inicial, será ajustado por JS */
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1.2;
   color: #000;
   letter-spacing: 0.5px;
   max-width: 100%;
-  word-break: keep-all;
-  overflow-wrap: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   white-space: normal;
-  hyphens: none;
+  hyphens: auto;
   text-align: center;
 }
 
@@ -1262,4 +1282,20 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
   margin-top: 20px;
   padding: 10px 30px;
   min-width: 100px;
+}
+
+/* Modal de Confirmación - botones más destacados */
+#modal-confirm-texto {
+  margin: 20px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  font-weight: 500;
+}
+
+#modal-confirm-si,
+#modal-confirm-no {
+  padding: 10px 24px;
+  min-width: 120px;
+  font-weight: 600;
 }

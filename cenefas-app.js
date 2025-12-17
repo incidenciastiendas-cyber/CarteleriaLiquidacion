@@ -306,18 +306,10 @@ function renderTable(){
   const tbody = $('#cenefas-body');
   tbody.innerHTML = '';
   cenefas.forEach((c, idx) => {
-    const tipoDetectado = c.tipo || detectarTipo(c.tipoOferta);
-    const nombreBadge = BADGE_NOMBRES[tipoDetectado] || tipoDetectado;
-    const badgeClass = `tipo-badge tipo-${tipoDetectado}`;
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="checkbox" data-idx="${idx}" class="sel"></td>
-      <td>
-        <div style="display: flex; align-items: center; gap: 4px;">
-          <span class="${badgeClass}">${nombreBadge}</span>
-          <input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc" style="flex: 1;">
-        </div>
-      </td>
+      <td><input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc"></td>
       <td><input data-idx="${idx}" data-field="fechaDesde" value="${c.fechaDesde || ''}" placeholder="25/11"></td>
       <td><input data-idx="${idx}" data-field="fechaHasta" value="${c.fechaHasta || ''}" placeholder="01/12"></td>
       <td><input data-idx="${idx}" data-field="objetoOferta" value="${c.objetoOferta || ''}" placeholder="Título de la acción"></td>
@@ -352,13 +344,13 @@ function addEmpty(){
   saveToLocalStorage();
 }
 
-function deleteSelected(){
+async function deleteSelected(){
   const checks = $all('.sel').filter(i=>i.checked);
   if(checks.length === 0){
-    alert('⚠️ No hay cenefas seleccionadas para eliminar');
+    showModal('⚠️ No hay cenefas seleccionadas para eliminar');
     return;
   }
-  const confirmar = confirm(`¿Estás seguro de eliminar ${checks.length} cenefa(s)?`);
+  const confirmar = await showConfirm(`¿Estás seguro de eliminar ${checks.length} cenefa(s)?`);
   if(!confirmar) return;
   
   const idxs = checks.map(c=>parseInt(c.dataset.idx,10));
@@ -383,16 +375,15 @@ function bindTableEvents(){
       
       cenefas[idx][field] = value;
       
-      // Auto-detectar tipo si cambia tipoOferta
+      // Auto-detectar tipo si cambia tipoOferta (solo guardar, no re-renderizar)
       if(field === 'tipoOferta'){
         cenefas[idx].tipo = detectarTipo(value);
-        renderTable();
       }
       
-      // Si cambia objetoOferta y tiene más de 3 elementos, dividir automáticamente
+      // Si cambia objetoOferta y tiene más de 5 elementos, dividir automáticamente
       if(field === 'objetoOferta'){
         const elementos = value.split(',').map(e => e.trim()).filter(e => e.length > 0);
-        if(elementos.length > 3){
+        if(elementos.length > 5){
           // Dividir fila
           const filaOriginal = cenefas[idx];
           const filasNuevas = dividirFilaSiNecesario({...filaOriginal, objetoOferta: value});
@@ -400,18 +391,18 @@ function bindTableEvents(){
           // Reemplazar fila original con las nuevas
           cenefas.splice(idx, 1, ...filasNuevas);
           renderTable();
-          showModal(`ℹ️ Se dividió la cenefa en ${filasNuevas.length} cenefas por tener más de 3 elementos.`);
+          showModal(`ℹ️ Se dividió la cenefa en ${filasNuevas.length} cenefas por tener más de 5 elementos.`);
         }
       }
       
       saveToLocalStorage();
     }
   });
-  $('#cenefas-body').addEventListener('click', (e)=>{
+  $('#cenefas-body').addEventListener('click', async (e)=>{
     // Eliminar con confirmación
     if(e.target.classList.contains('btn-del')){
       const idx = parseInt(e.target.dataset.idx,10);
-      const confirmar = confirm('¿Eliminar esta cenefa?');
+      const confirmar = await showConfirm('¿Eliminar esta cenefa?');
       if(!confirmar) return;
       cenefas.splice(idx,1); 
       renderTable();
@@ -493,25 +484,25 @@ function importCSV(file){
   }});
 }
 
-// Función para dividir una fila si el título tiene más de 3 elementos
+// Función para dividir una fila si el título tiene más de 5 elementos
 function dividirFilaSiNecesario(rowData) {
   const titulo = rowData.objetoOferta || '';
   
   // Dividir por comas y limpiar espacios
   const elementos = titulo.split(',').map(e => e.trim()).filter(e => e.length > 0);
   
-  // Si hay 3 o menos elementos, retornar fila original
-  if (elementos.length <= 3) {
+  // Si hay 5 o menos elementos, retornar fila original
+  if (elementos.length <= 5) {
     return [{
       id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
       ...rowData
     }];
   }
   
-  // Si hay más de 3 elementos, dividir en grupos de 3
+  // Si hay más de 5 elementos, dividir en grupos de 5
   const filas = [];
-  for (let i = 0; i < elementos.length; i += 3) {
-    const grupoElementos = elementos.slice(i, i + 3);
+  for (let i = 0; i < elementos.length; i += 5) {
+    const grupoElementos = elementos.slice(i, i + 5);
     filas.push({
       id: Date.now().toString() + Math.random().toString(36).slice(2, 6) + i,
       tipo: rowData.tipo,
@@ -802,6 +793,36 @@ function showModal(mensaje) {
   modal.style.display = 'flex';
 }
 
+// Modal de confirmación (reemplaza confirm())
+function showConfirm(mensaje) {
+  return new Promise((resolve) => {
+    const modal = $('#modal-confirm');
+    const texto = $('#modal-confirm-texto');
+    const btnSi = $('#modal-confirm-si');
+    const btnNo = $('#modal-confirm-no');
+    
+    texto.textContent = mensaje;
+    modal.style.display = 'flex';
+    
+    const handleSi = () => {
+      modal.style.display = 'none';
+      btnSi.removeEventListener('click', handleSi);
+      btnNo.removeEventListener('click', handleNo);
+      resolve(true);
+    };
+    
+    const handleNo = () => {
+      modal.style.display = 'none';
+      btnSi.removeEventListener('click', handleSi);
+      btnNo.removeEventListener('click', handleNo);
+      resolve(false);
+    };
+    
+    btnSi.addEventListener('click', handleSi);
+    btnNo.addEventListener('click', handleNo);
+  });
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
   renderTable(); 
@@ -824,6 +845,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('#select-all').addEventListener('change', (e)=>{
     const v = e.target.checked; 
     $all('.sel').forEach(ch=>ch.checked=v);
+  });
+
+  // Guardar borrador en localStorage
+  $('#btn-export-draft').addEventListener('click', ()=>{ 
+    saveToLocalStorage();
+    exportDraft();
+  });
+
+  // Toggle contraer/expandir tabla
+  $('#btn-toggle-compact').addEventListener('click', ()=>{
+    const tableSection = $('.table-section');
+    const btn = $('#btn-toggle-compact');
+    if(tableSection.style.display === 'none'){
+      tableSection.style.display = 'block';
+      btn.innerHTML = '<span class="material-icons" style="font-size: 18px; margin-right: 4px">expand_less</span> Contraer Tabla';
+    } else {
+      tableSection.style.display = 'none';
+      btn.innerHTML = '<span class="material-icons" style="font-size: 18px; margin-right: 4px">expand_more</span> Expandir Tabla';
+    }
   });
 
   // FEATURE-BackToTop: Bot\u00f3n flotante para volver arriba
@@ -856,6 +896,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if (e.target === modalMensaje) {
       modalMensaje.style.display = 'none';
     }
+    // Cerrar modal de confirmación
+    const modalConfirm = $('#modal-confirm');
+    if (e.target === modalConfirm) {
+      modalConfirm.style.display = 'none';
+      const btnNo = $('#modal-confirm-no');
+      if(btnNo) btnNo.click();
+    }
   });
 });
 
@@ -879,9 +926,8 @@ async function downloadSelectedPDFs() {
     return;
   }
   
-  if(!confirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: tipoOferta-objetoOferta.pdf`)) {
-    return;
-  }
+  const confirmar = await showConfirm(`¿Descargar ${checkboxes.length} PDF(s) individuales?\nSe descargarán uno por uno con el formato: tipoOferta-objetoOferta.pdf`);
+  if(!confirmar) return;
   
   const btn = $('#btn-download-selected');
   const originalText = btn.textContent;
@@ -965,9 +1011,8 @@ async function printAllSheets() {
     return;
   }
   
-  if(!confirm(`¿Descargar ${sheets.length} cenefa(s) en un solo PDF?`)) {
-    return;
-  }
+  const confirmar = await showConfirm(`¿Descargar ${sheets.length} cenefa(s) en un solo PDF?`);
+  if(!confirmar) return;
   
   const btn = $('#btn-print-all');
   const originalText = btn.textContent;
@@ -1046,7 +1091,7 @@ function downloadTemplate(){
 // Exportar borrador CSV
 function exportDraft(){
   if(cenefas.length === 0){
-    alert('No hay cenefas para exportar');
+    showModal('⚠️ No hay cenefas para exportar');
     return;
   }
   const csv = Papa.unparse(cenefas, {header: true});
@@ -1058,6 +1103,7 @@ function exportDraft(){
   a.download = `cenefas-borrador-${new Date().toISOString().split('T')[0]}.csv`;
   a.click();
   URL.revokeObjectURL(url);
+  showModal('✅ Borrador guardado y exportado exitosamente.');
 }
 
 // Vista compacta/expandida
@@ -1086,9 +1132,33 @@ document.addEventListener('DOMContentLoaded', ()=>{
     modal.style.display = 'none';
   });
 
+  // Cerrar modales de mensaje
+  const modalMensaje = $('#modal-mensaje');
+  const closeBtnMsg = $('.modal-mensaje-close');
+  const okBtn = $('#modal-mensaje-ok');
+  
+  closeBtnMsg.addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+  });
+  
+  okBtn.addEventListener('click', () => {
+    modalMensaje.style.display = 'none';
+  });
+
   window.addEventListener('click', (e) => {
     if (e.target === modal) {
       modal.style.display = 'none';
+    }
+    if (e.target === modalMensaje) {
+      modalMensaje.style.display = 'none';
+    }
+    // Cerrar modal de confirmación al hacer clic fuera
+    const modalConfirm = $('#modal-confirm');
+    if (e.target === modalConfirm) {
+      modalConfirm.style.display = 'none';
+      // Simular clic en "No" para resolver la Promise
+      const btnNo = $('#modal-confirm-no');
+      if(btnNo) btnNo.click();
     }
   });
   
