@@ -1,296 +1,140 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - Cartelería</title>
-  <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(183deg, #3d60fb 0%, #fff9dc 50%, #3d60fb 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .home-container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .home-header {
-      background: white;
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 40px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .home-logo {
-      width: 50px;
-      height: 50px;
-      background: #3d60fb;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .header-info h1 {
-      font-size: 32px;
-      color: #1f2937;
-      margin-bottom: 8px;
-    }
-
-    .header-info p {
-      color: #6b7280;
-      font-size: 16px;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f3f4f6;
-      padding: 10px 20px;
-      border-radius: 50px;
-    }
-
-    .user-icon {
-      width: 40px;
-      height: 40px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: #1f2937;
-    }
-
-    .btn-logout {
-      padding: 10px 20px;
-      background: #ef4444;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .btn-logout:hover {
-      background: #dc2626;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-    }
-
-    .cards-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      transform: scaleX(0);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover::before {
-      transform: scaleX(1);
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    }
-
-    .card-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      font-size: 40px;
-    }
-
-    .card-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: #1f2937;
-      margin-bottom: 12px;
-    }
-
-    .card-description {
-      color: #6b7280;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .card-arrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #667eea;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .card-arrow .material-icons {
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover .card-arrow .material-icons {
-      transform: translateX(5px);
-    }
-
-    @media (max-width: 768px) {
-      .home-header {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .header-info h1 {
-        font-size: 24px;
-      }
-
-      .cards-container {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="home-container">
-    <header class="home-header">
-      <div class="header-info">
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <div class="home-logo">
-            <img src="fonts/gdnicon.png" alt="Logo" style="width: 35px; height: 35px;">
-          </div>
-          <div>
-            <h1 style="margin: 0;">🏪 Cartelería</h1>
-            <p style="margin: 0;">Sistema de generación de carteles para tiendas</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - Cartelería</title>
+    <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="home.css" />
+  </head>
+  <body>
+    <div class="home-container">
+      <header class="home-header">
+        <div class="header-info">
+          <div style="display: flex; align-items: center; gap: 15px">
+            <div class="home-logo">
+              <img
+                src="fonts/gdnicon.png"
+                alt="Logo"
+                style="width: 35px; height: 35px"
+              />
+            </div>
+            <div>
+              <h1 style="margin: 0">
+                <span
+                  class="material-icons"
+                  style="
+                    font-size: 28px;
+                    vertical-align: middle;
+                    margin-right: 4px;
+                  "
+                  >store</span
+                >
+                Cartelería
+              </h1>
+              <p style="margin: 0">
+                Sistema de generación de carteles para tiendas
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="user-info">
-        <div class="user-badge">
-          <div class="user-icon" id="user-icon"></div>
-          <span class="user-name" id="user-name">Usuario</span>
+        <div class="user-info">
+          <div class="user-badge">
+            <div class="user-icon" id="user-icon"></div>
+            <span class="user-name" id="user-name">Usuario</span>
+          </div>
+          <button class="btn-logout" onclick="logout()">
+            <span class="material-icons" style="font-size: 18px">logout</span>
+            Salir
+          </button>
         </div>
-        <button class="btn-logout" onclick="logout()">
-          <span class="material-icons" style="font-size: 18px;">logout</span>
-          Salir
-        </button>
+      </header>
+
+      <div class="cards-container">
+        <a href="liquidacion.html" class="card">
+          <div class="card-icon">
+            <span class="material-icons" style="font-size: 48px; color: #ffffff"
+              >local_offer</span
+            >
+          </div>
+          <h2 class="card-title">Cartelería de Liquidación</h2>
+          <p class="card-description">
+            Genera carteles A6 de rebaja en precio y obleas para productos en
+            liquidación. Incluye código de barras, precios, fechas y toda la
+            información necesaria.
+          </p>
+          <span class="card-arrow">
+            Ir a Liquidación
+            <span class="material-icons">arrow_forward</span>
+          </span>
+        </a>
+
+        <a href="cenefas.html" class="card">
+          <div class="card-icon">
+            <span class="material-icons" style="font-size: 48px; color: #ffffff"
+              >view_carousel</span
+            >
+          </div>
+          <h2 class="card-title">Cenefas Promocionales</h2>
+          <p class="card-description">
+            Crea cenefas A5 horizontales para promociones especiales. Formato
+            automático según tipo de oferta (2x1, 3x2, descuentos, cuotas, etc).
+          </p>
+          <span class="card-arrow">
+            Ir a Cenefas
+            <span class="material-icons">arrow_forward</span>
+          </span>
+        </a>
       </div>
-    </header>
-
-    <div class="cards-container">
-      <a href="liquidacion.html" class="card">
-        <div class="card-icon">🏷️</div>
-        <h2 class="card-title">Cartelería de Liquidación</h2>
-        <p class="card-description">
-          Genera carteles A6 de rebaja en precio y obleas para productos en liquidación.
-          Incluye código de barras, precios, fechas y toda la información necesaria.
-        </p>
-        <span class="card-arrow">
-          Ir a Liquidación
-          <span class="material-icons">arrow_forward</span>
-        </span>
-      </a>
-
-      <a href="cenefas.html" class="card">
-        <div class="card-icon">🎯</div>
-        <h2 class="card-title">Cenefas Promocionales</h2>
-        <p class="card-description">
-          Crea cenefas A5 horizontales para promociones especiales.
-          Formato automático según tipo de oferta (2x1, 3x2, descuentos, cuotas, etc).
-        </p>
-        <span class="card-arrow">
-          Ir a Cenefas
-          <span class="material-icons">arrow_forward</span>
-        </span>
-      </a>
     </div>
-  </div>
 
-  <script src="users.js"></script>
-  <script src="auth.js"></script>
-  <script>
-    // Proteger página
-    requireAuth();
+    <script src="users.js"></script>
+    <script src="auth.js"></script>
+    <script>
+      // Proteger página
+      requireAuth();
 
-    // Mostrar información del usuario
-    const user = getCurrentUser();
-    if (user) {
-      document.getElementById('user-name').textContent = user.name;
-      const initial = user.name.charAt(0).toUpperCase();
-      document.getElementById('user-icon').textContent = initial;
-    }
-  </script>
-</body>
+      // Función para obtener iniciales (Rodrigo Bernel -> RB)
+      function getInitials(name) {
+        const words = name.trim().split(/\s+/);
+        if (words.length === 1) {
+          return words[0].substring(0, 2).toUpperCase();
+        }
+        return (
+          words[0].charAt(0) + words[words.length - 1].charAt(0)
+        ).toUpperCase();
+      }
+
+      // Función para generar color consistente por hash
+      function getAvatarColor(name) {
+        const colors = [
+          "#667eea",
+          "#f093fb",
+          "#4facfe",
+          "#43e97b",
+          "#feca57",
+          "#ee5a6f",
+        ];
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) {
+          hash = name.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colors[Math.abs(hash) % colors.length];
+      }
+
+      // Mostrar información del usuario
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById("user-name").textContent = user.name;
+        const initials = getInitials(user.name);
+        const userIcon = document.getElementById("user-icon");
+        userIcon.textContent = initials;
+        userIcon.style.backgroundColor = getAvatarColor(user.name);
+      }
+    </script>
+  </body>
 </html>

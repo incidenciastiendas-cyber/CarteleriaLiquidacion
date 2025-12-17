@@ -1,5 +1,45 @@
 /* Importar estilos base del proyecto principal */
 @import url('styles.css');
+@import url('login.css');
+
+/* Variables CSS para cenefas */
+:root {
+  --cenefa-bg-primary: #ffffff;
+  --cenefa-bg-secondary: #f8f9fa;
+  --cenefa-bg-hover: #e9ecef;
+  --cenefa-bg-active: #dee2e6;
+  
+  --cenefa-text-primary: #212529;
+  --cenefa-text-secondary: #6c757d;
+  --cenefa-text-muted: #adb5bd;
+  
+  --cenefa-primary: #007bff;
+  --cenefa-success: #28a745;
+  --cenefa-danger: #dc3545;
+  --cenefa-warning: #ffc107;
+  --cenefa-info: #17a2b8;
+  
+  --badge-nxn: #667eea;
+  --badge-precio: #28a745;
+  --badge-desc1: #f59e0b;
+  --badge-desc2: #ef4444;
+  --badge-nq: #8b5cf6;
+  --badge-cuotas: #ec4899;
+  --badge-mc: #2B3689;
+  --badge-mc2: #1e40af;
+  
+  --cenefa-space-xs: 4px;
+  --cenefa-space-sm: 8px;
+  --cenefa-space-md: 16px;
+  --cenefa-space-lg: 24px;
+  
+  --cenefa-shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --cenefa-shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  
+  --cenefa-radius-sm: 4px;
+  --cenefa-radius-md: 6px;
+  --cenefa-radius-lg: 8px;
+}
 
 /* Estilos específicos para cenefas */
 
@@ -64,6 +104,8 @@
   height: 100%;
   padding: 0px 40px 25px 10px;
   box-sizing: border-box;
+  background: transparent !important;
+  color: inherit;
 }
 
 .oferta-principal {
@@ -256,7 +298,7 @@
 }
 
 /* Tipo DESC-CUOTAS: dos filas "30% + 4" y "DE DESCUENTO | CUOTAS SIN INTERÉS" */
-.tipo-DESC-CUOTAS .oferta-combinada {
+.oferta-combinada {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -264,7 +306,7 @@
   width: 100%;
 }
 
-.tipo-DESC-CUOTAS .fila-numeros {
+.fila-numeros {
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -272,20 +314,20 @@
   margin-bottom: -3px;
 }
 
-.tipo-DESC-CUOTAS .numero-combo {
+.numero-combo {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 100px;
   font-weight: 800;
   line-height: 1;
 }
 
-.tipo-DESC-CUOTAS .simbolo-pequeno {
+.simbolo-pequeno {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 40px;
   font-weight: 700;
 }
 
-.tipo-DESC-CUOTAS .signo-mas {
+.signo-mas {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 40px;
   font-weight: 700;
@@ -433,7 +475,7 @@
   width: auto;
 }
 
-.tipo-MC .mc-numero {
+.mc-numero {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 110px;
   font-weight: 800;
@@ -441,13 +483,13 @@
   margin-bottom: -8px;
 }
 
-.tipo-MC .mc-simbolo {
+.mc-simbolo {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 45px;
   font-weight: 700;
 }
 
-.tipo-MC .mc-descripcion {
+.mc-descripcion {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 29px;
   font-weight: 700;
@@ -1090,6 +1132,82 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
 .no-break {
   white-space: nowrap;
   display: inline;
+}
+
+/* ============================================
+   BADGES de tipo detectado
+   ============================================ */
+.tipo-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--cenefa-radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.tipo-NxN { background-color: var(--badge-nxn); }
+.tipo-PRECIO { background-color: var(--badge-precio); }
+.tipo-DESC1 { background-color: var(--badge-desc1); }
+.tipo-DESC2 { background-color: var(--badge-desc2); }
+.tipo-NQ { background-color: var(--badge-nq); }
+.tipo-DESC-CUOTAS { background-color: var(--badge-cuotas); }
+.tipo-MC { background-color: var(--badge-mc); }
+.tipo-MC2 { background-color: var(--badge-mc); }
+.tipo-DESC2-MC { background-color: var(--badge-desc2); }
+.tipo-NxNMC { background-color: var(--badge-nxn); }
+.tipo-NxNMC2 { background-color: var(--badge-nxn); }
+
+/* ============================================
+   VISTA COMPACTA para tabla
+   ============================================ */
+#cenefas-table.compact-view input {
+  font-size: 12px;
+  padding: 4px 6px;
+}
+
+#cenefas-table.compact-view th,
+#cenefas-table.compact-view td {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+/* ============================================
+   Estilos para botones duplicar y eliminar
+   ============================================ */
+.btn-duplicate,
+.btn-del {
+  background-color: var(--cenefa-info);
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: var(--cenefa-radius-sm);
+  cursor: pointer;
+  margin-right: 4px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+}
+
+.btn-duplicate:hover {
+  background-color: #138496;
+  transform: scale(1.05);
+}
+
+.btn-del {
+  background-color: var(--cenefa-danger);
+  margin-right: 0;
+}
+
+.btn-del:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
 }
 
 /* ============================================

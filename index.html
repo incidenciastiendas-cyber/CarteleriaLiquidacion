@@ -1,138 +1,191 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Cartelería GDN</title>
-  <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
-  <link rel="stylesheet" href="login.css">
-</head>
-<body>
-  <div class="login-container">
-    <div class="login-header">
-      <div class="login-logo">
-        <img src="fonts/gdnicon.png" alt="Logo" style="width: 50px; height: 50px;">
-      </div>
-      <h1 class="login-title">Cartelería</h1>
-      <p class="login-subtitle">Sistema de generación de carteles</p>
-    </div>
-
-    <form class="login-form" id="login-form" autocomplete="on">
-      <div class="error-message" id="error-message"></div>
-      
-      <div class="form-group">
-        <label class="form-label" for="username">Usuario</label>
-        <input 
-          type="text" 
-          id="username" 
-          name="username"
-          class="form-input" 
-          placeholder="Ingresá tu usuario"
-          autocomplete="username"
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label class="form-label" for="password">Contraseña</label>
-        <div style="position: relative;">
-          <input 
-            type="password" 
-            id="password" 
-            name="password"
-            class="form-input" 
-            placeholder="Ingresá tu contraseña"
-            autocomplete="current-password"
-            style="padding-right: 45px;"
-            required
-          >
-          <button 
-            type="button" 
-            id="toggle-password" 
-            style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 20px; padding: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
-            title="Mostrar contraseña"
-          >
-            👁️
-          </button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Cartelería GDN</title>
+    <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
+    <link rel="stylesheet" href="login.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-header">
+        <div class="login-logo">
+          <img
+            src="fonts/gdnicon.png"
+            alt="Logo"
+            style="width: 50px; height: 50px"
+          />
         </div>
+        <h1 class="login-title">Cartelería</h1>
+        <p class="login-subtitle">Sistema de generación de carteles</p>
       </div>
 
-      <div class="form-checkbox-group">
-        <input 
-          type="checkbox" 
-          id="remember-me" 
-          class="form-checkbox"
-        >
-        <label for="remember-me" class="checkbox-label">Mantenerme conectado</label>
+      <form class="login-form" id="login-form" autocomplete="on">
+        <div class="error-message" id="error-message"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="username">
+            <span
+              class="material-icons"
+              style="font-size: 18px; vertical-align: middle; margin-right: 4px"
+              >person</span
+            >
+            Usuario
+          </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            placeholder="Ingresá tu usuario"
+            autocomplete="username"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <span
+              class="material-icons"
+              style="font-size: 18px; vertical-align: middle; margin-right: 4px"
+              >lock</span
+            >
+            Contraseña
+          </label>
+          <div style="position: relative">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="Ingresá tu contraseña"
+              autocomplete="current-password"
+              style="padding-right: 45px"
+              required
+            />
+            <button
+              type="button"
+              id="toggle-password"
+              style="
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #6b7280;
+                font-size: 20px;
+                padding: 0;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+              title="Mostrar contraseña"
+            >
+              <span class="material-icons">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-checkbox-group">
+          <input type="checkbox" id="remember-me" class="form-checkbox" />
+          <label for="remember-me" class="checkbox-label"
+            >Mantenerme conectado</label
+          >
+        </div>
+
+        <button type="submit" class="btn-login">
+          <span
+            class="material-icons"
+            style="font-size: 18px; vertical-align: middle; margin-right: 4px"
+            >login</span
+          >
+          Iniciar Sesión
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p class="contact-info">
+          ¿Problemas para acceder?<br />
+          Contactar con:
+          <a
+            href="mailto:incidenciastiendas@gdnargentina.com"
+            class="contact-link"
+            >incidenciastiendas@gdnargentina.com</a
+          >
+        </p>
       </div>
-
-      <button type="submit" class="btn-login">Iniciar Sesión</button>
-    </form>
-
-    <div class="login-footer">
-      <p class="contact-info">
-        ¿Problemas para acceder?<br>
-        Contactar con: <a href="mailto:incidenciastiendas@gdnargentina.com" class="contact-link">incidenciastiendas@gdnargentina.com</a>
-      </p>
     </div>
-  </div>
 
-  <script src="users.js"></script>
-  <script src="auth.js"></script>
-  <script>
-    // Redirigir si ya está autenticado
-    redirectIfAuthenticated();
+    <script src="users.js"></script>
+    <script src="auth.js"></script>
+    <script>
+      // Redirigir si ya está autenticado
+      redirectIfAuthenticated();
 
-    // Cargar usuario recordado
-    const rememberedUser = getRememberedUser();
-    if (rememberedUser) {
-      document.getElementById('username').value = rememberedUser;
-      document.getElementById('remember-me').checked = true;
-      document.getElementById('password').focus();
-    }
+      // Cargar usuario recordado
+      const rememberedUser = getRememberedUser();
+      if (rememberedUser) {
+        document.getElementById("username").value = rememberedUser;
+        document.getElementById("remember-me").checked = true;
+        document.getElementById("password").focus();
+      }
 
-    // Toggle mostrar/ocultar contraseña
-    document.getElementById('toggle-password').addEventListener('click', function() {
-      const passwordInput = document.getElementById('password');
-      const type = passwordInput.type === 'password' ? 'text' : 'password';
-      passwordInput.type = type;
-      this.textContent = type === 'password' ? '👁️' : '🙈';
-      this.title = type === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña';
-    });
+      // Toggle mostrar/ocultar contraseña
+      document
+        .getElementById("toggle-password")
+        .addEventListener("click", function () {
+          const passwordInput = document.getElementById("password");
+          const icon = this.querySelector(".material-icons");
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          icon.textContent =
+            type === "password" ? "visibility" : "visibility_off";
+          this.title =
+            type === "password" ? "Mostrar contraseña" : "Ocultar contraseña";
+        });
 
-    // Manejar submit del formulario
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value;
-      const rememberMe = document.getElementById('remember-me').checked;
-      const errorMsg = document.getElementById('error-message');
-      const submitBtn = e.target.querySelector('button[type="submit"]');
-      
-      // Limpiar error previo
-      errorMsg.classList.remove('show');
-      
-      // Deshabilitar botón
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Verificando...';
-      
-      // Simular delay para UX
-      setTimeout(() => {
-        const result = login(username, password, rememberMe);
-        
-        if (result.success) {
-          window.location.href = 'home.html';
-        } else {
-          errorMsg.textContent = result.message;
-          errorMsg.classList.add('show');
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Iniciar Sesión';
-          document.getElementById('password').value = '';
-          document.getElementById('password').focus();
-        }
-      }, 500);
-    });
-  </script>
-</body>
+      // Manejar submit del formulario
+      document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value;
+        const rememberMe = document.getElementById("remember-me").checked;
+        const errorMsg = document.getElementById("error-message");
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+
+        // Limpiar error previo
+        errorMsg.classList.remove("show");
+
+        // Deshabilitar botón
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Verificando...";
+
+        // Simular delay para UX
+        setTimeout(() => {
+          const result = login(username, password, rememberMe);
+
+          if (result.success) {
+            window.location.href = "home.html";
+          } else {
+            errorMsg.textContent = result.message;
+            errorMsg.classList.add("show");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Iniciar Sesión";
+            document.getElementById("password").value = "";
+            document.getElementById("password").focus();
+          }
+        }, 500);
+      });
+    </script>
+  </body>
 </html>

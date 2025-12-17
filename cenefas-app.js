@@ -1,7 +1,43 @@
 // cenefas-app.js - lógica para cenefas promocionales
+
+// NOMENCLATURA DE BADGES - Editar aquí los nombres que se muestran al usuario
+const BADGE_NOMBRES = {
+  'NxN': 'NxN',
+  'PRECIO': 'PREC PROD',
+  'DESC1': 'DESC',
+  'DESC2': 'DESC EN 2DA',
+  'NQ': 'CUOTAS',
+  'DESC-CUOTAS': 'DESC+CUOTAS',
+  'MC': 'MasClub',
+  'MC2': 'MasClub2',
+  'DESC2-MC': 'DESC MasClub',
+  'NxNMC': 'NxN MasClub',
+  'NxNMC2': 'NxN MasClub2'
+};
+
 const cenefas = [
 
 ];
+
+// Funciones de guardado automático
+function saveToLocalStorage(){
+  localStorage.setItem('cenefas-borrador', JSON.stringify(cenefas));
+}
+
+function loadFromLocalStorage(){
+  const saved = localStorage.getItem('cenefas-borrador');
+  if(saved){
+    try{
+      const data = JSON.parse(saved);
+      if(Array.isArray(data) && data.length > 0){
+        cenefas.push(...data);
+        renderTable();
+      }
+    }catch(e){
+      console.error('Error cargando borrador:', e);
+    }
+  }
+}
 
 // Detectar automáticamente el tipo de oferta según el contenido de tipoOferta
 function detectarTipo(tipoOferta) {
@@ -270,10 +306,18 @@ function renderTable(){
   const tbody = $('#cenefas-body');
   tbody.innerHTML = '';
   cenefas.forEach((c, idx) => {
+    const tipoDetectado = c.tipo || detectarTipo(c.tipoOferta);
+    const nombreBadge = BADGE_NOMBRES[tipoDetectado] || tipoDetectado;
+    const badgeClass = `tipo-badge tipo-${tipoDetectado}`;
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><input type="checkbox" data-idx="${idx}" class="sel"></td>
-      <td><input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc"></td>
+      <td>
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <span class="${badgeClass}">${nombreBadge}</span>
+          <input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc" style="flex: 1;">
+        </div>
+      </td>
       <td><input data-idx="${idx}" data-field="fechaDesde" value="${c.fechaDesde || ''}" placeholder="25/11"></td>
       <td><input data-idx="${idx}" data-field="fechaHasta" value="${c.fechaHasta || ''}" placeholder="01/12"></td>
       <td><input data-idx="${idx}" data-field="objetoOferta" value="${c.objetoOferta || ''}" placeholder="Título de la acción"></td>
@@ -281,7 +325,10 @@ function renderTable(){
       <td><input data-idx="${idx}" data-field="aclaracion" value="${c.aclaracion || ''}" placeholder="Aclaración 2"></td>
       <td><input data-idx="${idx}" data-field="legal1" value="${c.legal1 || ''}" placeholder="Texto legal principal"></td>
       <td><input data-idx="${idx}" data-field="legal2" value="${c.legal2 || ''}" placeholder="Texto legal secundario"></td>
-      <td><button data-idx="${idx}" class="btn-del">Eliminar</button></td>
+      <td style="white-space: nowrap;">
+        <button data-idx="${idx}" class="btn-duplicate" title="Duplicar fila"><span class="material-icons" style="font-size: 16px;">content_copy</span></button>
+        <button data-idx="${idx}" class="btn-del" title="Eliminar"><span class="material-icons" style="font-size: 16px;">delete</span></button>
+      </td>
       <td><button data-idx="${idx}" class="btn-view-preview"><span class="material-icons" style="font-size: 16px;">visibility</span></button></td>
     `;
     tbody.appendChild(tr);
@@ -302,13 +349,22 @@ function addEmpty(){
     legal2: ''
   });
   renderTable();
+  saveToLocalStorage();
 }
 
 function deleteSelected(){
   const checks = $all('.sel').filter(i=>i.checked);
+  if(checks.length === 0){
+    alert('⚠️ No hay cenefas seleccionadas para eliminar');
+    return;
+  }
+  const confirmar = confirm(`¿Estás seguro de eliminar ${checks.length} cenefa(s)?`);
+  if(!confirmar) return;
+  
   const idxs = checks.map(c=>parseInt(c.dataset.idx,10));
   for(let i=idxs.length-1;i>=0;i--) cenefas.splice(idxs[i],1);
   renderTable();
+  saveToLocalStorage();
 }
 
 function bindTableEvents(){
@@ -319,19 +375,57 @@ function bindTableEvents(){
     if(!Number.isNaN(idx) && field) {
       let value = t.value;
       
-      // Formatear automáticamente fechas a dd/mm
+      // Formatear automáticamente fechas a dd/mm (también desde números de Excel)
       if (field === 'fechaDesde' || field === 'fechaHasta') {
         value = formatearFecha(value);
         t.value = value; // Actualizar el input con el formato correcto
       }
       
       cenefas[idx][field] = value;
+      
+      // Auto-detectar tipo si cambia tipoOferta
+      if(field === 'tipoOferta'){
+        cenefas[idx].tipo = detectarTipo(value);
+        renderTable();
+      }
+      
+      // Si cambia objetoOferta y tiene más de 3 elementos, dividir automáticamente
+      if(field === 'objetoOferta'){
+        const elementos = value.split(',').map(e => e.trim()).filter(e => e.length > 0);
+        if(elementos.length > 3){
+          // Dividir fila
+          const filaOriginal = cenefas[idx];
+          const filasNuevas = dividirFilaSiNecesario({...filaOriginal, objetoOferta: value});
+          
+          // Reemplazar fila original con las nuevas
+          cenefas.splice(idx, 1, ...filasNuevas);
+          renderTable();
+          showModal(`ℹ️ Se dividió la cenefa en ${filasNuevas.length} cenefas por tener más de 3 elementos.`);
+        }
+      }
+      
+      saveToLocalStorage();
     }
   });
   $('#cenefas-body').addEventListener('click', (e)=>{
+    // Eliminar con confirmación
     if(e.target.classList.contains('btn-del')){
       const idx = parseInt(e.target.dataset.idx,10);
-      cenefas.splice(idx,1); renderTable();
+      const confirmar = confirm('¿Eliminar esta cenefa?');
+      if(!confirmar) return;
+      cenefas.splice(idx,1); 
+      renderTable();
+      saveToLocalStorage();
+    }
+    
+    // Duplicar fila
+    if(e.target.classList.contains('btn-duplicate')){
+      const idx = parseInt(e.target.dataset.idx,10);
+      const original = cenefas[idx];
+      const duplicado = {...original, id: Date.now().toString()};
+      cenefas.splice(idx + 1, 0, duplicado);
+      renderTable();
+      saveToLocalStorage();
     }
     // FEATURE-ScrollToPreview: Scroll al cartel en vista previa
     const viewBtn = e.target.closest('.btn-view-preview');
@@ -363,36 +457,76 @@ function importCSV(file){
       let tipoAccion = r['Tipo Accion']||r['Tipo Acción']||r['SKU']||r['Tipo Oferta']||'';
       let desde = r['Desde']||r['Fecha Desde']||'';
       let hasta = r['Hasta']||r['Fecha Hasta']||'';
+      let objetoOferta = r['Titulo Accion']||r['Título Acción']||r['Objeto Oferta']||r['Objeto']||'';
       
       // Corregir Tipo Acción: si tiene solo números, agregar %
       if (tipoAccion && /^\d+$/.test(tipoAccion.trim())) {
         tipoAccion = tipoAccion.trim() + '%';
       }
       
-      // Formatear fecha "Desde" a dd/mm
+      // Formatear fecha "Desde" a dd/mm (convierte números de Excel también)
       desde = formatearFecha(desde);
       
-      // Formatear fecha "Hasta" a dd/mm
+      // Formatear fecha "Hasta" a dd/mm (convierte números de Excel también)
       hasta = formatearFecha(hasta);
       
-      rows.push({
-        id: Date.now().toString()+Math.random().toString(36).slice(2,6),
+      // Dividir objetoOferta si tiene más de 3 elementos separados por comas
+      const rowData = {
         tipo: '',  // se detecta automáticamente
         tipoOferta: tipoAccion,
         fechaDesde: desde,
         fechaHasta: hasta,
-        objetoOferta: r['Titulo Accion']||r['Título Acción']||r['Objeto Oferta']||r['Objeto']||'',
+        objetoOferta: objetoOferta,
         aclaracionObjeto: r['Incluye/Excluye']||r['Aclaracion 1']||r['Aclaración 1']||r['Aclaracion Objeto']||r['Aclaración Objeto']||'',
         aclaracion: r['Aclaracion 2']||r['Aclaración 2']||r['Aclaracion']||r['Aclaración']||'',
         legal1: r['Legal 1']||r['Legal1']||'',
         legal2: r['Legal 2']||r['Legal2']||''
-      });
+      };
+      
+      rows.push(...dividirFilaSiNecesario(rowData));
     });
     
     cenefas.push(...rows);
     renderTable();
+    saveToLocalStorage();
     showModal(`✅ Se importaron ${rows.length} cenefa(s) correctamente.`);
   }});
+}
+
+// Función para dividir una fila si el título tiene más de 3 elementos
+function dividirFilaSiNecesario(rowData) {
+  const titulo = rowData.objetoOferta || '';
+  
+  // Dividir por comas y limpiar espacios
+  const elementos = titulo.split(',').map(e => e.trim()).filter(e => e.length > 0);
+  
+  // Si hay 3 o menos elementos, retornar fila original
+  if (elementos.length <= 3) {
+    return [{
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+      ...rowData
+    }];
+  }
+  
+  // Si hay más de 3 elementos, dividir en grupos de 3
+  const filas = [];
+  for (let i = 0; i < elementos.length; i += 3) {
+    const grupoElementos = elementos.slice(i, i + 3);
+    filas.push({
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 6) + i,
+      tipo: rowData.tipo,
+      tipoOferta: rowData.tipoOferta,
+      fechaDesde: rowData.fechaDesde,
+      fechaHasta: rowData.fechaHasta,
+      objetoOferta: grupoElementos.join(', '),
+      aclaracionObjeto: rowData.aclaracionObjeto,
+      aclaracion: rowData.aclaracion,
+      legal1: rowData.legal1,
+      legal2: rowData.legal2
+    });
+  }
+  
+  return filas;
 }
 
 function formatearFecha(fecha) {
@@ -404,6 +538,18 @@ function formatearFecha(fecha) {
   // Si ya está en formato dd/mm o dd/mm/aaaa, devolverla tal cual
   if (/^\d{1,2}\/\d{1,2}(\/\d{4})?$/.test(fecha)) {
     return fecha;
+  }
+  
+  // Si es un número (formato serial de Excel)
+  if (/^\d+(\.\d+)?$/.test(fecha)) {
+    const excelDate = parseFloat(fecha);
+    // Excel cuenta desde 1900-01-01, con bug en día 60
+    const excelEpoch = new Date(1900, 0, 1);
+    const days = Math.floor(excelDate) - 2; // -2 por bug de 1900 en Excel
+    const date = new Date(excelEpoch.getTime() + days * 24 * 60 * 60 * 1000);
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    return `${dia}/${mes}`;
   }
   
   // Intentar detectar y convertir otros formatos comunes
@@ -545,7 +691,7 @@ function renderPreview(){
         <div class="a5-horizontal">
           <div class="cenefa-body">
             ${bannerMC}
-            <div class="oferta-box tipo-${tipoDetectado}">
+            <div class="oferta-box">
               ${svgShape}
               <div class="oferta-content">
                 ${vigenciaEnOferta}
@@ -565,7 +711,7 @@ function renderPreview(){
         <div class="a5-horizontal">
           <div class="cenefa-body">
             ${bannerMC}
-            <div class="oferta-box tipo-${tipoDetectado}">
+            <div class="oferta-box">
               ${svgShape}
               <div class="oferta-content">
                 ${vigenciaEnOferta}
@@ -897,6 +1043,35 @@ function downloadTemplate(){
   link.click();
 }
 
+// Exportar borrador CSV
+function exportDraft(){
+  if(cenefas.length === 0){
+    alert('No hay cenefas para exportar');
+    return;
+  }
+  const csv = Papa.unparse(cenefas, {header: true});
+  const BOM = '\uFEFF';
+  const blob = new Blob([BOM + csv], {type: 'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `cenefas-borrador-${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Vista compacta/expandida
+let compactMode = false;
+function toggleCompactView(){
+  compactMode = !compactMode;
+  const table = $('#cenefas-table');
+  if(compactMode){
+    table.classList.add('compact-view');
+  } else {
+    table.classList.remove('compact-view');
+  }
+}
+
 // Modal de Ayuda
 document.addEventListener('DOMContentLoaded', ()=>{
   const modal = $('#modal-ayuda');
@@ -916,4 +1091,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       modal.style.display = 'none';
     }
   });
+  
+  // Cargar borrador de localStorage al iniciar
+  loadFromLocalStorage();
 });
