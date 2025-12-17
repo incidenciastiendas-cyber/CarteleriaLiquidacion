@@ -5,25 +5,25 @@ const authorizedUsers = [
   {
     username: 'admin',
     password: 'Admin2025!',
-    email: 'incidenciastiendas@gdnargentina.com',
+    email: 'incidenciastiendas@example.com',
     name: 'Administrador'
   },
   {
     username: 'tiendas',
     password: 'Tiendas2025!',
-    email: 'tiendas@gdnargentina.com',
+    email: 'tiendas@example.com',
     name: 'Usuario Tiendas'
   },
   {
     username: 'gustavo.klobouk',
     password: 'AguanteBOCA12',
-    email: 'gustavo.klobouk@gdnargentina.com',
-    name: 'Gustavo Klobouk'
+    email: 'gustavo.klobouk@example.com',
+    name: 'Gustavo Klo'
   },
   {
     username: 'rodrigo.armando',
     password: 'Rodrigo4',
-    email: 'rodrigo.armando@gdnargentina.com',
+    email: 'rodrigo.armando@example.com',
     name: 'Rodrigo Bernel'
   }
   // Agregar más usuarios aquí siguiendo el formato:

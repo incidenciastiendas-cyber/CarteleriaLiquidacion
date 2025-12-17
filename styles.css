@@ -37,7 +37,8 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(183deg, #3d60fb 0%, #fff9dc 50%, #3d60fb 100%);
+  /*background: linear-gradient(183deg, #3d60fb 0%, #fff9dc 50%, #3d60fb 100%);*/
+  background: #173448;
   min-height: 100vh;
   margin: 0;
   color: #1f2937;
@@ -70,7 +71,7 @@ header h1 {
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #173448;
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -83,7 +84,7 @@ header h1 {
 }
 
 .btn-cenefas:hover {
-  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+ background: #173448;
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -341,21 +342,21 @@ footer small {
 }
 
 .btn-primary-download {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #173448;
   color: white;
 }
 
 .btn-primary-download:hover {
-  background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+  background: #173448;
 }
 
 .btn-secondary-download {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: #173448;
   color: white;
 }
 
 .btn-secondary-download:hover {
-  background: linear-gradient(135deg, #e082ea 0%, #e4465b 100%);
+  background: #173448;
 }
 
 /* ========================================
