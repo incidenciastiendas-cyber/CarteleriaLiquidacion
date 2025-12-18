@@ -90,6 +90,7 @@
   height: 248px;
   position: relative;
   background: #fff;
+  margin-top:40px;
 }
 
 /* Oferta Box - Sector negro: 281px ancho x 172px alto */
@@ -137,12 +138,13 @@
 
 .oferta-descripcion {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 20px;
+  font-size: 29px;
   font-weight: 700;
-  letter-spacing: 0.5px;
   line-height: 1.1;
-  margin-top: -5px;
+  text-align: center;
+  padding: 0 15px;
 }
+
 
 .oferta-vigencia {
   font-family: 'Miso', Arial, sans-serif;
@@ -151,7 +153,7 @@
   font-weight: 400;
   letter-spacing: 0.3px;
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   right: 0;
   text-align: center;
@@ -214,15 +216,17 @@
   display: flex;
   align-items: baseline;
   justify-content: center;
-  gap: 2px;
-  margin-bottom: -5px;
+  gap: 1px;
+  margin-bottom: -8px;
 }
 
 .numero-descuento {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 120px;
+  font-size: 110px;
   font-weight: 800;
-  line-height: 1;
+  line-height: 0.8;
+  letter-spacing: -3px;
+  margin-bottom: -6px;
 }
 
 .simbolo-porcentaje {
@@ -251,6 +255,7 @@
   font-size: 144px;
   font-weight: 800;
   line-height: 1;
+  letter-spacing: -4px;
 }
 
 .col-derecha {
@@ -272,7 +277,7 @@
   font-family: 'Miso', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 0.9;
   text-transform: uppercase;
   text-align: left;
   margin-top: 2px;
@@ -284,9 +289,9 @@
   align-items: center;
   justify-content: center;
   font-family: 'Miso', Arial, sans-serif;
-  gap: 18px;
+  gap: 26px;
   width: 100%;
-  padding: 0px 15px 0px 32px;
+  padding: 0px 15px 0px 44px;
 }
 
 .col-numero-cuotas {
@@ -300,6 +305,7 @@
   font-size: 138px;
   font-weight: 800;
   line-height: 1;
+  letter-spacing: -18px;
 }
 
 .col-texto-cuotas {
@@ -311,7 +317,7 @@
   font-family: 'Miso', Arial, sans-serif;
   font-size: 35px;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 0.9;
   text-transform: uppercase;
   text-align: left;
 }
@@ -330,7 +336,7 @@
   align-items: baseline;
   justify-content: center;
   gap: 2px;
-  margin-bottom: -3px;
+  margin-bottom: -10px;
 }
 
 .numero-combo {
@@ -338,6 +344,7 @@
   font-size: 100px;
   font-weight: 800;
   line-height: 1;
+  letter-spacing:-3px;
 }
 
 .simbolo-pequeno {
@@ -355,9 +362,9 @@
 .fila-textos {
   display: flex;
   justify-content: space-around;
-  width: 100%;
-  gap: 10px;
+  width: 90%;
   padding: 0 10px;
+  margin-bottom:5px;
 }
 
 .texto-izq,
@@ -485,12 +492,12 @@
   font-size: 18px;
   font-weight: 400;
   color: white;
-  padding-top: 5px;
+  padding-top: 8px;
   text-transform: uppercase;
 }
 
 .mc-logo-banner {
-  height: 24px;
+  height: 27px;
   width: auto;
 }
 
@@ -498,7 +505,8 @@
   font-family: 'Miso', Arial, sans-serif;
   font-size: 110px;
   font-weight: 800;
-  line-height: 1;
+  line-height: 0.8;
+  letter-spacing: -3px;
   margin-bottom: -8px;
 }
 
@@ -739,7 +747,7 @@
 .objeto-oferta {
   font-family: 'Miso', Arial, sans-serif;
   font-size: 34px; /* Tamaño inicial, será ajustado por JS */
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.2;
   color: #000;
   letter-spacing: 0.5px;
