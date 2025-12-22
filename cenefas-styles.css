@@ -46,21 +46,50 @@
 /* Inputs de la tabla de edición - más anchos para mejor escritura */
 #cenefas-table input[type="text"],
 #cenefas-table input[data-field] {
-  min-width: 150px;
+  min-width: 80px;
   width: 100%;
-  padding: 8px 10px;
-  font-size: 14px;
+  padding: 6px 8px;
+  font-size: 12px;
+  box-sizing: border-box;
 }
 
-/* Columnas específicas con anchos personalizados */
-#cenefas-table td:nth-child(2) input { min-width: 180px; } /* Tipo Oferta */
-#cenefas-table td:nth-child(3) input,
-#cenefas-table td:nth-child(4) input { min-width: 100px; } /* Fechas */
-#cenefas-table td:nth-child(5) input { min-width: 250px; } /* Objeto Oferta */
-#cenefas-table td:nth-child(6) input,
-#cenefas-table td:nth-child(7) input { min-width: 200px; } /* Aclaraciones */
-#cenefas-table td:nth-child(8) input,
-#cenefas-table td:nth-child(9) input { min-width: 220px; } /* Legal 1 y 2 */
+/* Columna 1: Selector (checkbox) - MÁS ANGOSTA */
+#cenefas-table td:nth-child(1),
+#cenefas-table th:nth-child(1) {
+  width: 35px;
+  min-width: 35px;
+  max-width: 35px;
+  text-align: center;
+  padding: 4px;
+}
+
+/* Columna 2: Badge tipo (SIN input) */
+#cenefas-table td:nth-child(2),
+#cenefas-table th:nth-child(2) {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 4px;
+  white-space: nowrap;
+}
+
+#cenefas-table td:nth-child(2) .tipo-badge {
+  display: inline-block;
+  font-size: 9px;
+  padding: 2px 6px;
+}
+
+/* Columnas específicas con anchos personalizados - REDUCIDOS */
+#cenefas-table td:nth-child(3) input { min-width: 120px; max-width: 140px; } /* Tipo Acción (input) */
+#cenefas-table td:nth-child(4) input,
+#cenefas-table td:nth-child(5) input { min-width: 70px; max-width: 80px; } /* Fechas */
+#cenefas-table td:nth-child(6) input { min-width: 180px; max-width: 220px; } /* Objeto Oferta */
+#cenefas-table td:nth-child(7) input,
+#cenefas-table td:nth-child(8) input { min-width: 120px; max-width: 150px; } /* Aclaraciones */
+#cenefas-table td:nth-child(9) input,
+#cenefas-table td:nth-child(10) input { min-width: 140px; max-width: 180px; } /* Legal 1 y 2 */
 
 /* A5 Horizontal: 595px ancho x 420px alto (mitad de A4 verticalmente) */
 .a5-horizontal {
@@ -172,7 +201,7 @@
   align-items: baseline;
   justify-content: center;
   gap: 10px;
-  margin-bottom: -5px;
+  margin-bottom: -25px;
 }
 
 .numero {
@@ -233,6 +262,60 @@
   font-family: 'Miso', Arial, sans-serif;
   font-size: 50px;
   font-weight: 700;
+}
+
+/* Tipo HASTA-DESC: "HASTA" arriba del número con % */
+.oferta-hasta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.hasta-texto {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: -5px;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   FORMATO HASTA-DESC-MC - Hx%MC (H30%MC)
+   Hasta X% con banner MásClub
+   Banner MC arriba derecha, SVG azul con forma de flecha
+   ============================================ */
+
+.tipo-HASTA-DESC-MC .oferta-box {
+  left: auto;
+  right: 0;
+}
+
+.tipo-HASTA-DESC-MC .oferta-hasta-mc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0;
+}
+
+.hasta-texto-mc {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: -5px;
+  letter-spacing: 1px;
+  color: white;
+  margin-top: 5px;
+}
+
+/* Contenido derecha para HASTA-DESC-MC usa contenido-derecha-mc con padding-top 43px */
+.tipo-HASTA-DESC-MC .contenido-derecha-mc {
+  padding-top: 43px;
 }
 
 /* Tipo DESC2: columnas "30% | DESCUENTO EN LA SEGUNDA UNIDAD" */
@@ -1180,6 +1263,8 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
 .tipo-NxN { background-color: var(--badge-nxn); }
 .tipo-PRECIO { background-color: var(--badge-precio); }
 .tipo-DESC1 { background-color: var(--badge-desc1); }
+.tipo-HASTA-DESC { background-color: var(--badge-desc1); }
+.tipo-HASTA-DESC-MC { background-color: var(--badge-mc); }
 .tipo-DESC2 { background-color: var(--badge-desc2); }
 .tipo-NQ { background-color: var(--badge-nq); }
 .tipo-DESC-CUOTAS { background-color: var(--badge-cuotas); }

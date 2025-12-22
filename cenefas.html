@@ -183,9 +183,9 @@
             <span
               class="material-icons"
               style="font-size: 18px; margin-right: 4px"
-              >view_compact</span
+              >expand_less</span
             >
-            Vista Compacta
+            Contraer Tabla
           </button>
         </div>
         <div class="controls-group">
@@ -221,8 +221,11 @@
           <table id="cenefas-table">
             <thead>
               <tr>
-                <th><input id="select-all" type="checkbox" /></th>
-                <th>Tipo Acción</th>
+                <th style="width: 35px">
+                  <input id="select-all" type="checkbox" />
+                </th>
+                <th style="width: 100px">Tipo</th>
+                <th>Acción</th>
                 <th>Desde</th>
                 <th>Hasta</th>
                 <th>Título Acción</th>
@@ -355,6 +358,16 @@
                 <td>Número grande + % pequeño</td>
               </tr>
               <tr>
+                <td><code>H30%</code></td>
+                <td>Hasta X% descuento</td>
+                <td>HASTA arriba + Número + %</td>
+              </tr>
+              <tr>
+                <td><code>H30%MC</code></td>
+                <td>Hasta X% MásClub</td>
+                <td>Banner azul + HASTA arriba + Número + %</td>
+              </tr>
+              <tr>
                 <td><code>30%2</code></td>
                 <td>Descuento 2da unidad</td>
                 <td>Número + % arriba del texto</td>
@@ -368,6 +381,11 @@
                 <td><code>30%+4Q</code></td>
                 <td>Descuento + Cuotas</td>
                 <td>30% + 4 en fila superior, textos abajo</td>
+              </tr>
+              <tr>
+                <td><code>30%+6QMC</code></td>
+                <td>Descuento + Cuotas MC</td>
+                <td>Banner MásClub + 30% + 6 cuotas</td>
               </tr>
               <tr>
                 <td><code>80%MC</code></td>
@@ -401,8 +419,10 @@
             <h3>4️⃣ Campos del Formulario</h3>
             <ul>
               <li>
-                <strong>Tipo Acción</strong> (obligatorio): 2X1, $3999, 40%,
-                2X1MC, 35%2MC, etc. Los textos se generan automáticamente.
+                <strong>Tipo Acción</strong> (obligatorio): Códigos como 2X1,
+                3X2, $3999, 40%, H30%, H30%MC, 30%2, 6Q, 30%+4Q, 30%+6QMC,
+                80%MC, 30%o35%MC, 35%2MC, 2X1MC, 3X2o4X2MC. Los textos se
+                generan automáticamente según el código ingresado.
               </li>
               <li>
                 <strong>Desde/Hasta</strong>: Fechas de vigencia (formato:

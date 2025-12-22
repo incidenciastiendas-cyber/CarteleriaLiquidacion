@@ -6,6 +6,8 @@ const BADGE_NOMBRES = {
   'PRECIO': 'PREC PROD',
   'DESC1': 'DESC',
   'DESC2': 'DESC EN 2DA',
+  'HASTA-DESC': 'HASTA X%',
+  'HASTA-DESC-MC': 'HASTA X% MC',
   'NQ': 'CUOTAS',
   'DESC-CUOTAS': 'DESC+CUOTAS',
   'MC': 'MasClub',
@@ -74,6 +76,11 @@ function detectarTipo(tipoOferta) {
     return 'DESC2-MC';
   }
   
+  // HASTA-DESC-MC: formato Hx%MC (ej: "H30%MC")
+  if (/^H\d+%MC$/i.test(texto)) {
+    return 'HASTA-DESC-MC';
+  }
+  
   // MC: formato x%MC (ej: 80%MC)
   if (/\d+%MC$/i.test(texto)) {
     return 'MC';
@@ -82,6 +89,11 @@ function detectarTipo(tipoOferta) {
   // DESC2: contiene "2" seguido de % o palabra SEGUNDA/2° (ej: "30%2", "SEGUNDA")
   if (texto.includes('%') && (/\d+%2/i.test(texto) || texto.includes('SEGUNDA') || texto.includes('2°'))) {
     return 'DESC2';
+  }
+  
+  // HASTA-DESC: formato Hx% (ej: "H30%" o "h30%")
+  if (/^H\d+%$/i.test(texto)) {
+    return 'HASTA-DESC';
   }
   
   // DESC1: contiene solo %
@@ -135,6 +147,32 @@ function generarOfertaHTML(c, tipo) {
                 <span class="numero-descuento">${descuento}</span><span class="simbolo-porcentaje">%</span>
               </div>
               <div class="oferta-descripcion">DE DESCUENTO</div>`;
+    
+    case 'HASTA-DESC':
+      // Formato: "H30%" - palabra HASTA arriba del número grande con %
+      const hastaDesc = tipoOferta.replace(/[H%]/gi, '').trim();
+      return `<div class="oferta-hasta">
+                <div class="hasta-texto">HASTA</div>
+                <div class="oferta-principal oferta-descuento">
+                  <span class="numero-descuento">${hastaDesc}</span><span class="simbolo-porcentaje">%</span>
+                </div>
+              </div>
+              <div class="oferta-descripcion">${descripcion || 'DE DESCUENTO'}</div>`;
+    
+    case 'HASTA-DESC-MC':
+      // Formato: "H30%MC" - Banner MasClub + HASTA arriba del número con %
+      const hastaDescMC = tipoOferta.replace(/[H%MC]/gi, '').trim();
+      return `<div class="oferta-hasta-mc">
+                <div class="mc-banner">
+                  <span class="mc-exclusivo">EXCLUSIVO</span>
+                  <img src="fonts/MC_Logo_Blanco.png" alt="MásClub" class="mc-logo-banner">
+                </div>
+                <div class="hasta-texto-mc">HASTA</div>
+                <div class="oferta-principal oferta-descuento">
+                  <span class="numero-descuento">${hastaDescMC}</span><span class="simbolo-porcentaje">%</span>
+                </div>
+              </div>
+              <div class="oferta-descripcion">${descripcion || 'DE DESCUENTO'}</div>`;
     
     case 'DESC2':
       // Formato: columnas "30% | DESCUENTO EN LA SEGUNDA UNIDAD"
@@ -306,10 +344,17 @@ function renderTable(){
   const tbody = $('#cenefas-body');
   tbody.innerHTML = '';
   cenefas.forEach((c, idx) => {
+    const tipoDetectado = c.tipo || detectarTipo(c.tipoOferta);
+    const badgeNombre = BADGE_NOMBRES[tipoDetectado] || tipoDetectado;
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><input type="checkbox" data-idx="${idx}" class="sel"></td>
-      <td><input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, 2X1MC, etc"></td>
+      <td style="text-align: center;"><input type="checkbox" data-idx="${idx}" class="sel"></td>
+      <td style="text-align: center;">
+        <span class="tipo-badge tipo-${tipoDetectado}">${badgeNombre}</span>
+      </td>
+      <td>
+        <input data-idx="${idx}" data-field="tipoOferta" value="${c.tipoOferta || ''}" placeholder="2X1, $3999, 40%, H30%, H30%MC, etc">
+      </td>
       <td><input data-idx="${idx}" data-field="fechaDesde" value="${c.fechaDesde || ''}" placeholder="25/11"></td>
       <td><input data-idx="${idx}" data-field="fechaHasta" value="${c.fechaHasta || ''}" placeholder="01/12"></td>
       <td><input data-idx="${idx}" data-field="objetoOferta" value="${c.objetoOferta || ''}" placeholder="Título de la acción"></td>
