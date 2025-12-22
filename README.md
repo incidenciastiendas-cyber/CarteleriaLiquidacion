@@ -1,28 +1,139 @@
-# Cartelería Masiva — versión estática
+# Cartelería Liquidación
 
-Esta carpeta contiene una versión ligera y ejecutable en el navegador de la funcionalidad **Cartelería Masiva** extraída de la app principal.
+Sistema de generación de carteles para productos en liquidación y cenefas promocionales.
 
-Qué incluye:
+## 📁 Estructura del Proyecto
 
-- `index.html`: UI estática con tabla de productos, importador CSV, botones de control y vista previa.
-- `styles.css`: estilos para A4/A6/oblea y layout.
-- `app.js`: lógica JS para gestionar productos, importar CSV (PapaParse) y generar códigos de barras (JsBarcode).
-- `sample.csv`: CSV de ejemplo con la fila que me diste.
-
-Uso rápido:
-
-1. Abrí PowerShell en esta carpeta:
-
-```powershell
-cd "h:\Mi unidad\Colab Notebooks\App Carteleria\carteleria-static"
-python -m http.server 8000
+```
+CarteleriaLiquidacion/
+├── index.html              # Login (página inicial)
+├── home.html               # Dashboard principal
+├── liquidacion.html        # Cartelería de liquidación (A6 + obleas)
+├── cenefas.html            # Cenefas promocionales (A5 horizontal)
+├── traductor.html          # Traductor Master (Excel a CSV)
+│
+├── styles/                 # Archivos CSS
+│   ├── styles.css          # Estilos base del proyecto
+│   ├── login.css           # Estilos del login
+│   ├── home.css            # Estilos del home
+│   ├── cenefas-styles.css  # Estilos de cenefas
+│   └── traductor-styles.css # Estilos del traductor
+│
+├── js/                     # Archivos JavaScript
+│   ├── auth.js             # Autenticación
+│   ├── users.js            # Base de datos de usuarios
+│   ├── app.js              # Lógica de liquidación
+│   ├── cenefas-app.js      # Lógica de cenefas
+│   └── traductor-app.js    # Lógica del traductor
+│
+├── fonts/                  # Fuentes y recursos tipográficos
+├── assets/                 # Recursos (imágenes, logos)
+├── sample.csv              # CSV de ejemplo para liquidación
+├── sample-cenefas.csv      # CSV de ejemplo para cenefas
+└── IniciarCarteleria.bat   # Launcher de la aplicación
 ```
 
-2. Abrí en tu navegador: `http://localhost:8000`.
-3. Importá `sample.csv` o tu CSV real, abrí la vista previa y luego usa `Imprimir` del navegador para guardar como PDF.
+## 🚀 Módulos
 
-Notas:
+### 1. Sistema de Login
 
-- La fuente principal es `Miso` (cargada desde Google Fonts).
-- Los códigos de barras se generan con `JsBarcode` y se renderizan como SVG; soporta EAN/UPC/Code128 en modo `auto`.
-- Si querés, puedo adaptar el CSS para copiar exactamente el `correccion2.pdf` (enviame el PDF) o exportar directamente PDFs desde el servidor usando wkhtmltopdf (requiere binario o instalar Node + librerías).
+- **Archivo**: `index.html`
+- **Función**: Autenticación de usuarios
+- **Usuarios**: Definidos en `js/users.js`
+
+### 2. Cartelería de Liquidación
+
+- **Archivo**: `liquidacion.html`
+- **Función**: Generación de carteles A6 y obleas
+- **Formatos**: PDF individual o masivo
+- **Entrada**: CSV con datos de productos
+
+### 3. Cenefas Promocionales
+
+- **Archivo**: `cenefas.html`
+- **Función**: Creación de cenefas A5 horizontal
+- **Tipos**: NxN, Descuentos, Cuotas, MásClub, etc.
+- **Entrada**: CSV o carga manual
+
+### 4. Traductor Master
+
+- **Archivo**: `traductor.html`
+- **Función**: Convierte Excel de eventos a CSV para cenefas
+- **Características**:
+  - Drag & drop de archivos Excel
+  - Procesamiento automático de reglas
+  - Estadísticas por departamento
+  - Exporta CSV compatible con cenefas
+
+#### Pasos del Procesamiento
+
+1. **Filtrar**: Solo filas con `Testimonial = "SI"`
+2. **Procesar cada fila**: Extraer CSI, CCQ, Incluye/Excluye, Hasta%, tipo de acción
+3. **Filtrar departamentos**: Si tipo = "$precio", solo departamentos 80, 43, 21, 93, 98
+4. **Combinar MC+Regular**: Si hay 25% y 30%MC del mismo título → crear `25%O30%MC` y eliminar las 2 originales
+5. **Unificar títulos**: Agrupar por departamento+tipo → unir títulos (máx 4, cada uno <30 caracteres)
+6. **Generar CSV**: Con punto y coma (;) como separador
+
+#### Reglas de Procesamiento
+
+**Tipo de Acción:**
+
+- `1x25%` → `25%`
+- `2x1` → `2x1`
+- `#2x70%` → `70%2`
+- `Mas 6CSI` → `+6Q` (agregado al tipo)
+- Si `Tu Club = "Si"` → Se agrega "MC" al final
+
+**Procesamiento de Título:**
+
+- `Hasta 30% en adornos` → Tipo: `H30%`, Título: `En adornos`
+- `CCQ` o `Combinalo como quieras` → Va a campo "Aclaración 2"
+- `Coca cola excluye envases` → Título: `Coca cola`, Incluye/Excluye: `Excluye envases`
+
+**Combinación MC + Regular:**
+
+- Mismo título con versión regular (25%) y MásClub (30%MC)
+- Se combina en: `25%O30%MC`
+- Las dos filas originales se eliminan automáticamente
+
+## 📝 Uso
+
+1. Abrir `IniciarCarteleria.bat` o acceder a `index.html`
+2. Iniciar sesión con credenciales
+3. Seleccionar módulo desde el dashboard
+4. Cargar datos (CSV o Excel según módulo)
+5. Previsualizar y descargar resultados
+
+## 🔧 Desarrollo
+
+### Agregar nuevos usuarios
+
+Editar `js/users.js` y agregar entrada en el array de usuarios.
+
+### Modificar estilos
+
+Todos los archivos CSS están en la carpeta `styles/`.
+
+### Actualizar lógica
+
+Los archivos JavaScript están organizados en la carpeta `js/`.
+
+## 📦 Dependencias Externas
+
+- **PapaParse**: Parsing de CSV
+- **html2canvas**: Captura de elementos DOM
+- **jsPDF**: Generación de PDFs
+- **SheetJS (xlsx.js)**: Lectura de archivos Excel
+- **Material Icons**: Iconografía
+
+## 🎨 Diseño
+
+- Background: `#bdd5fa`
+- Cards: Blanco con bordes redondeados (16px)
+- Tipografía: System fonts + Miso (custom)
+- Iconos: Material Icons
+
+## 📚 Documentación Adicional
+
+- [Traductor Master - Reglas de Procesamiento](TRADUCTOR-README.md)
+- [Gestión de Usuarios](USUARIOS.md)

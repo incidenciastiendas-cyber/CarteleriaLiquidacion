@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Cenefas Promocionales — Previsualizador</title>
     <link rel="icon" type="image/png" href="fonts/gdnicon.png" />
-    <link rel="stylesheet" href="cenefas-styles.css" />
+    <link rel="stylesheet" href="styles/cenefas-styles.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -111,7 +111,10 @@
             </button>
           </div>
         </div>
-        <div style="display: flex; gap: 10px; align-items: center">
+      </header>
+
+      <div class="controls">
+        <div class="controls-group">
           <a href="home.html" class="btn-cenefas">
             <span
               class="material-icons"
@@ -128,10 +131,15 @@
             >
             ¿Cómo usar?
           </button>
+          <button id="btn-download-template" class="btn btn-info">
+            <span
+              class="material-icons"
+              style="font-size: 18px; margin-right: 4px"
+              >description</span
+            >
+            Descargar Template CSV
+          </button>
         </div>
-      </header>
-
-      <div class="controls">
         <div class="controls-group">
           <div class="file-input-wrapper">
             <label for="file-csv" class="btn btn-file"
@@ -145,13 +153,13 @@
             <input id="file-csv" type="file" accept=".csv" />
           </div>
           <button id="btn-import" class="btn btn-file">Importar CSV</button>
-          <button id="btn-download-template" class="btn btn-info">
+          <button id="btn-export-draft" class="btn btn-info">
             <span
               class="material-icons"
               style="font-size: 18px; margin-right: 4px"
-              >description</span
+              >save</span
             >
-            Descargar Template CSV
+            Guardar Borrador
           </button>
         </div>
         <div class="controls-group">
@@ -170,14 +178,6 @@
               >delete</span
             >
             Eliminar seleccionados
-          </button>
-          <button id="btn-export-draft" class="btn btn-info">
-            <span
-              class="material-icons"
-              style="font-size: 18px; margin-right: 4px"
-              >save</span
-            >
-            Guardar Borrador
           </button>
           <button id="btn-toggle-compact" class="btn btn-secondary">
             <span
@@ -278,8 +278,8 @@
               margin-top: 20px;
             "
           >
-            <button id="modal-confirm-si" class="btn btn-danger">
-              Sí, eliminar
+            <button id="modal-confirm-si" class="btn btn-primary">
+              Sí, confirmar
             </button>
             <button id="modal-confirm-no" class="btn btn-secondary">
               Cancelar
@@ -541,6 +541,6 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="cenefas-app.js"></script>
+    <script src="js/cenefas-app.js"></script>
   </body>
 </html>

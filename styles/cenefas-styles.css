@@ -235,7 +235,7 @@
 
 .numero-precio {
   font-family: 'Miso', Arial, sans-serif;
-  font-size: 120px;
+  font-size: 90px;
   font-weight: 800;
   line-height: 1;
 }
@@ -246,7 +246,7 @@
   align-items: baseline;
   justify-content: center;
   gap: 1px;
-  margin-bottom: -8px;
+  margin-bottom: -4px;
 }
 
 .numero-descuento {
@@ -309,13 +309,30 @@
   line-height: 1;
   margin-bottom: -5px;
   letter-spacing: 1px;
-  color: white;
-  margin-top: 5px;
 }
 
-/* Contenido derecha para HASTA-DESC-MC usa contenido-derecha-mc con padding-top 43px */
+/* Contenido izquierda para HASTA-DESC-MC (parte blanca con objeto oferta) */
 .tipo-HASTA-DESC-MC .contenido-derecha-mc {
   padding-top: 43px;
+  left: 0;
+  right: auto;
+  width: 259px;
+}
+
+/* Banner MC específico para HASTA-DESC-MC - posición ajustada */
+.mc-banner {
+  position: absolute;
+  top: 0;
+  left: 262px;
+  right: 0;
+  width: auto;
+  height: 43px;
+  background: #2B3689;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
 }
 
 /* Tipo DESC2: columnas "30% | DESCUENTO EN LA SEGUNDA UNIDAD" */
@@ -559,6 +576,7 @@
 .mc-banner {
   position: absolute;
   left: 231px;
+  top:0.9px;
   width: 305px;
   height: 43px;
   background: #2B3689;
@@ -645,7 +663,8 @@
   text-align: center;
   overflow-wrap: break-word;
   white-space: normal;
-  hyphens: auto;
+  hyphens: none; /* NO usar guiones, solo cortar en espacios */
+  word-break: normal; /* Respetar espacios como puntos de corte */
 }
 
 /* ============================================
@@ -838,7 +857,8 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
-  hyphens: auto;
+  hyphens: none; /* NO usar guiones, solo cortar en espacios */
+  word-break: normal; /* Respetar espacios como puntos de corte */
   text-align: center;
 }
 
@@ -1104,7 +1124,7 @@ button, .btn, .btn-primary, .btn-success, .btn-danger, .btn-info, .btn-file, .bt
 }
 
 /* ============================================
-   FEATURE-BackToTop: Bot\u00f3n flotante volver arriba
+   FEATURE-BackToTop: Botón flotante volver arriba
    ============================================ */
 .btn-back-to-top {
   position: fixed;

@@ -160,13 +160,9 @@ function generarOfertaHTML(c, tipo) {
               <div class="oferta-descripcion">${descripcion || 'DE DESCUENTO'}</div>`;
     
     case 'HASTA-DESC-MC':
-      // Formato: "H30%MC" - Banner MasClub + HASTA arriba del número con %
+      // Formato: "H30%MC" - Banner MasClub externo + HASTA arriba del número con %
       const hastaDescMC = tipoOferta.replace(/[H%MC]/gi, '').trim();
       return `<div class="oferta-hasta-mc">
-                <div class="mc-banner">
-                  <span class="mc-exclusivo">EXCLUSIVO</span>
-                  <img src="fonts/MC_Logo_Blanco.png" alt="MásClub" class="mc-logo-banner">
-                </div>
                 <div class="hasta-texto-mc">HASTA</div>
                 <div class="oferta-principal oferta-descuento">
                   <span class="numero-descuento">${hastaDescMC}</span><span class="simbolo-porcentaje">%</span>
@@ -666,7 +662,7 @@ function renderPreview(){
         <path d="M281 85.1463L279.007 79H0V100H276.516L281 85.1463Z" fill="#0B0B0B"/>
         <path d="M259 20L1 18" stroke="black" stroke-width="2"/>
       </svg>
-    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') ? `
+    ` : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC' || tipoDetectado === 'HASTA-DESC-MC') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" preserveAspectRatio="none" style="position: absolute; top: 0; right: 0; width: 281px; height: 172px; z-index: 1;">
         <polygon points="0,0 239,0 281,86 239,172 0,172" fill="#2B3689" />
       </svg>
@@ -684,7 +680,7 @@ function renderPreview(){
     
     const vigenciaEnOferta = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') 
       ? `<div class="mc2-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>`
-      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC')
+      : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC' || tipoDetectado === 'HASTA-DESC-MC')
       ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>` 
       : `<div class="oferta-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>`;
     
@@ -693,7 +689,7 @@ function renderPreview(){
     // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC: objeto oferta va a la izquierda (parte blanca), NO dentro del cuadro
     // MC2 usa contenido-derecha normal (sin -mc)
     // Agregar clase específica para contenido-derecha según el tipo
-    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') 
+    const contenidoDerechaClass = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC' || tipoDetectado === 'HASTA-DESC-MC') 
       ? 'contenido-derecha-mc' 
       : 'contenido-derecha';
     
@@ -715,7 +711,7 @@ function renderPreview(){
               ${c.aclaracion ? `<div class="${aclaracionClass}">${escapeHtml(c.aclaracion).toUpperCase()}</div>` : ''}`;
     
     // Banner MasClub para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC (fuera de oferta-content pero dentro de cenefa-body)
-    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC') 
+    const bannerMC = (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC' || tipoDetectado === 'HASTA-DESC-MC') 
       ? `<div class="mc-banner">
            <span class="mc-exclusivo">EXCLUSIVO</span>
            <img src="assets/logos/masclub.png" alt="Más club" class="mc-logo-banner">
@@ -870,6 +866,50 @@ function showConfirm(mensaje) {
 
 // Init
 document.addEventListener('DOMContentLoaded', ()=>{
+  // Verificar si hay datos del traductor
+  const datosTraductor = localStorage.getItem('traductor-to-cenefas');
+  let cargadoDesdeTraductor = false;
+  
+  if (datosTraductor) {
+    try {
+      const cenefasData = JSON.parse(datosTraductor);
+      console.log(`✓ Cargando ${cenefasData.length} cenefas desde Traductor Master`);
+      
+      // Limpiar datos existentes
+      cenefas = [];
+      
+      // Cargar datos del traductor
+      cenefasData.forEach(item => {
+        cenefas.push({
+          tipo: item.tipo || '',
+          desde: item.desde || '',
+          hasta: item.hasta || '',
+          titulo: item.titulo || '',
+          incluyeExcluye: item.incluyeExcluye || '',
+          aclaracion2: item.aclaracion2 || '',
+          legal1: item.legal1 || '',
+          legal2: item.legal2 || ''
+        });
+      });
+      
+      // Limpiar localStorage del traductor
+      localStorage.removeItem('traductor-to-cenefas');
+      
+      // Guardar en el borrador de cenefas
+      saveToLocalStorage();
+      
+      // Marcar que se cargó desde traductor
+      cargadoDesdeTraductor = true;
+      
+      // Mostrar mensaje
+      setTimeout(() => {
+        showModal(`✓ Se cargaron ${cenefasData.length} cenefas desde el Traductor Master`);
+      }, 300);
+    } catch (error) {
+      console.error('Error al cargar datos del traductor:', error);
+    }
+  }
+  
   renderTable(); 
   bindTableEvents();
 
@@ -1207,6 +1247,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   });
   
-  // Cargar borrador de localStorage al iniciar
-  loadFromLocalStorage();
+  // Cargar borrador de localStorage al iniciar (solo si NO se cargó desde traductor)
+  if (!cargadoDesdeTraductor) {
+    loadFromLocalStorage();
+  }
 });
