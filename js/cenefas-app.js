@@ -17,9 +17,11 @@ const BADGE_NOMBRES = {
   'NxNMC2': 'NxN MasClub2'
 };
 
-const cenefas = [
+let cenefas = [
 
 ];
+
+let cargadoDesdeTraductor = false;
 
 // Funciones de guardado automático
 function saveToLocalStorage(){
@@ -61,12 +63,12 @@ function detectarTipo(tipoOferta) {
     return 'DESC-CUOTAS';
   }
   
-  // MC2: formato x%ox%MC (ej: 30%o35%MC)
-  if (/\d+%[oO]\d+%MC$/i.test(texto)) {
+  // MC2: formato x%ox%MC (ej: 30%o35%MC, 25%O30%MC)
+  if (/\d+%[oO]\d+%?MC$/i.test(texto)) {
     return 'MC2';
   }
   
-  // NxNMC2: formato NxNozxNMC (ej: 3X2o4X2MC)
+  // NxNMC2: formato NxNozxNMC (ej: 3X2o4X2MC, 2x1O3x1MC)
   if (/\d+[xX]\d+[oO]\d+[xX]\d+MC$/i.test(texto)) {
     return 'NxNMC2';
   }
@@ -868,7 +870,7 @@ function showConfirm(mensaje) {
 document.addEventListener('DOMContentLoaded', ()=>{
   // Verificar si hay datos del traductor
   const datosTraductor = localStorage.getItem('traductor-to-cenefas');
-  let cargadoDesdeTraductor = false;
+  cargadoDesdeTraductor = false;
   
   if (datosTraductor) {
     try {
@@ -879,18 +881,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
       cenefas = [];
       
       // Cargar datos del traductor
+      console.log('DEBUG - Primer item del traductor:', cenefasData[0]);
       cenefasData.forEach(item => {
+        const tipoOferta = item.tipo || '';
         cenefas.push({
-          tipo: item.tipo || '',
-          desde: item.desde || '',
-          hasta: item.hasta || '',
-          titulo: item.titulo || '',
-          incluyeExcluye: item.incluyeExcluye || '',
-          aclaracion2: item.aclaracion2 || '',
+          id: Date.now().toString() + Math.random(),
+          tipo: detectarTipo(tipoOferta),  // Detectar el tipo desde el valor
+          tipoOferta: tipoOferta,           // Guardar el valor original
+          fechaDesde: item.desde || '',
+          fechaHasta: item.hasta || '',
+          objetoOferta: item.titulo || '',
+          aclaracionObjeto: item.incluyeExcluye || '',
+          aclaracion: item.aclaracion2 || '',
           legal1: item.legal1 || '',
           legal2: item.legal2 || ''
         });
       });
+      console.log('DEBUG - Cenefas cargadas:', cenefas.length, 'Primera cenefa:', cenefas[0]);
       
       // Limpiar localStorage del traductor
       localStorage.removeItem('traductor-to-cenefas');
