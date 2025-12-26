@@ -13,6 +13,7 @@ const BADGE_NOMBRES = {
   'MC': 'MasClub',
   'MC2': 'MasClub2',
   'DESC2-MC': 'DESC MasClub',
+  'DESC2-NxN-MC': 'DESC2 O NxN MC',
   'NxNMC': 'NxN MasClub',
   'NxNMC2': 'NxN MasClub2'
 };
@@ -56,6 +57,11 @@ function detectarTipo(tipoOferta) {
   // DESC-CUOTAS-MC: formato x%+NMC (ej: "30%+6QMC")
   if (/\d+%\+\d+Q?MC$/i.test(texto)) {
     return 'DESC-CUOTAS-MC';
+  }
+  
+  // DESC2-NxN-MC: formato x%2OxNxMC (ej: "80%2O2X1MC" - 80% en 2da O 2x1 MC)
+  if (/\d+%2O\d+X\d+MC$/i.test(texto)) {
+    return 'DESC2-NxN-MC';
   }
   
   // DESC-CUOTAS: contiene % Y un número seguido (ej: "30%+4")
@@ -121,6 +127,17 @@ function generarOfertaHTML(c, tipo) {
   const tipoOferta = escapeHtml(c.tipoOferta || '');
   const descripcion = escapeHtml(c.descripcionOferta || '');
   
+  // Función auxiliar para formatear precios con separador de miles
+  function formatearPrecio(precio) {
+    // Remover cualquier formato existente y el símbolo $
+    const numero = precio.replace(/[\$\.\s]/g, '');
+    // Si es un número válido, agregar puntos de miles
+    if (/^\d+$/.test(numero)) {
+      return numero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+    return numero;
+  }
+  
   switch(tipo) {
     case 'NxN':
       // Formato: "2X1" con X mayúscula - genera automáticamente "LLEVÁ 2 PAGÁ 1"
@@ -136,10 +153,11 @@ function generarOfertaHTML(c, tipo) {
       return `<div class="oferta-principal">${tipoOferta}</div>`;
     
     case 'PRECIO':
-      // Formato: "$3.999" con $ pequeño
-      const precio = tipoOferta.replace('$', '');
+      // Formato: "$3.999" con $ pequeño - siempre formatear con separador de miles
+      const precioSinFormato = tipoOferta.replace('$', '');
+      const precioFormateado = formatearPrecio(precioSinFormato);
       return `<div class="oferta-principal oferta-precio">
-                <span class="signo-peso">$</span><span class="numero-precio">${precio}</span>
+                <span class="signo-peso">$</span><span class="numero-precio">${precioFormateado}</span>
               </div>`;
     
     case 'DESC1':
@@ -260,6 +278,40 @@ function generarOfertaHTML(c, tipo) {
                   <div class="col-derecha">
                     <div class="simbolo-arriba">%</div>
                     <div class="texto-columna">DESCUENTO EN<br>LA SEGUNDA<br>UNIDAD</div>
+                  </div>
+                </div>`;
+      }
+      return `<div class="oferta-principal">${tipoOferta}</div>`;
+    
+    case 'DESC2-NxN-MC':
+      // Formato: 80%2O2X1MC - Descuento en 2da O NxN con MasClub (diseño dividido como MC2)
+      const descNxNCombo = tipoOferta.match(/(\d+)%2O(\d+)[xX](\d+)MC/i);
+      if (descNxNCombo) {
+        const pct = descNxNCombo[1];
+        const numLleva = descNxNCombo[2];
+        const numPaga = descNxNCombo[3];
+        return `<div class="mc2-dcto1">
+                  <div class="desc2nxn-numero-container">
+                    <span class="desc2nxn-numero">${pct}</span>
+                    <div class="desc2nxn-simbolo-col">
+                      <span class="desc2nxn-simbolo">%</span>
+                      <div class="desc2nxn-segunda">EN LA SEGUNDA UNIDAD</div>
+                    </div>
+                  </div>
+                  <div class="mc2-texto1">
+                    <div class="mc2-texto1-linea1">CON TODOS</div>
+                    <div class="mc2-texto1-linea2">LOS MEDIOS DE PAGO</div>
+                  </div>
+                </div>
+                <div class="mc2-separador">DESCUENTOS NO ACUMULABLES</div>
+                <div class="mc2-dcto2">
+                  <div class="desc2nxn-nxn-container">
+                    <div class="mc2-nxn-numero">${numLleva}<span class="x-pequena-mc2">x</span>${numPaga}</div>
+                    <div class="mc2-nxn-descripcion">LLEVÁ ${numLleva} PAGÁ ${numPaga}</div>
+                  </div>
+                  <div class="mc2-texto2">
+                    <span class="mc2-exclusivo">EXCLUSIVO</span>
+                    <img src="assets/logos/masclub.png" alt="Más club" class="mc2-logo">
                   </div>
                 </div>`;
       }
@@ -442,9 +494,10 @@ function bindTableEvents(){
     }
   });
   $('#cenefas-body').addEventListener('click', async (e)=>{
-    // Eliminar con confirmación
-    if(e.target.classList.contains('btn-del')){
-      const idx = parseInt(e.target.dataset.idx,10);
+    // Eliminar con confirmación (usar closest para capturar clicks en el icono también)
+    const btnDel = e.target.closest('.btn-del');
+    if(btnDel){
+      const idx = parseInt(btnDel.dataset.idx,10);
       const confirmar = await showConfirm('¿Eliminar esta cenefa?');
       if(!confirmar) return;
       cenefas.splice(idx,1); 
@@ -452,9 +505,10 @@ function bindTableEvents(){
       saveToLocalStorage();
     }
     
-    // Duplicar fila
-    if(e.target.classList.contains('btn-duplicate')){
-      const idx = parseInt(e.target.dataset.idx,10);
+    // Duplicar fila (usar closest para capturar clicks en el icono también)
+    const btnDup = e.target.closest('.btn-duplicate');
+    if(btnDup){
+      const idx = parseInt(btnDup.dataset.idx,10);
       const original = cenefas[idx];
       const duplicado = {...original, id: Date.now().toString()};
       cenefas.splice(idx + 1, 0, duplicado);
@@ -656,8 +710,8 @@ function renderPreview(){
     
     // SVG para la forma de flecha (se renderiza en PDF)
     // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC: flecha derecha azul #2B3689
-    // Para MC2 y NxNMC2: SVG personalizado con fondos incluidos
-    const svgShape = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') ? `
+    // Para MC2, NxNMC2 y DESC2-NxN-MC: SVG personalizado con fondos incluidos
+    const svgShape = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2' || tipoDetectado === 'DESC2-NxN-MC') ? `
       <svg class="oferta-shape" width="281" height="172" viewBox="0 0 281 172" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 0; left: 0; width: 281px; height: 172px; z-index: 1;">
         <path d="M253.764 1L279.953 85.0029L253.759 171H1V1H253.764Z" fill="#ffffff" stroke="black" stroke-width="2"/>
         <path d="M254.5 172L279 91H0V172H254.5Z" fill="#2B3689"/>
@@ -674,13 +728,13 @@ function renderPreview(){
       </svg>
     `;
     
-    // Para MC2 y NxNMC2, la vigencia va arriba dentro del oferta-content
+    // Para MC2, NxNMC2 y DESC2-NxN-MC, la vigencia va arriba dentro del oferta-content
     // Para MC, DESC2-MC, NxNMC y DESC-CUOTAS-MC, la vigencia va dentro del cuadro abajo
     // Extraer solo dd/mm (sin año) para vigencia
     const fechaDesdeFormatted = extraerDiaMes(c.fechaDesde||'');
     const fechaHastaFormatted = extraerDiaMes(c.fechaHasta||'');
     
-    const vigenciaEnOferta = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2') 
+    const vigenciaEnOferta = (tipoDetectado === 'MC2' || tipoDetectado === 'NxNMC2' || tipoDetectado === 'DESC2-NxN-MC') 
       ? `<div class="mc2-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>`
       : (tipoDetectado === 'MC' || tipoDetectado === 'DESC2-MC' || tipoDetectado === 'NxNMC' || tipoDetectado === 'DESC-CUOTAS-MC' || tipoDetectado === 'HASTA-DESC-MC')
       ? `<div class="oferta-vigencia mc-vigencia">DEL ${escapeHtml(fechaDesdeFormatted)} AL ${escapeHtml(fechaHastaFormatted)}</div>` 
@@ -1002,11 +1056,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 // Sanitizar nombre de archivo
 function sanitizeFilename(filename) {
   return filename
-    .replace(/[<>:"/\\|?*]/g, '-')  // Caracteres no permitidos
-    .replace(/\s+/g, '_')            // Espacios a guiones bajos
-    .replace(/_{2,}/g, '_')          // Múltiples guiones bajos a uno
-    .replace(/^[_-]+|[_-]+$/g, '')   // Limpiar bordes
-    .substring(0, 200);              // Límite de longitud
+    .replace(/[<>:"/\\|?*$%]/g, '_')  // Caracteres no permitidos (incluye $, %)
+    .replace(/\s+/g, '_')               // Espacios a guiones bajos
+    .replace(/_{2,}/g, '_')             // Múltiples guiones bajos a uno
+    .replace(/^[_-]+|[_-]+$/g, '')      // Limpiar bordes
+    .substring(0, 200);                 // Límite de longitud
 }
 
 // Descargar cenefas seleccionadas individualmente

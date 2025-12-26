@@ -75,7 +75,7 @@ function procesarDatos(datos) {
   // 1. Filtrar por Testimonial = "SI"
   const filtrados = datos.filter(row => {
     const testimonial = String(row['Testimonial'] || '').trim().toUpperCase();
-    return testimonial === 'SI' || testimonial === 'SÍ';
+    return testimonial === 'SI' || testimonial === 'SÍ'|| testimonial === 'Tapa'|| testimonial === 'TAPA'|| testimonial === 'tapa';
   });
 
   console.log('PASO 2: Filtrados (Testimonial=SI):', filtrados.length);
@@ -271,10 +271,21 @@ function procesarTituloYTipo(item, tituloOriginal) {
   const dpto = matchDpto ? matchDpto[1] : '';
 
   // ORDEN DE PROCESAMIENTO (de primero a último):
+  // 0. Extracción de precio del título (si viene con $)
   // 1. CSI (Cuotas Sin Interés) - PRIMERO
   // 2. CCQ (Combínalo Como Quieras)
   // 3. Incluye/Excluye
   // 4. Hasta X%
+
+  // REGLA 0: Extraer precio del título si viene con $ (ej: "MANTECOL TROZADO $1589 X 100 GR")
+  const regexPrecioEnTitulo = /\$(\d+(?:\.\d{3})*(?:,\d{2})?)/;
+  const matchPrecio = titulo.match(regexPrecioEnTitulo);
+  if (matchPrecio) {
+    tipoAccion = matchPrecio[0]; // Guardar el precio con $
+    // Remover precio del título
+    titulo = titulo.replace(regexPrecioEnTitulo, '').trim();
+    titulo = titulo.replace(/\s+/g, ' ').trim();
+  }
 
   // REGLA 1: Interpretar CSI (Cuotas sin interés) - PRIMERO
   // Patrones: "Mas XCSI", "mas x csi", "XCSI", "X CSI"
@@ -355,7 +366,7 @@ function procesarTituloYTipo(item, tituloOriginal) {
 
   // Legal (usar campos disponibles)
   const legal1 = 'EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS Y SE APLICARÁ SOBRE EL PRECIO UNITARIO';
-  const legal2 = generarLegal2(fechaDesde, fechaHasta);
+  const legal2 = generarLegal2(fechaDesde, fechaHasta, dpto, tipoAccion, tuClub);
 
   return {
     tipoAccion: tipoAccion || '',
@@ -376,6 +387,16 @@ function procesarTituloYTipo(item, tituloOriginal) {
 
 function procesarTipoAccion(tipo) {
   tipo = tipo.trim();
+  
+  // 1+1 $500 o 1+1 40% → $500 o 40% (ignorar el combo 1+1)
+  if (/^1\+1\s+/.test(tipo)) {
+    tipo = tipo.replace(/^1\+1\s+/, '').trim();
+  }
+  
+  // x%2OxNxMC → mantener (ej: 80%2O2X1MC - 80% en segunda O 2x1 con MasClub)
+  if (/^\d+%2O\d+X\d+MC$/i.test(tipo)) {
+    return tipo.toUpperCase();
+  }
   
   // 1x25% → 25%
   if (/^\d+[xX]\d+%$/.test(tipo)) {
@@ -431,20 +452,28 @@ function formatearFecha(fecha) {
   }
 }
 
-function generarLegal2(desde, hasta) {
+function generarLegal2(desde, hasta, dpto, tipoAccion, tuClub) {
   if (!desde || !hasta) return '';
   
-  // Extraer solo día y mes
-  const desdePartes = desde.split('/');
-  const hastaPartes = hasta.split('/');
-  
-  if (desdePartes.length >= 2 && hastaPartes.length >= 2) {
-    const desdeDM = `${desdePartes[0]}/${desdePartes[1]}/${desdePartes[2]}`;
-    const hastaDM = `${hastaPartes[0]}/${hastaPartes[1]}/${hastaPartes[2]}`;
-    return `PROMOCIÓN VÁLIDA DESDE EL ${desdeDM} HASTA EL ${hastaDM} PARA MÁS INFORMACIÓN O CONDICIONES O LIMITACIONES APLICABLES CONSULTE EN MAXIAHORRO.AR/LEGALES. DONNA SA: 30-67871830-0`;
+  // Dpto 96 = Bebidas con alcohol
+  if (dpto === '96') {
+    return `BEBER CON MODERACIÓN. PROHIBIDA SU VENTA A MENORES DE 18 AÑOS. PROMOCIÓN VÁLIDA DESDE EL DÍA ${desde} HASTA EL DÍA ${hasta}. PARA MÁS INFORMACIÓN O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.`;
   }
   
-  return '';
+  // Si tiene cuotas sin interés (contiene Q)
+  const matchCuotas = tipoAccion.match(/(\d+)Q/);
+  if (matchCuotas) {
+    const numCuotas = matchCuotas[1];
+    return `${numCuotas} CUOTAS SIN INTERÉS. Promoción válida desde el ${desde} al ${hasta} inclusive para los productos indicados, válidos con tarjeta Visa y MasterCard emitidas por entidades bancarias. CFT 0%. TEA0%, TNA0%. No acumulable con otras promociones.`;
+  }
+  
+  // Si Tu Club está activo
+  if (tuClub) {
+    return `PROMOCIÓN VÁLIDA DESDE EL DÍA ${desde} HASTA EL DÍA ${hasta}, SIN OBLIGACIÓN DE COMPRA PARA TODOS LOS SOCIOS DE MÁS CLUB. PARA MÁS INFORMACIÓN Y CONDICIONES O LIMITACIONES APLICABLES, CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0. VER TOPES Y CONDICIONES EN WWW.MASCLUB.COM.AR`;
+  }
+  
+  // Legal genérico
+  return `PROMOCIÓN VÁLIDA DESDE EL DÍA ${desde} HASTA EL DÍA ${hasta}. PARA MÁS INFORMACIÓN O LIMITACIONES APLICABLES CONSULTE EN MASONLINE.COM.AR/LEGALES. DORINKA SRL 30-67813830-0.`;
 }
 
 function calcularEstadisticas() {
@@ -574,7 +603,7 @@ function mostrarResultados() {
 function downloadCSV() {
   // Generar CSV en el formato esperado por cenefas promocionales
   // IMPORTANTE: Separador punto y coma (;) para evitar confusión con comas en los títulos
-  const headers = ['Tipo Acción', 'Desde', 'Hasta', 'Título Acción', 'Incluye/Excluye', 'Aclaración 2', 'Legal 1', 'Legal 2', 'Títulos Originales'];
+  const headers = ['Tipo Acción', 'Desde', 'Hasta', 'Título Acción', 'Incluye/Excluye', 'Aclaración 2', 'Legal 1', 'Legal 2', 'Títulos Originales', 'Departamento'];
   
   let csv = headers.join(';') + '\n';
   
@@ -588,7 +617,8 @@ function downloadCSV() {
       escaparCSV(item.aclaracion2),
       escaparCSV(item.legal1),
       escaparCSV(item.legal2),
-      escaparCSV(item.titulosOriginales)
+      escaparCSV(item.titulosOriginales),
+      escaparCSV(item.descripcionDpto)
     ];
     csv += row.join(';') + '\n';
   });

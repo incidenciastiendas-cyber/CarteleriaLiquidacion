@@ -64,25 +64,34 @@ CarteleriaLiquidacion/
   - Procesamiento automático de reglas
   - Estadísticas por departamento
   - Exporta CSV compatible con cenefas
+  - Envío directo a Cenefas Promocionales
 
 #### Pasos del Procesamiento
 
 1. **Filtrar**: Solo filas con `Testimonial = "SI"`
-2. **Procesar cada fila**: Extraer CSI, CCQ, Incluye/Excluye, Hasta%, tipo de acción
+2. **Procesar cada fila**: Extraer CSI, CCQ, Incluye/Excluye, Hasta%, tipo de acción, precios del título
 3. **Filtrar departamentos**: Si tipo = "$precio", solo departamentos 80, 43, 21, 93, 98
 4. **Combinar MC+Regular**: Si hay 25% y 30%MC del mismo título → crear `25%O30%MC` y eliminar las 2 originales
 5. **Unificar títulos**: Agrupar por departamento+tipo → unir títulos (máx 4, cada uno <30 caracteres)
-6. **Generar CSV**: Con punto y coma (;) como separador
+6. **Generar CSV**: Con punto y coma (;) como separador, incluye columna de departamento
 
 #### Reglas de Procesamiento
 
 **Tipo de Acción:**
 
+- `1+1 $500` → `$500` (ignora combo 1+1)
+- `1+1 40%` → `40%` (ignora combo 1+1)
 - `1x25%` → `25%`
 - `2x1` → `2x1`
 - `#2x70%` → `70%2`
+- `80%2O2X1MC` → `80%2O2X1MC` (combo descuento 2da O NxN con MC)
 - `Mas 6CSI` → `+6Q` (agregado al tipo)
 - Si `Tu Club = "Si"` → Se agrega "MC" al final
+
+**Extracción de Precios del Título:**
+
+- `MANTECOL TROZADO $1589 X 100 GR` → Tipo: `$1589`, Título: `MANTECOL TROZADO X 100 GR`
+- El precio se extrae automáticamente del título y se mueve al tipo de acción
 
 **Procesamiento de Título:**
 
@@ -95,6 +104,15 @@ CarteleriaLiquidacion/
 - Mismo título con versión regular (25%) y MásClub (30%MC)
 - Se combina en: `25%O30%MC`
 - Las dos filas originales se eliminan automáticamente
+
+**Legales Dinámicos:**
+
+- **Legal 1**: Siempre "EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS..."
+- **Legal 2** (dinámico según):
+  - Dpto 96 (Bebidas con alcohol): Legal específico con advertencia +18
+  - Cuotas sin interés: Legal con CFT 0%, TEA 0%, TNA 0%
+  - Tu Club activo: Legal de Más Club con condiciones
+  - Genérico: Legal estándar con vigencia
 
 ## 📝 Uso
 

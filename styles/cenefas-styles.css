@@ -827,6 +827,87 @@
   height: 22px;
   width: auto;
 }
+
+/* Estilos específicos para DESC2-NxN-MC (80%2O2X1MC) */
+.desc2nxn-numero-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: -3px;
+}
+
+.desc2nxn-numero {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 70px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1;
+}
+
+.desc2nxn-simbolo-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 4px;
+  width: 40px;
+}
+
+.desc2nxn-simbolo {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1;
+}
+
+.desc2nxn-segunda {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: #000000;
+  text-transform: uppercase;
+  text-align: left;
+  line-height: 1.1;
+  max-width: 70px;
+}
+
+.desc2nxn-nxn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.mc2-nxn-numero {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 70px;
+  font-weight: 700;
+  color: white;
+  line-height: 0.7;
+  display: flex;
+  margin-top: 7px;
+  align-items: flex-start;
+}
+
+.x-pequena-mc2 {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  text-transform: lowercase;
+  padding: 0 3px;
+  margin-top: 8px;
+}
+
+.mc2-nxn-descripcion {
+  font-family: 'Miso', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  margin-top: -6px;
+}
+
 .tipo-NxNMC2 .mc2-numero1, .mc2-numero2{
   text-transform: lowercase;
 }

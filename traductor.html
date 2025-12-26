@@ -280,14 +280,26 @@
 
           <div class="rule-group">
             <h4>🔄 Tipo de Acción</h4>
+            <p>• <code>1+1 $500</code> → <code>$500</code> (ignora combo 1+1)</p>
+            <p>• <code>1+1 40%</code> → <code>40%</code> (ignora combo 1+1)</p>
             <p>• <code>1x25%</code> → <code>25%</code></p>
             <p>• <code>2x1</code> → <code>2x1</code></p>
             <p>• <code>#2x70%</code> → <code>70%2</code></p>
-            <p>• <code>$13333</code> → <code>$13333</code></p>
+            <p>• <code>80%2O2X1MC</code> → <code>80%2O2X1MC</code> (combo desc 2da O NxN MC)</p>
+            <p>• <code>$13333</code> → <code>$13.333</code> (con separador de miles)</p>
             <p>• Si <code>Tu Club = "Si"</code> → Se agrega "MC" al final</p>
             <p>
               • <code>Mas 6CSI</code> o <code>6 CSI</code> → <code>+6Q</code>
             </p>
+          </div>
+
+          <div class="rule-group">
+            <h4>💰 Extracción de Precios del Título</h4>
+            <p>
+              • <code>MANTECOL TROZADO $1589 X 100 GR</code> →<br>
+              Tipo: <code>$1589</code>, Título: <code>MANTECOL TROZADO X 100 GR</code>
+            </p>
+            <p>• El precio se extrae automáticamente y se mueve al tipo de acción</p>
           </div>
 
           <div class="rule-group">
@@ -312,6 +324,18 @@
             <p>• Mismo título con versión regular (25%) y MásClub (30%MC)</p>
             <p>• Se combina en: <code>25%O30%MC</code></p>
             <p>• Las dos filas originales se eliminan automáticamente</p>
+          </div>
+
+          <div class="rule-group">
+            <h4>⚖️ Legales Dinámicos</h4>
+            <p><strong>Legal 1:</strong> Siempre "EL DESCUENTO SE HARÁ EFECTIVO EN LÍNEA DE CAJAS..."</p>
+            <p><strong>Legal 2 (dinámico según):</strong></p>
+            <ul style="margin-left: 20px; line-height: 1.6">
+              <li><strong>Dpto 96 (Bebidas con alcohol):</strong> Legal con advertencia +18</li>
+              <li><strong>Cuotas sin interés:</strong> Legal con CFT 0%, TEA 0%, TNA 0%</li>
+              <li><strong>Tu Club activo:</strong> Legal de Más Club con condiciones</li>
+              <li><strong>Genérico:</strong> Legal estándar con vigencia</li>
+            </ul>
           </div>
         </div>
       </section>
