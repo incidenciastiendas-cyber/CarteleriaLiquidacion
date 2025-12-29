@@ -18,14 +18,21 @@ const authorizedUsers = [
     username: 'gustavo.klobouk',
     password: 'AguanteBOCA12',
     email: 'gustavo.klobouk@example.com',
-    name: 'Gustavo Klo'
+    name: 'Gustavo Klobouk'
   },
   {
     username: 'rodrigo.armando',
     password: 'Rodrigo4',
     email: 'rodrigo.armando@example.com',
     name: 'Rodrigo Bernel'
+  },
+  {
+    username: 'valentin.ata',
+    password: 'Valentino',
+    email: 'valentin.ata@example.com',
+    name: 'Valentin Ata Diaz'
   }
+  
   // Agregar más usuarios aquí siguiendo el formato:
   // {
   //   username: 'usuario',

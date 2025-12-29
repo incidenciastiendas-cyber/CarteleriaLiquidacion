@@ -17,6 +17,8 @@ body {
         background: var(--app-background);
         padding: 20px;
         min-height: 100vh;
+        display: flex;
+        flex-direction: column;
       }
 
       .home-container {

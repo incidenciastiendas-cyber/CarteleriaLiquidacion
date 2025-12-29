@@ -1,21 +1,21 @@
 /* Fuentes locales */
 @font-face {
   font-family: 'Miso';
-  src: url('fonts/Miso-Regular.ttf') format('truetype');
+  src: url('../fonts/Miso-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Miso';
-  src: url('fonts/Miso-Bold.ttf') format('truetype');
+  src: url('../fonts/Miso-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Libre Barcode EAN13 Text';
-  src: url('fonts/LibreBarcodeEAN13Text-Regular.ttf') format('truetype');
+  src: url('../fonts/LibreBarcodeEAN13Text-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }

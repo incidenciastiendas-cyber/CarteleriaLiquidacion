@@ -1,7 +1,13 @@
 // auth.js - Sistema de autenticación local
+// NOTA: Autenticación deshabilitada - Usuario automático establecido como "User"
 
 // Verificar si el usuario ya está autenticado
 function isAuthenticated() {
+  // Siempre autenticado con usuario genérico
+  ensureDefaultUser();
+  return true;
+  
+  /* CÓDIGO DE AUTENTICACIÓN ORIGINAL - COMENTADO
   const session = localStorage.getItem('carteleriaSession');
   if (session) {
     try {
@@ -21,6 +27,21 @@ function isAuthenticated() {
     }
   }
   return false;
+  */
+}
+
+// Asegurar que siempre haya un usuario por defecto
+function ensureDefaultUser() {
+  const session = localStorage.getItem('carteleriaSession');
+  if (!session) {
+    const defaultUser = {
+      username: 'User',
+      email: 'user@gdn.com',
+      name: 'User',
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('carteleriaSession', JSON.stringify(defaultUser));
+  }
 }
 
 // Obtener datos del usuario actual
@@ -38,6 +59,12 @@ function getCurrentUser() {
 
 // Intentar login
 function login(username, password, rememberMe) {
+  // Login automático - siempre exitoso con usuario genérico
+  ensureDefaultUser();
+  const sessionData = getCurrentUser();
+  return { success: true, user: sessionData };
+  
+  /* CÓDIGO DE AUTENTICACIÓN ORIGINAL - COMENTADO
   const user = authorizedUsers.find(
     u => u.username === username && u.password === password
   );
@@ -67,6 +94,7 @@ function login(username, password, rememberMe) {
   }
   
   return { success: false, message: 'Usuario o contraseña incorrectos' };
+  */
 }
 
 // Cerrar sesión
@@ -92,14 +120,21 @@ function getRememberedUser() {
 
 // Proteger página (redirigir a login si no está autenticado)
 function requireAuth() {
+  // Siempre autenticado - solo asegurar que exista el usuario
+  ensureDefaultUser();
+  
+  /* CÓDIGO ORIGINAL - COMENTADO
   if (!isAuthenticated()) {
     window.location.href = 'index.html';
   }
+  */
 }
 
 // Redirigir a home si ya está autenticado (para la página de login)
 function redirectIfAuthenticated() {
-  if (isAuthenticated()) {
+  // Redirigir automáticamente después de mostrar bienvenida
+  ensureDefaultUser();
+  setTimeout(() => {
     window.location.href = 'home.html';
-  }
+  }, 1500); // 1.5 segundos de delay para mostrar pantalla de bienvenida
 }
